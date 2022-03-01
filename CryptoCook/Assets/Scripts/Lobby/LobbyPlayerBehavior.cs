@@ -11,6 +11,8 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public TextMeshProUGUI pseudoText;
 
     public GameObject[] lobbyPosition; //Position du joueur dans le lobby
+
+    public GameObject readyUi;
     #endregion
 
     #region paramètres
@@ -19,6 +21,10 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public string pseudo;
     [SyncVar(hook = nameof(UpdatePosition))]
     public int positionInLobby;
+
+    [HideInInspector]
+    [SyncVar(hook = nameof(UpdateReady))]
+    public bool isReady;
     #endregion
 
     // Start is called before the first frame update
@@ -29,8 +35,10 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     }
     void Start()
     {
+        //Initialise toutes les valeurs syncs
         UpdatePosition(positionInLobby, positionInLobby);
         UpdatePseudoText(pseudo, pseudo);
+        UpdateReady(isReady, isReady);
     }
 
     // Update is called once per frame
@@ -39,7 +47,7 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         
     }
 
-    void UpdatePosition(int oldValue, int newValue)
+    private void UpdatePosition(int oldValue, int newValue)
     {
         transform.SetParent(lobbyPosition[newValue].transform);
         Debug.Log("value + " + positionInLobby);
@@ -47,9 +55,19 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
     }
 
-    void UpdatePseudoText(string oldText, string newText)
+    private void UpdatePseudoText(string oldText, string newText)
     {
         pseudoText.text = newText;
+    }
+
+    private void UpdateReady(bool oldVal, bool newValue)
+    {
+        readyUi.SetActive(newValue);
+    }
+    [Command]
+    public void OnPressedReady()
+    {
+        isReady = !isReady;
     }
 
 

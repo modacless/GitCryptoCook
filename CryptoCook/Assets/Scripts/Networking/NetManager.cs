@@ -20,6 +20,8 @@ public class NetManager : NetworkManager
 
     #region variables
     public static bool isHost = false; //Bool permettant de savoir si le networkmanager utiliser est un serveur ou juste un client
+
+    private LobbyPlayerBehavior[] lobbyPlayers = new LobbyPlayerBehavior[2];
     #endregion
 
     #region Unity Callbacks
@@ -53,6 +55,10 @@ public class NetManager : NetworkManager
     public override void LateUpdate()
     {
         base.LateUpdate();
+        if (isHost)
+        {
+
+        }
     }
 
     /// <summary>
@@ -292,6 +298,25 @@ public class NetManager : NetworkManager
         pref.GetComponent<LobbyPlayerBehavior>().positionInLobby = msg.position;
         pref.GetComponent<LobbyPlayerBehavior>().pseudo = msg.pseudo;
 
+        lobbyPlayers[msg.position] = pref.GetComponent<LobbyPlayerBehavior>();
+
+    }
+
+    public bool CheckPlayersReady()
+    {
+        foreach(LobbyPlayerBehavior lb in lobbyPlayers)
+        {
+            if(lb == null)
+            {
+                return false;
+            }
+            if (!lb.isReady)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
     #endregion
 
