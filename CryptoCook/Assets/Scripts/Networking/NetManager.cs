@@ -10,6 +10,11 @@ using Mirror;
 
 public class NetManager : NetworkManager
 {
+
+    #region
+    public GameObject lobbyPlayerPrefs;
+    #endregion
+
     #region Unity Callbacks
 
     public override void OnValidate()
@@ -241,4 +246,18 @@ public class NetManager : NetworkManager
     public override void OnStopClient() { }
 
     #endregion
+
+
+    #region Lobby
+    public struct lobbyMessage : NetworkMessage
+    {
+        public string pseudo;
+    }
+
+    public void CreateLobbyPlayer(NetworkConnection conn, lobbyMessage msg)
+    {
+        GameObject pref = Instantiate(lobbyPlayerPrefs);
+    }
+    #endregion
+
 }
