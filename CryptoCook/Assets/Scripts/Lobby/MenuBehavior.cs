@@ -8,6 +8,7 @@ public class MenuBehavior : MonoBehaviour
 {
     #region Références
     public GameObject menuCanvas;
+    public TMP_InputField ipText;
     #endregion
 
     void Start()
@@ -21,14 +22,20 @@ public class MenuBehavior : MonoBehaviour
         
     }
 
+    //Boutton Host
     public void OnPressedHost()
     {
         menuCanvas.SetActive(false);
+        NetworkManager.singleton.StartHost();
     }
+
+    //Boutton Join
 
     public void OnPressedClient()
     {
         menuCanvas.SetActive(false);
+        NetworkManager.singleton.networkAddress = ipText.text;
+        NetworkManager.singleton.StartClient();
     }
 
 

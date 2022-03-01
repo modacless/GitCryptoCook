@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using TMPro;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
@@ -11,8 +12,16 @@ using Mirror;
 public class NetManager : NetworkManager
 {
 
-    #region
+    #region références
     public GameObject lobbyPlayerPrefs;
+    public TextMeshProUGUI pseudoText;
+
+    //Position des joueurs dans le lobby
+    public GameObject[] lobbyPositions;
+    #endregion
+
+    #region variables
+    private bool isHost = false; //Bool permettant de savoir si le networkmanager utiliser est un serveur ou juste un client
     #endregion
 
     #region Unity Callbacks
@@ -182,6 +191,25 @@ public class NetManager : NetworkManager
     public override void OnClientConnect()
     {
         base.OnClientConnect();
+        if (isHost)
+        {
+            lobbyMessage msg = new lobbyMessage
+            {
+                pseudo = pseudoText.text,
+                position = 0
+            };
+            NetworkClient.Send(msg);
+        }
+        else
+        {
+            lobbyMessage msg = new lobbyMessage
+            {
+                pseudo = pseudoText.text,
+                position = 1
+            };
+            NetworkClient.Send(msg);
+        }
+       
     }
 
     /// <summary>
@@ -217,7 +245,11 @@ public class NetManager : NetworkManager
     /// This is invoked when a host is started.
     /// <para>StartHost has multiple signatures, but they all cause this hook to be called.</para>
     /// </summary>
-    public override void OnStartHost() { }
+    public override void OnStartHost() 
+    {
+        isHost = true;
+        NetworkServer.RegisterHandler<lobbyMessage>(CreateLobbyPlayer, true);
+    }
 
     /// <summary>
     /// This is invoked when a server is started - including when a host is started.
@@ -252,11 +284,15 @@ public class NetManager : NetworkManager
     public struct lobbyMessage : NetworkMessage
     {
         public string pseudo;
+        public int position;
     }
 
     public void CreateLobbyPlayer(NetworkConnection conn, lobbyMessage msg)
     {
-        GameObject pref = Instantiate(lobbyPlayerPrefs);
+        GameObject pref = Instantiate(lobbyPlayerPrefs, lobbyPositions[msg.position].transform);
+        pref.GetComponent<LobbyPlayerBehavior>().pseudo = msg.pseudo;
+        NetworkServer.AddPlayerForConnection(conn, pref);
+
     }
     #endregion
 
