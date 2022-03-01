@@ -14,14 +14,12 @@ public class NetManager : NetworkManager
 
     #region références
     public GameObject lobbyPlayerPrefs;
-    public TextMeshProUGUI pseudoText;
+    public TMP_InputField pseudoText;
 
-    //Position des joueurs dans le lobby
-    public GameObject[] lobbyPositions;
     #endregion
 
     #region variables
-    private bool isHost = false; //Bool permettant de savoir si le networkmanager utiliser est un serveur ou juste un client
+    public static bool isHost = false; //Bool permettant de savoir si le networkmanager utiliser est un serveur ou juste un client
     #endregion
 
     #region Unity Callbacks
@@ -289,9 +287,10 @@ public class NetManager : NetworkManager
 
     public void CreateLobbyPlayer(NetworkConnection conn, lobbyMessage msg)
     {
-        GameObject pref = Instantiate(lobbyPlayerPrefs, lobbyPositions[msg.position].transform);
-        pref.GetComponent<LobbyPlayerBehavior>().pseudo = msg.pseudo;
+        GameObject pref = Instantiate(lobbyPlayerPrefs);
         NetworkServer.AddPlayerForConnection(conn, pref);
+        pref.GetComponent<LobbyPlayerBehavior>().positionInLobby = msg.position;
+        pref.GetComponent<LobbyPlayerBehavior>().pseudo = msg.pseudo;
 
     }
     #endregion

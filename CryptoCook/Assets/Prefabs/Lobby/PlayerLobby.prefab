@@ -552,7 +552,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   pseudoText: {fileID: 264866348043658727}
+  lobbyPosition: []
   pseudo: 
+  positionInLobby: 0
 --- !u!114 &2239173269569678940
 MonoBehaviour:
   m_ObjectHideFlags: 0
