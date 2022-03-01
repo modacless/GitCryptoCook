@@ -22,6 +22,9 @@ public class NetManager : NetworkManager
     public static bool isHost = false; //Bool permettant de savoir si le networkmanager utiliser est un serveur ou juste un client
 
     private LobbyPlayerBehavior[] lobbyPlayers = new LobbyPlayerBehavior[2];
+
+    private float timerStart = 1; //Timer qui permet de passer du lobby au jeux
+    private bool allReady = false;
     #endregion
 
     #region Unity Callbacks
@@ -57,9 +60,22 @@ public class NetManager : NetworkManager
         base.LateUpdate();
         if (isHost)
         {
+            if (CheckPlayersReady() && !allReady)
+            {
+                allReady = true;
+            }
 
+            if (allReady)
+            {
+                timerStart -= Time.deltaTime;
+                if(timerStart <= 0)
+                {
+
+                }
+            }
         }
     }
+
 
     /// <summary>
     /// Runs on both Server and Client
@@ -308,15 +324,22 @@ public class NetManager : NetworkManager
         {
             if(lb == null)
             {
+                allReady = false;
                 return false;
             }
             if (!lb.isReady)
             {
+                allReady = false;
                 return false;
             }
         }
 
         return true;
+    }
+
+    private void GoToMainGame()
+    {
+        ServerChangeScene("MainGame");
     }
     #endregion
 
