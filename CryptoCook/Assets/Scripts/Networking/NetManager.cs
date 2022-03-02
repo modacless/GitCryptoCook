@@ -355,12 +355,15 @@ public class NetManager : NetworkManager
             if(lb == null)
             {
                 allReady = false;
-                return false;
+                //return false;
             }
-            if (!lb.isReady)
+            else
             {
-                allReady = false;
-                return false;
+                if (!lb.isReady)
+                {
+                    allReady = false;
+                    return false;
+                }
             }
         }
 

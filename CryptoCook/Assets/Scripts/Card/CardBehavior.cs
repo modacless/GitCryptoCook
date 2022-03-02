@@ -15,4 +15,9 @@ public class CardBehavior : MonoBehaviour
     {
         
     }
+
+    public void InitializeCard(CardBehavior card)
+    {
+        cardLogic = card.cardLogic;
+    }
 }
