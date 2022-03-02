@@ -692,9 +692,11 @@ MonoBehaviour:
   lobbyPosition: []
   readyUi: {fileID: 6752157990364802916}
   readyButton: {fileID: 7640124255189058020}
+  networkManager: {fileID: 0}
   pseudo: 
   positionInLobby: 0
   isReady: 0
+  deck: 
 --- !u!114 &2239173269569678940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1067,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1539145565544835436}
         m_TargetAssemblyTypeName: LobbyPlayerBehavior, Assembly-CSharp
         m_MethodName: OnPressedReady
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1539145565544835436}
+        m_TargetAssemblyTypeName: LobbyPlayerBehavior, Assembly-CSharp
+        m_MethodName: CmdOnPressedReady
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -14,12 +14,13 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public GameObject[] lobbyPosition; //Position du joueur dans le lobby
 
     public GameObject readyUi;
-
     public GameObject readyButton;
+
+    public NetManager networkManager; //Référence qui permet de donner stocker les variables transmises ( pseudo, deck )
     #endregion
 
+    [Header("Variables internes")]
     #region paramètres
-    [Header("SyncVar")]
     [SyncVar(hook = nameof(UpdatePseudoText))]
     public string pseudo;
     [SyncVar(hook = nameof(UpdatePosition))]
@@ -28,6 +29,8 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     [HideInInspector]
     [SyncVar(hook = nameof(UpdateReady))]
     public bool isReady;
+
+    public string deck;
     #endregion
 
     // Start is called before the first frame update
@@ -38,6 +41,9 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     }
     void Start()
     {
+        //Trouve la référence du network Manager
+        networkManager = GameObject.Find("NetworkManager").GetComponent<NetManager>();
+
         //Initialise toutes les valeurs syncs
         UpdatePosition(positionInLobby, positionInLobby);
         UpdatePseudoText(pseudo, pseudo);
@@ -49,12 +55,6 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         {
             readyButton.SetActive(false);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void UpdatePosition(int oldValue, int newValue)
@@ -74,11 +74,22 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     {
         readyUi.SetActive(newValue);
     }
+
     [Command]
-    public void OnPressedReady()
+    public void CmdOnPressedReady()
     {
         isReady = !isReady;
     }
 
+    public void OnPressedReady()
+    {
+        if (!isReady)
+        {
+            networkManager.pseudoPlayer = pseudo;
+            networkManager.deckPlayer = deck;
+
+            Debug.Log(networkManager.pseudoPlayer);
+        }
+    }
 
 }

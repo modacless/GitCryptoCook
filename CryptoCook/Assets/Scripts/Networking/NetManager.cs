@@ -15,6 +15,7 @@ public class NetManager : NetworkManager
     #region références
     public GameObject lobbyPlayerPrefs;
     public TMP_InputField pseudoText;
+    public GameObject PlayerInGame;
 
     #endregion
 
@@ -25,6 +26,13 @@ public class NetManager : NetworkManager
 
     private float timerStart = 1; //Timer qui permet de passer du lobby au jeux
     private bool allReady = false;
+
+    /// <summary>
+    /// Variables qui vont être transmis entre le loby, et le jeu
+    /// </summary>
+    [HideInInspector] public string pseudoPlayer;
+    [HideInInspector] public string deckPlayer;
+
     #endregion
 
     #region Unity Callbacks
@@ -155,6 +163,17 @@ public class NetManager : NetworkManager
     public override void OnClientSceneChanged()
     {
         base.OnClientSceneChanged();
+        if(SceneManager.GetActiveScene().name != "Base")
+        {
+            InGameMessage msg = new InGameMessage
+            {
+                pseudo = pseudoPlayer,
+                deck = deckPlayer
+            };
+
+            NetworkClient.Send(msg);
+        }
+        
     }
 
     #endregion
@@ -219,7 +238,7 @@ public class NetManager : NetworkManager
         base.OnClientConnect();
         if (isHost)
         {
-            lobbyMessage msg = new lobbyMessage
+            LobbyMessage msg = new LobbyMessage
             {
                 pseudo = pseudoText.text,
                 position = 0
@@ -228,7 +247,7 @@ public class NetManager : NetworkManager
         }
         else
         {
-            lobbyMessage msg = new lobbyMessage
+            LobbyMessage msg = new LobbyMessage
             {
                 pseudo = pseudoText.text,
                 position = 1
@@ -274,7 +293,8 @@ public class NetManager : NetworkManager
     public override void OnStartHost() 
     {
         isHost = true;
-        NetworkServer.RegisterHandler<lobbyMessage>(CreateLobbyPlayer, true);
+        NetworkServer.RegisterHandler<LobbyMessage>(CreateLobbyPlayer, true);
+        NetworkServer.RegisterHandler<InGameMessage>(CreateInGamePlayer, true);
     }
 
     /// <summary>
@@ -307,13 +327,16 @@ public class NetManager : NetworkManager
 
 
     #region Lobby
-    public struct lobbyMessage : NetworkMessage
+
+    //Structure représentant le message envoyé quand un joueur se connecte
+    public struct LobbyMessage : NetworkMessage
     {
         public string pseudo;
         public int position;
     }
 
-    public void CreateLobbyPlayer(NetworkConnection conn, lobbyMessage msg)
+    //Fonction qui créer le joueur lobby
+    public void CreateLobbyPlayer(NetworkConnection conn, LobbyMessage msg)
     {
         GameObject pref = Instantiate(lobbyPlayerPrefs);
         NetworkServer.AddPlayerForConnection(conn, pref);
@@ -324,6 +347,7 @@ public class NetManager : NetworkManager
 
     }
 
+    //Vérifie si tous les joueurs sont prets
     public bool CheckPlayersReady()
     {
         foreach(LobbyPlayerBehavior lb in lobbyPlayers)
@@ -347,6 +371,25 @@ public class NetManager : NetworkManager
     {
         ServerChangeScene("MainGame");
     }
+    #endregion
+
+    #region In Game
+
+    //Structure représentant le message envoyé quand un jouer lance la partie
+    public struct InGameMessage : NetworkMessage
+    {
+        public string pseudo;
+        public string deck;
+    }
+    //Fonction qui créer le joueur tenant les cartes
+    public void CreateInGamePlayer(NetworkConnection conn, InGameMessage msg)
+    {
+        GameObject player = Instantiate(PlayerInGame);
+        NetworkServer.AddPlayerForConnection(conn, player);
+        player.GetComponent<PlayerBehavior>().pseudo = msg.pseudo;
+        player.GetComponent<PlayerBehavior>().deck = msg.deck;
+    }
+
     #endregion
 
 }
