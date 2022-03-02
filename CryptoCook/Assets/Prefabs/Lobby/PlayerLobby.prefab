@@ -691,6 +691,7 @@ MonoBehaviour:
   pseudoText: {fileID: 264866348043658727}
   lobbyPosition: []
   readyUi: {fileID: 6752157990364802916}
+  readyButton: {fileID: 7640124255189058020}
   pseudo: 
   positionInLobby: 0
   isReady: 0

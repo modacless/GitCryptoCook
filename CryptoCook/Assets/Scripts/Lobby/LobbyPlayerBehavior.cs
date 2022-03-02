@@ -10,9 +10,12 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     #region Références
     public TextMeshProUGUI pseudoText;
 
+    [HideInInspector]
     public GameObject[] lobbyPosition; //Position du joueur dans le lobby
 
     public GameObject readyUi;
+
+    public GameObject readyButton;
     #endregion
 
     #region paramètres
@@ -39,6 +42,13 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         UpdatePosition(positionInLobby, positionInLobby);
         UpdatePseudoText(pseudo, pseudo);
         UpdateReady(isReady, isReady);
+
+        //Active le boutton ready pour le joueur possédant l'authorité
+        readyButton.SetActive(true);
+        if (!hasAuthority)
+        {
+            readyButton.SetActive(false);
+        }
     }
 
     // Update is called once per frame

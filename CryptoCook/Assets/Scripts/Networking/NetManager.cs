@@ -58,22 +58,28 @@ public class NetManager : NetworkManager
     public override void LateUpdate()
     {
         base.LateUpdate();
-        if (isHost)
+        if (SceneManager.GetActiveScene().name == "Base" ) 
         {
-            if (CheckPlayersReady() && !allReady)
+            if (isHost)
             {
-                allReady = true;
-            }
-
-            if (allReady)
-            {
-                timerStart -= Time.deltaTime;
-                if(timerStart <= 0)
+                if (CheckPlayersReady() && !allReady)
                 {
+                    allReady = true;
+                }
 
+                if (allReady)
+                {
+                    timerStart -= Time.deltaTime;
+                    if (timerStart <= 0)
+                    {
+                        timerStart = 100;
+                        GoToMainGame();
+                    }
                 }
             }
+
         }
+            
     }
 
 
