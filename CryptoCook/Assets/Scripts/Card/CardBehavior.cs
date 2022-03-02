@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardBehavior : MonoBehaviour
 {
-    public ScriptableCard cardStats; 
+    public ScriptableCard cardLogic;
     void Start()
     {
         
