@@ -530,6 +530,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 6458310247147389016, guid: cf5a3c054e753084080dfaf74966a480, type: 3}
   - {fileID: 8667703452763311355, guid: 340cd2ef2375ebb489ff45249dc96c80, type: 3}
+  - {fileID: 6694101996773000217, guid: 252d2bafc37ea924c86b49dcf64bdcf0, type: 3}
   lobbyPlayerPrefs: {fileID: 6458310247147389016, guid: cf5a3c054e753084080dfaf74966a480, type: 3}
   pseudoText: {fileID: 831430913}
   PlayerInGame: {fileID: 8667703452763311355, guid: 340cd2ef2375ebb489ff45249dc96c80, type: 3}

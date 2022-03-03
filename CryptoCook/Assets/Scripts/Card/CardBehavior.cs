@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class CardBehavior : MonoBehaviour
+using Mirror;
+public class CardBehavior : NetworkBehaviour
 {
     public ScriptableCard cardLogic;
     void Start()
@@ -16,8 +16,8 @@ public class CardBehavior : MonoBehaviour
         
     }
 
-    public void InitializeCard(CardBehavior card)
+    public void InitializeCard(ScriptableCard card)
     {
-        cardLogic = card.cardLogic;
+        cardLogic = card;
     }
 }
