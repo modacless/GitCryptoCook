@@ -115,7 +115,17 @@ public class DeckManager : NetworkBehaviour
     public void CmdNextTurn()
     {
         playerHost.GetComponent<PlayerBehavior>().yourTurn = !playerHost.GetComponent<PlayerBehavior>().yourTurn;
+        if (playerHost.GetComponent<PlayerBehavior>().yourTurn)
+        {
+
+        }
+
         playerClient.GetComponent<PlayerBehavior>().yourTurn = !playerClient.GetComponent<PlayerBehavior>().yourTurn;
+
+        if (playerClient.GetComponent<PlayerBehavior>().yourTurn)
+        {
+
+        }
     }
 
 

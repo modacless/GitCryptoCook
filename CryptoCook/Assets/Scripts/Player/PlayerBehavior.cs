@@ -106,7 +106,10 @@ public class PlayerBehavior : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (hasAuthority)
+        {
+            SelectCard();
+        }
     }
 
     private void PickupInDeckCuisine()
@@ -202,6 +205,26 @@ public class PlayerBehavior : NetworkBehaviour
             buttonNextRound.SetActive(newValue);
         }
 
+    }
+
+    private void SelectCard()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit,100))
+            {
+                if(hit.transform.gameObject.GetComponent<CardBehavior>() != null)
+                {
+                    if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
+                    {
+                        Debug.Log(hit.transform.gameObject);
+                    }
+                }
+            }
+            Debug.DrawRay(Input.mousePosition, Camera.main.transform.forward);
+        }
     }
 
 
