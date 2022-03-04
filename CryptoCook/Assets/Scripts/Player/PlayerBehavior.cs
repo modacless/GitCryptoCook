@@ -39,17 +39,23 @@ public class PlayerBehavior : NetworkBehaviour
     //Carte pioché au début de la partie
     private int startHand = 5;
 
+    public int actualPoint = 0; //Point du joueur
+    public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
+
+    //[HideInInspector]
+    [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
+
+    /// <summary>
+    /// Stockage des différentes cartes
+    /// </summary>
+
     // Liste de cartes dans la main du joueur
     public List<CardBehavior> handCards = new List<CardBehavior>();
     // Liste de cartes dans le deck du joueur, dois agir comme une pile
     [SerializeField]
     private List<ScriptableCard> deckCards;
-
-    public int actualPoint = 0; //Point du joueur
-    public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
-
-    [HideInInspector]
-    [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
+    //Liste de toutes les cartes aliments
+    public List<CardBehavior> reserveCards;
 
     #endregion
 
@@ -69,15 +75,16 @@ public class PlayerBehavior : NetworkBehaviour
                 yourTurn = true;
                 buttonNextRound.SetActive(true);
                 CmdInitializeDeckHost();
+                deckManager.ChangeBoardAuthority(netIdentity.connectionToClient);
             }
 
             if (isClientOnly)
             {
                 CmdInitializeDeckClient();
-                Camera.main.transform.rotation = Quaternion.Euler(90, 180, 0);
+                Camera.main.transform.rotation = Quaternion.Euler(80, 180, 0);
             }
 
-            transform.position = new Vector3(0, 0, -4);
+            transform.position = new Vector3(0, 0, 4);
             for (int i = 0; i < startHand; i++)
             {
                 PickupInDeckCuisine();
@@ -85,7 +92,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
         else
         {
-            transform.position = new Vector3(0, 0, 4);
+            transform.position = new Vector3(0, 0, -4);
         }
 
     }
@@ -134,13 +141,14 @@ public class PlayerBehavior : NetworkBehaviour
         //RpcCreateCard();
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        if (handCards.Count < 8)
+        if (handCards.Count < 7)
         {
             cardObj.transform.position = cardPosition[handCards.Count].transform.position; //La position de la carte pioché étant, la taille de la main
             cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
             handCards.Add(cardObj.GetComponent<CardBehavior>());
             deckCards.RemoveAt(0);
             NetworkServer.Spawn(cardObj, playerobj);
+            RpcCreateCard(cardObj);
         }
         else
         {
@@ -149,22 +157,12 @@ public class PlayerBehavior : NetworkBehaviour
     }
 
     //Permet de répliquer la création de la carte
-    [ClientRpc(includeOwner = false)]
-    private void RpcCreateCard()
+    [ClientRpc]
+    private void RpcCreateCard(GameObject cardObj)
     {
-        GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        if (handCards.Count < 8)
-        {
-            cardObj.transform.position = cardPosition[handCards.Count].transform.position; //La position de la carte pioché étant, la taille de la main
-            cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-            handCards.Add(cardObj.GetComponent<CardBehavior>());
-            deckCards.RemoveAt(0);
-        }
-        else
-        {
-            //Discard
-        }
+        handCards.Add(cardObj.GetComponent<CardBehavior>());
+        deckCards.RemoveAt(0);
     }
 
     #endregion
@@ -180,6 +178,7 @@ public class PlayerBehavior : NetworkBehaviour
     public void CmdInitializeDeckHost()
     {
         deckManager.playerHost = this.gameObject;
+        deckManager.GetComponent<NetworkIdentity>().AssignClientAuthority(netIdentity.connectionToClient);
     }
 
     #endregion
@@ -207,6 +206,8 @@ public class PlayerBehavior : NetworkBehaviour
         {
             PickupInDeckCuisine();
         }
+
+
     }
 
     private void ShowButtonTurn(bool oldValue, bool newValue)
@@ -220,7 +221,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     private void SelectCard()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -230,7 +231,7 @@ public class PlayerBehavior : NetworkBehaviour
                 {
                     if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
                     {
-                        Debug.Log(hit.transform.gameObject);
+                        
                     }
                 }
             }
@@ -248,7 +249,7 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
                 {
-                    Debug.Log(hit.transform.gameObject);
+                    
                 }
             }
         }

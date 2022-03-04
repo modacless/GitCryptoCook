@@ -88,7 +88,6 @@ public class LobbyPlayerBehavior : NetworkBehaviour
             networkManager.pseudoPlayer = pseudo;
             networkManager.deckPlayer = deck;
 
-            Debug.Log(networkManager.pseudoPlayer);
         }
     }
 
