@@ -109,9 +109,11 @@ public class PlayerBehavior : NetworkBehaviour
         if (hasAuthority)
         {
             SelectCard();
+            OverrideCard();
         }
     }
 
+    #region Deck Interraction
     private void PickupInDeckCuisine()
     {
         if(deckCards.Count > 0)
@@ -125,6 +127,7 @@ public class PlayerBehavior : NetworkBehaviour
         deckCards.OrderBy(item => Random.Range(0, deckCards.Count));
     }
 
+    //Permet de créer une carte, côté client et server
     [Command]
     private void CmdCreateCard(GameObject playerobj)
     {
@@ -145,6 +148,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    //Permet de répliquer la création de la carte
     [ClientRpc(includeOwner = false)]
     private void RpcCreateCard()
     {
@@ -163,6 +167,9 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    #endregion
+
+    #region initialise
     [Command]
     public void CmdInitializeDeckClient()
     {
@@ -174,6 +181,10 @@ public class PlayerBehavior : NetworkBehaviour
     {
         deckManager.playerHost = this.gameObject;
     }
+
+    #endregion
+
+    #region hand and Card
 
     private int FindPlaceInHand()
     {
@@ -227,5 +238,21 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    private void OverrideCard()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+            if (hit.transform.gameObject.GetComponent<CardBehavior>() != null)
+            {
+                if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
+                {
+                    Debug.Log(hit.transform.gameObject);
+                }
+            }
+        }
+    }
 
+    #endregion
 }
