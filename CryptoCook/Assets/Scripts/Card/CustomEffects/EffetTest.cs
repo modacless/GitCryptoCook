@@ -10,13 +10,13 @@ public class EffetTest : ScriptableEffect
         //code pour combo dans le repas
 
 
-        //for(int i = 0; i < card.repas.allrecipe.length; i++)
-        //{
-        //  if(card.repas.allrecipe[i].type == RecipeType.Entree)
-        //  {
-        //      card.baseScore += 2;
-        //  }
-        //}
+        for (int i = 0; i < card.repas.allRecipes.Count; i++)
+        {
+            if (card.repas.allRecipes[i].cardLogic.recipeType == ScriptableCard.RecipeType.Entree)
+            {
+                card.variablePoint += 2;
+            }
+        }
 
         yield return null;
     }

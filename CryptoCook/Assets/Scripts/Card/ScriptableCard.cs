@@ -11,6 +11,15 @@ public class ScriptableCard : ScriptableObject
         Recette,
         Effet
     }
+    public enum RecipeType
+    {
+        Entree,
+        Plat,
+        Dessert
+    }
+
+    public RecipeType recipeType;
+
     public CardType cardType;
      
     public MeshFilter meshFilterModel;

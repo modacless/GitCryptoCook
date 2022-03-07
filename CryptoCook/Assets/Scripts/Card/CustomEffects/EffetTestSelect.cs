@@ -14,17 +14,17 @@ public class EffetTestSelect : ScriptableEffect
     {
         //code pour effet pour détruire une recette adverse
 
-        //card.playerBehaviour.selectedAdversaryRecipe = null;
-        //card.playerBehaviour.StartAdversaryRecipeSelection();
-        //while(card.playerBehaviour.selectedAdversaryRecipe == null && card.playerBehaviour.isSelecting)
-        //{
-        //      yield return new WaitForEndOfFrames();
-        //}
-        //
-        //if(card.playerBehaviour.selectedAdversaryRecipe != null)
-        //{
-        //      card.playerBehaviour.selectedAdversaryRecipe.RemoveFromBoard();
-        //}
+        card.player.selectedCard = null;
+        card.player.StartSelectRecipeEnemy();
+        while (card.player.selectedCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (card.player.selectedCard != null)
+        {
+            //card.player.selectedCard.RemoveFromBoard();
+        }
         yield return null;
     }
 }

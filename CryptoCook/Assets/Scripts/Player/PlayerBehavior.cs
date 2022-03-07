@@ -77,7 +77,7 @@ public class PlayerBehavior : NetworkBehaviour
     //Recete sur le plateau
     public List<Repas> boardRepas = new List<Repas>();
 
-    public CardBehavior selectCard;
+    public CardBehavior selectedCard;
 
     #endregion
 
@@ -339,6 +339,8 @@ public class PlayerBehavior : NetworkBehaviour
         card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
+        StartCoroutine(card.cardLogic.effect.OnUse(card));
+        RefreshBoard();
     }
 
     public int FindBoardPlaces(GameObject card)
@@ -420,7 +422,7 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffetPhase;
         textStatePlayer.text = "Select Receipe ally";
         
-        while (selectCard == null)
+        while (selectedCard == null)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -428,8 +430,8 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
-                    selectCard = hit.transform.GetComponent<CardBehavior>();
-                    Debug.Log("Carte sélectionné : " + selectCard);
+                    selectedCard = hit.transform.GetComponent<CardBehavior>();
+                    Debug.Log("Carte sélectionné : " + selectedCard);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -448,7 +450,7 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffetPhase;
         textStatePlayer.text = "Select Receipe Enemy";
 
-        while (selectCard == null)
+        while (selectedCard == null)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -456,8 +458,8 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
-                    selectCard = hit.transform.GetComponent<CardBehavior>();
-                    Debug.Log("Carte sélectionné : " + selectCard);
+                    selectedCard = hit.transform.GetComponent<CardBehavior>();
+                    Debug.Log("Carte sélectionné : " + selectedCard);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -465,5 +467,14 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = oldState;
     }
 
-
+    public void RefreshBoard()
+    {
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
+            {
+                boardRepas[i].allRecipes[j].RefreshEffect();
+            }
+        }
+    }
 }

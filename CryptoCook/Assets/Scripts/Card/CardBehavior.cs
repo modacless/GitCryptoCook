@@ -21,8 +21,8 @@ public class CardBehavior : NetworkBehaviour
 
     public PlayerBehavior player;
     public Repas repas;
-    public int point;
-
+    public int basePoint;
+    public int variablePoint;
 
     [HideInInspector]
     [SyncVar] public int emplacementHand = -1;
@@ -49,7 +49,7 @@ public class CardBehavior : NetworkBehaviour
     public void InitializeCard(ScriptableCard card)
     {
         cardLogic = card;
-        point = cardLogic.pointEarn;
+        basePoint = cardLogic.pointEarn;
     }
 
     public void OnMouseDown()
@@ -127,5 +127,8 @@ public class CardBehavior : NetworkBehaviour
         return Camera.main.ScreenToViewportPoint(mousePoint);
     }
     
-
+    public void RefreshEffect()
+    {
+        StartCoroutine(cardLogic.effect.OnBoardChange(this));
+    }
 }
