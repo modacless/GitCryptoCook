@@ -19,5 +19,6 @@ public class ScriptableCard : ScriptableObject
     public string cardName;
     public string TextDescription;
 
+    public ScriptableEffect effect;
 }
 
