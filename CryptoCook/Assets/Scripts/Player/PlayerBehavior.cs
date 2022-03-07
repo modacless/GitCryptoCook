@@ -98,10 +98,12 @@ public class PlayerBehavior : NetworkBehaviour
 
         if (!isClientOnly)
         {
+            Debug.Log("Host pos" + deckManager.playerPosition[0].transform.position);
             transform.position = deckManager.playerPosition[0].transform.position;
         }
         else
         {
+            Debug.Log("Client pos" + deckManager.playerPosition[1].transform.position);
             transform.position = deckManager.playerPosition[1].transform.position;
         }
 
@@ -197,14 +199,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
-        if (!isClientOnly)
-        {
-            transform.position = deckManager.playerPosition[0].transform.position;
-        }
-        else
-        {
-            transform.position = deckManager.playerPosition[1].transform.position;
-        }
     }
 
     #region Deck Interraction
