@@ -9,6 +9,8 @@ public class DeckManager : NetworkBehaviour
     private GameObject cardObject;
     [SerializeField]
     private GameObject deckObject;
+    [SerializeField]
+    public GameObject[] playerPosition;
 
     [SerializeField]
     private List<ScriptableCard> deckCards;
@@ -24,12 +26,21 @@ public class DeckManager : NetworkBehaviour
     [SyncVar] public int tour = 0;
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
         if (isServer)
         {
-           
+            yield return new WaitUntil(() => allPlayersReady());
+
+            for (int i = 0; i < cardsPosition.Length; i++)
+            {
+                PickupAliment(i);
+            }
+
+            yield return new WaitUntil(() => playerHost != null);
+            ChangeBoardAuthority(netIdentity.connectionToClient);
         }
+            
 
         int playerStart = Random.Range(0, 2);
         switch (playerStart)
@@ -39,33 +50,13 @@ public class DeckManager : NetworkBehaviour
             case 1:
                 break;
         }
+        yield return null;
     }
 
-    private bool DoOnce = false;
 
     private void Update()
     {
-        if (isServer)
-        {
-            //On attend que tous les joueurs se connectes
-            if (!DoOnce)
-            {
-                if (!allPlayersReady())
-                {
 
-                }
-                else
-                {
-                    for (int i = 0; i < cardsPosition.Length; i++)
-                    {
-                        PickupAliment(i);
-                        DoOnce = true;
-                    }
-
-                    ChangeBoardAuthority(netIdentity.connectionToClient);
-                }
-            }
-        }
     }
 
     public void PickupAliment(int emplacement)
@@ -81,52 +72,45 @@ public class DeckManager : NetworkBehaviour
 
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
         deckCards.RemoveAt(0);
-        cardObj.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
-        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-        boardCards.Add(cardObj.GetComponent<CardBehavior>());
-
-        NetworkServer.Spawn(cardObj);
-        RpcCreateCard(cardObj);
+        NetworkServer.Spawn(cardObj,netIdentity.connectionToClient);
+        RpcCreateCard(cardObj,emplacement);
     }
 
     [ClientRpc]
-    private void RpcCreateCard(GameObject cardObj)
+    private void RpcCreateCard(GameObject cardObj, int emplacement)
     {
         Debug.Log(cardObj + " " + deckCards[0]);
+        cardObj.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
+        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
         boardCards.Add(cardObj.GetComponent<CardBehavior>());
         deckCards.RemoveAt(0);
     }
 
-    public bool CanStartMatch()
-    {
-        if (playerHost == null)
-            return false;
-        if (playerClient == null)
-            return false;
-
-
-
-        return true;
-    }
-
-    [Command(requiresAuthority =false)]
+    [Command(requiresAuthority = false)]
     public void CmdNextTurn()
     {
         playerHost.GetComponent<PlayerBehavior>().yourTurn = !playerHost.GetComponent<PlayerBehavior>().yourTurn;
         if (playerHost.GetComponent<PlayerBehavior>().yourTurn)
         {
             ChangeBoardAuthority(playerHost.GetComponent<NetworkIdentity>().connectionToClient);
+            RpcNextTurn(playerHost.GetComponent<PlayerBehavior>());
             Debug.Log("Host auto");
         }
 
         playerClient.GetComponent<PlayerBehavior>().yourTurn = !playerClient.GetComponent<PlayerBehavior>().yourTurn;
-
         if (playerClient.GetComponent<PlayerBehavior>().yourTurn)
         {
             ChangeBoardAuthority(playerClient.GetComponent<NetworkIdentity>().connectionToClient);
+            RpcNextTurn(playerClient.GetComponent<PlayerBehavior>());
             Debug.Log("Client auto");
         }
+    }
+
+    [ClientRpc]
+    public void RpcNextTurn(PlayerBehavior player)
+    {
+        player.statePlayer = PlayerBehavior.StatePlayer.DrawPhase;
     }
 
     //Permet de changer l'autorithé des cartes au milieu
@@ -135,7 +119,8 @@ public class DeckManager : NetworkBehaviour
     {
         foreach(CardBehavior cb in boardCards)
         {
-            cb.gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+            if(cb.gameObject.GetComponent<NetworkIdentity>().connectionToClient != null)
+                cb.gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
             cb.gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
         }
     }
@@ -147,12 +132,23 @@ public class DeckManager : NetworkBehaviour
         {
             if (!nt.isReady)
             {
-                Debug.Log(nt);
                 return false;
             }
         }
 
         return true;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPickInReserve(CardBehavior card)
+    {
+        RpcPickInReserve(card);
+    }
+
+    [ClientRpc]
+    private void RpcPickInReserve(CardBehavior card)
+    {
+        boardCards.Remove(card);
     }
 
 

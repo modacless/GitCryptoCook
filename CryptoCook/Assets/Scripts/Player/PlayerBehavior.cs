@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Mirror;
 using System.Linq;
 
@@ -19,6 +20,8 @@ public class PlayerBehavior : NetworkBehaviour
     [SerializeField]
     private GameObject[] cardPosition;
 
+    [SerializeField]
+    private TextMeshProUGUI textStatePlayer;
 
     private GameObject gameManager;
     private DeckManager deckManager;
@@ -39,11 +42,22 @@ public class PlayerBehavior : NetworkBehaviour
     //Carte pioché au début de la partie
     private int startHand = 5;
 
+    private int maxCardsInHand = 7;
+
     public int actualPoint = 0; //Point du joueur
     public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
 
-    //[HideInInspector]
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
+
+    public enum StatePlayer
+    {
+        DrawPhase,
+        PickupFoodPhase,
+        PlayCardPhase,
+        EnnemyPhase
+    }
+
+    [SyncVar] public StatePlayer statePlayer;
 
     /// <summary>
     /// Stockage des différentes cartes
@@ -51,40 +65,74 @@ public class PlayerBehavior : NetworkBehaviour
 
     // Liste de cartes dans la main du joueur
     public List<CardBehavior> handCards = new List<CardBehavior>();
+    public bool[] handCardsPositionIsNotEmpty;
     // Liste de cartes dans le deck du joueur, dois agir comme une pile
     [SerializeField]
     private List<ScriptableCard> deckCards;
     //Liste de toutes les cartes aliments
     public List<CardBehavior> reserveCards;
 
+    public List<List<CardBehavior>> boardCards = new List<List<CardBehavior>>(5);
+
     #endregion
 
 
-    void Start()
+    IEnumerator Start()
     {
+        if (isServer)
+            yield return new WaitUntil(() => allPlayersReady());
+
+        handCardsPositionIsNotEmpty = new bool[maxCardsInHand];
+        handCardsPositionIsNotEmpty.Count(v => (v = false));
+
+        //Inutile je pense
+        for (int i = 0; i < boardCards.Count; i++)
+        {
+            boardCards[i] = new List<CardBehavior>();
+        }
 
         gameManager = GameObject.Find("GameManager");
         deckManager = gameManager.GetComponent<DeckManager>();
         buttonNextRound.SetActive(false);
+        textStatePlayer.gameObject.SetActive(false);
+
+        if (!isClientOnly)
+        {
+            transform.position = deckManager.playerPosition[0].transform.position;
+        }
+        else
+        {
+            transform.position = deckManager.playerPosition[1].transform.position;
+        }
 
         if (hasAuthority)
         {
+            ChangePseudo(pseudo, pseudo);
+            Debug.Log(deckManager);
+            textStatePlayer.gameObject.SetActive(true);
 
             if (isServer)
             {
-                yourTurn = true;
+                CmdChangeTurn(true);
                 buttonNextRound.SetActive(true);
                 CmdInitializeDeckHost();
+                //CmdChangePlayerPosition(deckManager.playerPosition[0].transform.position);
                 deckManager.ChangeBoardAuthority(netIdentity.connectionToClient);
+                
             }
 
             if (isClientOnly)
             {
+                statePlayer = StatePlayer.EnnemyPhase;
                 CmdInitializeDeckClient();
-                Camera.main.transform.rotation = Quaternion.Euler(80, 180, 0);
+                //CmdChangePlayerPosition(deckManager.playerPosition[1].transform.position);
+                transform.localRotation = Quaternion.Euler(0, 180, 0);
+                Camera.main.transform.rotation = Quaternion.Euler(90, 0, 180);
             }
 
-            transform.position = new Vector3(0, 0, 4);
+            //On attend que les joueurs se positionnent correctement
+            yield return new WaitForSeconds(1f);
+
             for (int i = 0; i < startHand; i++)
             {
                 PickupInDeckCuisine();
@@ -92,9 +140,13 @@ public class PlayerBehavior : NetworkBehaviour
         }
         else
         {
-            transform.position = new Vector3(0, 0, -4);
+            if (isServer)
+            {
+
+            }
         }
 
+        yield return null;
     }
 
     public override void OnStartClient()
@@ -115,12 +167,64 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if (hasAuthority)
         {
-            SelectCard();
-            OverrideCard();
+            if (statePlayer == StatePlayer.DrawPhase)
+            {
+                textStatePlayer.text = "Draw phase";
+
+                //Check mouse is tuching deck
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (hit.transform.tag == "Deck" && Input.GetMouseButtonDown(0))
+                    {
+                        CmdDrawCard();
+                    }
+                }
+            }
+
+            if (statePlayer == StatePlayer.PickupFoodPhase)
+            {
+                textStatePlayer.text = "Pick a food";
+            }
+            if (statePlayer == StatePlayer.PlayCardPhase)
+            {
+                textStatePlayer.text = "Play your cards";
+            }
+            if (statePlayer == StatePlayer.EnnemyPhase)
+            {
+                textStatePlayer.text = "Ennemy Turn";
+            }
+        }
+
+        if (!isClientOnly)
+        {
+            transform.position = deckManager.playerPosition[0].transform.position;
+        }
+        else
+        {
+            transform.position = deckManager.playerPosition[1].transform.position;
         }
     }
 
     #region Deck Interraction
+
+    [Command]
+    public void CmdDrawCard()
+    {
+        RpcDrawCard();
+    }
+
+    [ClientRpc]
+    public void RpcDrawCard()
+    {
+        statePlayer = StatePlayer.PickupFoodPhase;
+        if (hasAuthority)
+        {
+            PickupInDeckCuisine();
+        }
+    }
+
     private void PickupInDeckCuisine()
     {
         if(deckCards.Count > 0)
@@ -141,14 +245,14 @@ public class PlayerBehavior : NetworkBehaviour
         //RpcCreateCard();
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        if (handCards.Count < 7)
+        int emplacement = FindPlaceInHand(cardObj.GetComponent<CardBehavior>());
+        if (emplacement != -1)
         {
-            cardObj.transform.position = cardPosition[handCards.Count].transform.position; //La position de la carte pioché étant, la taille de la main
+            Debug.Log("Create Card");
+            cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
             cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-            handCards.Add(cardObj.GetComponent<CardBehavior>());
-            deckCards.RemoveAt(0);
             NetworkServer.Spawn(cardObj, playerobj);
-            RpcCreateCard(cardObj);
+            RpcCreateCard(cardObj,emplacement);
         }
         else
         {
@@ -158,7 +262,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     //Permet de répliquer la création de la carte
     [ClientRpc]
-    private void RpcCreateCard(GameObject cardObj)
+    private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
         handCards.Add(cardObj.GetComponent<CardBehavior>());
@@ -172,25 +276,42 @@ public class PlayerBehavior : NetworkBehaviour
     public void CmdInitializeDeckClient()
     {
         deckManager.playerClient = this.gameObject;
+        //RpcInitializeDeckClient();
+    }
+
+    [ClientRpc]
+    public void RpcInitializeDeckClient()
+    {
+        deckManager.playerClient = this.gameObject;
     }
 
     [Command]
     public void CmdInitializeDeckHost()
     {
         deckManager.playerHost = this.gameObject;
+        //RpcInitializeDeckHost();
         deckManager.GetComponent<NetworkIdentity>().AssignClientAuthority(netIdentity.connectionToClient);
+    }
+
+    [ClientRpc]
+    public void RpcInitializeDeckHost()
+    {
+        deckManager.playerHost = this.gameObject;
     }
 
     #endregion
 
     #region hand and Card
 
-    private int FindPlaceInHand()
+    private int FindPlaceInHand(CardBehavior card)
     {
-        for(int i = 0; i< handCards.Count; i++)
+        for(int i = 0; i< handCardsPositionIsNotEmpty.Length; i++)
         {
-            if (handCards[i] == null)
+            Debug.Log(i);
+            if (handCardsPositionIsNotEmpty[i] == false)
             {
+                card.emplacement = i;
+                handCardsPositionIsNotEmpty[i] = true;
                 return i;
             }
         }
@@ -198,16 +319,36 @@ public class PlayerBehavior : NetworkBehaviour
         return -1;
     }
 
+    [Command]
+    public void CmdDropCardOnBoard(CardBehavior card)
+    {
+        RpcDropCardOnBoard(card);
+    }
+
+    [ClientRpc]
+    public void RpcDropCardOnBoard(CardBehavior card)
+    {
+        Debug.Log(card.emplacement);
+        handCards.Remove(card);
+        handCardsPositionIsNotEmpty[card.emplacement] = false;
+    }
+
+
+
+    #endregion
+
+    #region Turn logic
+
+    [Command]
+    public void CmdChangeTurn(bool turn)
+    {
+        yourTurn = turn;
+    }
+
     public void OnPressedNextTurn()
     {
         deckManager.CmdNextTurn();
-
-        if (hasAuthority)
-        {
-            PickupInDeckCuisine();
-        }
-
-
+        statePlayer = StatePlayer.EnnemyPhase;
     }
 
     private void ShowButtonTurn(bool oldValue, bool newValue)
@@ -219,41 +360,32 @@ public class PlayerBehavior : NetworkBehaviour
 
     }
 
-    private void SelectCard()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit,100))
-            {
-                if(hit.transform.gameObject.GetComponent<CardBehavior>() != null)
-                {
-                    if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
-                    {
-                        
-                    }
-                }
-            }
-            Debug.DrawRay(Input.mousePosition, Camera.main.transform.forward);
-        }
-    }
-
-    private void OverrideCard()
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100))
-        {
-            if (hit.transform.gameObject.GetComponent<CardBehavior>() != null)
-            {
-                if (hit.transform.gameObject.GetComponent<CardBehavior>().hasAuthority)
-                {
-                    
-                }
-            }
-        }
-    }
-
     #endregion
+
+    [ServerCallback]
+    private bool allPlayersReady()
+    {
+        foreach (NetworkConnection nt in NetworkServer.connections.Values)
+        {
+            if (!nt.isReady)
+            {
+                Debug.Log(nt);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    [Command]
+    public void CmdChangePlayerPosition(Vector3 newPosition)
+    {
+        RpcChangePlayerPosition(newPosition);
+    }
+
+    [ClientRpc]
+    public void RpcChangePlayerPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+    }
 }

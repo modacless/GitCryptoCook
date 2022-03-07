@@ -8,19 +8,25 @@ using Mirror;
 public class CardBehavior : NetworkBehaviour
 {
     public ScriptableCard cardLogic;
+    public DeckManager deckManager;
 
     #region Drag parameters
     private float mZCoord;
     private Vector3 basePosition;
 
-    private bool isInReserve = false;
-    public CardArea area;
+    public bool isInReserve = false;
+    private bool isOnBoard = false;
+
+    [HideInInspector]
+    [SyncVar] public int emplacement = -1;
 
     #endregion
 
     void Start()
     {
+        deckManager = GameObject.Find("GameManager").GetComponent<DeckManager>();
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
+
     }
 
     // Update is called once per frame
@@ -32,7 +38,6 @@ public class CardBehavior : NetworkBehaviour
     public void InitializeCard(ScriptableCard card)
     {
         cardLogic = card;
-        area = cardLogic.startArea;
     }
 
     public void OnMouseDown()
@@ -42,7 +47,7 @@ public class CardBehavior : NetworkBehaviour
 
     public void OnMouseDrag()
     {
-        if (hasAuthority)
+        if (hasAuthority && !isInReserve && !isOnBoard)
         {
             Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
             Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
@@ -55,18 +60,20 @@ public class CardBehavior : NetworkBehaviour
         if (hasAuthority)
         {
             RaycastHit hit;
+            int emplacementMask = LayerMask.GetMask("DropCard");
             //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(transform.position,Vector3.down,out hit,Mathf.Infinity))
+            if (Physics.Raycast(transform.position,Vector3.down,out hit,Mathf.Infinity, emplacementMask))
             {
-                Debug.Log(hit.transform.name);
-                if (hit.transform.tag == "Reserve" && !isInReserve && area == CardArea.OnGround)
+                if (hit.transform.tag == "Reserve" && !isInReserve && cardLogic.cardType == CardType.Aliment)
                 {
                     PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    if (pl.yourTurn)
+                    Debug.Log(pl.pseudo);
+                    if ( pl.statePlayer == PlayerBehavior.StatePlayer.PickupFoodPhase)
                     {
                         isInReserve = true;
                         pl.reserveCards.Add(this);
-                        area = CardArea.InReserve;
+                        deckManager.CmdPickInReserve(this);
+                        pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
                     }
                     else
                     {
@@ -75,7 +82,24 @@ public class CardBehavior : NetworkBehaviour
                 }
                 else
                 {
-                    transform.position = basePosition;
+                    if (hit.transform.tag == "Board" && !isOnBoard && (cardLogic.cardType == CardType.Recette || cardLogic.cardType == CardType.Effet))
+                    {
+                        PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
+                        if(pl.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
+                        {
+                            isOnBoard = true;
+                            pl.CmdDropCardOnBoard(this);
+                        }
+                        else
+                        {
+                            transform.position = basePosition;
+                        }
+                        
+                    }
+                    else
+                    {
+                        transform.position = basePosition;
+                    }
                 }
             }
             else

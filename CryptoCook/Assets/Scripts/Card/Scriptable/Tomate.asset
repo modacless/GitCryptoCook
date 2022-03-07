@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e350fceb4412a0428c073f1ff96f3f2, type: 3}
   m_Name: Tomate
   m_EditorClassIdentifier: 
+  cardType: 1
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
   cardName: Tomate
-  pseudoName: Test
+  TextDescription: 

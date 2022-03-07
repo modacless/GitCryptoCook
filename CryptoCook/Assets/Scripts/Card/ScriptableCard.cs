@@ -5,16 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Card",menuName = "Cards/New card")]
 public class ScriptableCard : ScriptableObject
 {
-
-    public enum CardArea
+    public enum CardType
     {
-        InHand,
-        OnBoard,
-        OnGround,
-        InReserve
+        Aliment,
+        Recette,
+        Effet
     }
-
-    public CardArea startArea;
+    public CardType cardType;
 
     public MeshFilter meshFilterModel;
     public MeshRenderer meshRendererModel;
