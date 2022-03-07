@@ -12,12 +12,14 @@ public class ScriptableCard : ScriptableObject
         Effet
     }
     public CardType cardType;
-
+     
     public MeshFilter meshFilterModel;
     public MeshRenderer meshRendererModel;
 
     public string cardName;
     public string TextDescription;
+
+    public int pointEarn;
 
 }
 

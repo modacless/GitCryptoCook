@@ -62,16 +62,14 @@ public class DeckManager : NetworkBehaviour
     public void PickupAliment(int emplacement)
     {
         CmdCreateCard(emplacement);
-        deckCards.RemoveAt(0);
     }
 
     [Command(requiresAuthority = false)]
     private void CmdCreateCard(int emplacement)
     {
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-
+        //cardObj.AddComponent<CardBehavior>();
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        deckCards.RemoveAt(0);
         NetworkServer.Spawn(cardObj,netIdentity.connectionToClient);
         RpcCreateCard(cardObj,emplacement);
     }
@@ -83,6 +81,7 @@ public class DeckManager : NetworkBehaviour
         cardObj.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
         cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
+        cardObj.GetComponent<CardBehavior>().emplacementFood = emplacement;
         boardCards.Add(cardObj.GetComponent<CardBehavior>());
         deckCards.RemoveAt(0);
     }
@@ -143,6 +142,10 @@ public class DeckManager : NetworkBehaviour
     public void CmdPickInReserve(CardBehavior card)
     {
         RpcPickInReserve(card);
+        if (deckCards.Count > 0)
+        {
+            PickupAliment(card.emplacementFood);
+        }
     }
 
     [ClientRpc]

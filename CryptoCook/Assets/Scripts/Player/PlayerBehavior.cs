@@ -54,6 +54,7 @@ public class PlayerBehavior : NetworkBehaviour
         DrawPhase,
         PickupFoodPhase,
         PlayCardPhase,
+        EffetPhase,
         EnnemyPhase
     }
 
@@ -74,9 +75,17 @@ public class PlayerBehavior : NetworkBehaviour
     //Emplacement des cartes, permet de savoir dans quel plats on met les recettes
     public GameObject[] boardCardsEmplacement;
     //Recete sur le plateau
-    public List<List<CardBehavior>> boardCards = new List<List<CardBehavior>>();
+    public List<Repas> boardRepas = new List<Repas>();
+
+    public CardBehavior selectCard;
 
     #endregion
+
+    public class Repas
+    {
+        public List<CardBehavior> allRecipes = new List<CardBehavior>();
+        public int points;
+    }
 
 
     IEnumerator Start()
@@ -90,7 +99,7 @@ public class PlayerBehavior : NetworkBehaviour
         //Inutile je pense
         for (int i = 0; i < boardCardsEmplacement.Length; i++)
         {
-            boardCards.Add(new List<CardBehavior>());
+            boardRepas.Add(new Repas());
         }
 
         gameManager = GameObject.Find("GameManager");
@@ -171,6 +180,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if (hasAuthority)
         {
+
             if (statePlayer == StatePlayer.DrawPhase)
             {
                 textStatePlayer.text = "Draw phase";
@@ -260,6 +270,7 @@ public class PlayerBehavior : NetworkBehaviour
     [ClientRpc]
     private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
+        cardObj.GetComponent<CardBehavior>().player = this;
         cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
         handCards.Add(cardObj.GetComponent<CardBehavior>());
         deckCards.RemoveAt(0);
@@ -324,7 +335,8 @@ public class PlayerBehavior : NetworkBehaviour
     [ClientRpc]
     public void RpcDropCardOnBoard(CardBehavior card,int emplacement)
     {
-        boardCards[emplacement].Add(card);
+        boardRepas[emplacement].allRecipes.Add(card);
+        card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
     }
@@ -396,4 +408,62 @@ public class PlayerBehavior : NetworkBehaviour
     {
         transform.position = newPosition;
     }
+
+    public void StartSelectRecipeAlly()
+    {
+        StartCoroutine(SelectRecipeAlly());
+    }
+
+    private IEnumerator SelectRecipeAlly()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Receipe ally";
+        
+        while (selectCard == null)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    selectCard = hit.transform.GetComponent<CardBehavior>();
+                    Debug.Log("Carte sélectionné : " + selectCard);
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+    public void StartSelectRecipeEnemy()
+    {
+        StartCoroutine(SelectRecipeEnemy());
+    }
+
+    private IEnumerator SelectRecipeEnemy()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Receipe Enemy";
+
+        while (selectCard == null)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
+                {
+                    selectCard = hit.transform.GetComponent<CardBehavior>();
+                    Debug.Log("Carte sélectionné : " + selectCard);
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+
 }

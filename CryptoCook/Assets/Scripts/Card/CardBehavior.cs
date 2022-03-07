@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using static ScriptableCard;
+using static PlayerBehavior;
 using UnityEngine;
 using Mirror;
 
@@ -15,10 +17,19 @@ public class CardBehavior : NetworkBehaviour
     private Vector3 basePosition;
 
     public bool isInReserve = false;
-    private bool isOnBoard = false;
+    public bool isOnBoard = false;
+
+    public PlayerBehavior player;
+    public Repas repas;
+    public int point;
+
 
     [HideInInspector]
     [SyncVar] public int emplacementHand = -1;
+    [SyncVar] public int emplacementFood = -1;
+
+    private UnityEvent OnUse;
+
 
     #endregion
 
@@ -38,6 +49,7 @@ public class CardBehavior : NetworkBehaviour
     public void InitializeCard(ScriptableCard card)
     {
         cardLogic = card;
+        point = cardLogic.pointEarn;
     }
 
     public void OnMouseDown()
@@ -61,7 +73,6 @@ public class CardBehavior : NetworkBehaviour
         {
             RaycastHit hit;
             int emplacementMask = LayerMask.GetMask("DropCard");
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(transform.position,Vector3.down,out hit,Mathf.Infinity, emplacementMask))
             {
                 if (hit.transform.tag == "Reserve" && !isInReserve && cardLogic.cardType == CardType.Aliment)
@@ -72,7 +83,7 @@ public class CardBehavior : NetworkBehaviour
                     {
                         isInReserve = true;
                         pl.reserveCards.Add(this);
-                        deckManager.CmdPickInReserve(this);
+                        deckManager.CmdPickInReserve(this);                                                                                                                                                                                                 
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
                     }
                     else
@@ -88,7 +99,6 @@ public class CardBehavior : NetworkBehaviour
                         if(pl.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
                         {
                             isOnBoard = true;
-                            
                             pl.CmdDropCardOnBoard(this, pl.FindBoardPlaces(hit.transform.gameObject));
                         }
                         else
@@ -116,5 +126,6 @@ public class CardBehavior : NetworkBehaviour
         mousePoint.z = mZCoord;
         return Camera.main.ScreenToViewportPoint(mousePoint);
     }
+    
 
 }
