@@ -1594,6 +1594,7 @@ MonoBehaviour:
   yourTurn: 0
   statePlayer: 0
   handCards: []
+  handCardsPositionIsNotEmpty: 
   deckCards:
   - {fileID: 11400000, guid: 0d948dec12cec114598539f7573edd96, type: 2}
   - {fileID: 11400000, guid: 0d948dec12cec114598539f7573edd96, type: 2}
@@ -1636,6 +1637,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d948dec12cec114598539f7573edd96, type: 2}
   - {fileID: 11400000, guid: 0d948dec12cec114598539f7573edd96, type: 2}
   reserveCards: []
+  boardCardsEmplacement:
+  - {fileID: 3634484340328891273}
+  - {fileID: 112556183116949712}
+  - {fileID: 1253591587167620494}
+  - {fileID: 1159593643574024802}
+  - {fileID: 6928820454952563113}
 --- !u!114 &2653777060473528998
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -71,8 +71,10 @@ public class PlayerBehavior : NetworkBehaviour
     private List<ScriptableCard> deckCards;
     //Liste de toutes les cartes aliments
     public List<CardBehavior> reserveCards;
-
-    public List<List<CardBehavior>> boardCards = new List<List<CardBehavior>>(5);
+    //Emplacement des cartes, permet de savoir dans quel plats on met les recettes
+    public GameObject[] boardCardsEmplacement;
+    //Recete sur le plateau
+    public List<List<CardBehavior>> boardCards = new List<List<CardBehavior>>();
 
     #endregion
 
@@ -86,9 +88,9 @@ public class PlayerBehavior : NetworkBehaviour
         handCardsPositionIsNotEmpty.Count(v => (v = false));
 
         //Inutile je pense
-        for (int i = 0; i < boardCards.Count; i++)
+        for (int i = 0; i < boardCardsEmplacement.Length; i++)
         {
-            boardCards[i] = new List<CardBehavior>();
+            boardCards.Add(new List<CardBehavior>());
         }
 
         gameManager = GameObject.Find("GameManager");
@@ -304,7 +306,7 @@ public class PlayerBehavior : NetworkBehaviour
             Debug.Log(i);
             if (handCardsPositionIsNotEmpty[i] == false)
             {
-                card.emplacement = i;
+                card.emplacementHand = i;
                 handCardsPositionIsNotEmpty[i] = true;
                 return i;
             }
@@ -314,20 +316,32 @@ public class PlayerBehavior : NetworkBehaviour
     }
 
     [Command]
-    public void CmdDropCardOnBoard(CardBehavior card)
+    public void CmdDropCardOnBoard(CardBehavior card,int emplacement)
     {
-        RpcDropCardOnBoard(card);
+        RpcDropCardOnBoard(card,emplacement);
     }
 
     [ClientRpc]
-    public void RpcDropCardOnBoard(CardBehavior card)
+    public void RpcDropCardOnBoard(CardBehavior card,int emplacement)
     {
-        Debug.Log(card.emplacement);
+        boardCards[emplacement].Add(card);
         handCards.Remove(card);
-        handCardsPositionIsNotEmpty[card.emplacement] = false;
+        handCardsPositionIsNotEmpty[card.emplacementHand] = false;
     }
 
+    public int FindBoardPlaces(GameObject card)
+    {
+        for(int i =0; i< boardCardsEmplacement.Length; i++)
+        {
+            if(boardCardsEmplacement[i] == card)
+            {
+                Debug.Log("Empacement sur le board + " + i);
+                return i;
+            }
+        }
 
+        return 0;
+    }
 
     #endregion
 

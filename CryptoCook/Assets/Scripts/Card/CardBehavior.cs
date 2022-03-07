@@ -18,7 +18,7 @@ public class CardBehavior : NetworkBehaviour
     private bool isOnBoard = false;
 
     [HideInInspector]
-    [SyncVar] public int emplacement = -1;
+    [SyncVar] public int emplacementHand = -1;
 
     #endregion
 
@@ -88,7 +88,8 @@ public class CardBehavior : NetworkBehaviour
                         if(pl.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
                         {
                             isOnBoard = true;
-                            pl.CmdDropCardOnBoard(this);
+                            
+                            pl.CmdDropCardOnBoard(this, pl.FindBoardPlaces(hit.transform.gameObject));
                         }
                         else
                         {
