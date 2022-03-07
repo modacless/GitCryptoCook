@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5692126618853228530}
   m_Layer: 0
   m_Name: Card
-  m_TagString: Untagged
+  m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   cardLogic: {fileID: 0}
+  deckManager: {fileID: 0}
+  isInReserve: 0
+  emplacementHand: -1
+  emplacementFood: -1
 --- !u!114 &1249341536468256839
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class ScriptableCard : ScriptableObject
         Effet
     }
     public CardType cardType;
-
+     
     public MeshFilter meshFilterModel;
     public MeshRenderer meshRendererModel;
 
@@ -20,5 +20,7 @@ public class ScriptableCard : ScriptableObject
     public string TextDescription;
 
     public ScriptableEffect effect;
+    public int pointEarn;
+
 }
 
