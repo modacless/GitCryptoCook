@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using TMPro;
 using static ScriptableCard;
 using static PlayerBehavior;
 using UnityEngine;
@@ -9,8 +10,11 @@ using Mirror;
 
 public class CardBehavior : NetworkBehaviour
 {
+    #region références
     public ScriptableCard cardLogic;
     public DeckManager deckManager;
+    public TextMeshPro textName; 
+    #endregion
 
     #region Drag parameters
     private float mZCoord;
@@ -27,6 +31,7 @@ public class CardBehavior : NetworkBehaviour
     [HideInInspector]
     [SyncVar] public int emplacementHand = -1;
     [SyncVar] public int emplacementFood = -1;
+
 
     private UnityEvent OnUse;
 
@@ -50,6 +55,7 @@ public class CardBehavior : NetworkBehaviour
     {
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
+        textName.text = cardLogic.cardName;
     }
 
     public void OnMouseDown()
@@ -129,6 +135,7 @@ public class CardBehavior : NetworkBehaviour
     
     public void RefreshEffect()
     {
+        variablePoint = 0;
         StartCoroutine(cardLogic.effect.OnBoardChange(this));
     }
 }

@@ -22,6 +22,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     [SerializeField]
     private TextMeshProUGUI textStatePlayer;
+    [SerializeField]
+    private TextMeshProUGUI textPoint;
 
     private GameObject gameManager;
     private DeckManager deckManager;
@@ -44,7 +46,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     private int maxCardsInHand = 7;
 
-    public int actualPoint = 0; //Point du joueur
+    public int currentPoint = 0; //Point du joueur
     public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
 
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
@@ -93,6 +95,7 @@ public class PlayerBehavior : NetworkBehaviour
         if (isServer)
             yield return new WaitUntil(() => allPlayersReady());
 
+        textPoint.gameObject.SetActive(false);
         handCardsPositionIsNotEmpty = new bool[maxCardsInHand];
         handCardsPositionIsNotEmpty.Count(v => (v = false));
 
@@ -121,8 +124,8 @@ public class PlayerBehavior : NetworkBehaviour
         if (hasAuthority)
         {
             ChangePseudo(pseudo, pseudo);
-            Debug.Log(deckManager);
             textStatePlayer.gameObject.SetActive(true);
+            textPoint.gameObject.SetActive(true);
 
             if (isServer)
             {
@@ -180,6 +183,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if (hasAuthority)
         {
+            textPoint.text = currentPoint.ToString();
 
             if (statePlayer == StatePlayer.DrawPhase)
             {
@@ -476,5 +480,15 @@ public class PlayerBehavior : NetworkBehaviour
                 boardRepas[i].allRecipes[j].RefreshEffect();
             }
         }
+
+        currentPoint = 0;
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
+            {
+                currentPoint += boardRepas[i].allRecipes[j].basePoint + boardRepas[i].allRecipes[j].variablePoint;
+            }
+        }
+
     }
 }
