@@ -2298,17 +2298,16 @@ MonoBehaviour:
   - {fileID: 1346745042}
   alimentDeck:
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
+  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
+  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
+  - {fileID: 11400000, guid: 450993f6d08d672438b41036c55f79b6, type: 2}
+  - {fileID: 11400000, guid: 450993f6d08d672438b41036c55f79b6, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
-  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
+  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
+  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   cardsPosition:
   - {fileID: 454627381}
   - {fileID: 980716602}

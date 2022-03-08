@@ -31,9 +31,6 @@ public class AlimentBehavior : CardBehavior
     {
         if (hasAuthority && !isInReserve)
         {
-            //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
-            //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
-            //transform.position = newWorldPosition;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
@@ -49,19 +46,17 @@ public class AlimentBehavior : CardBehavior
         if (hasAuthority)
         {
             RaycastHit hit;
-            Debug.Log("rayscasted");
             int emplacementMask = LayerMask.GetMask("DropCard");
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, emplacementMask))
             {
-                Debug.Log("touch a emplacement reserve");
                 if (hit.transform.tag == "Reserve" && !isInReserve)
                 {
-                    Debug.Log("isReserve");
                     PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
                     Debug.Log(pl.pseudo);
                     if (pl.statePlayer == PlayerBehavior.StatePlayer.PickupFoodPhase)
                     {
                         isInReserve = true;
+                        player = pl;
                         pl.reserveCards.Add(this);
                         deckManager.CmdPickOnTable(this);
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
@@ -80,19 +75,27 @@ public class AlimentBehavior : CardBehavior
         }
     }
 
-    public void OnMouseUpAsButton()
+    public override void OnMouseDown()
     {
-        if(player.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
+        base.OnMouseDown();
+
+        if(hasAuthority)
         {
-            if(isInReserve && !isUsedThisTurn)
+            if (player != null)
             {
-                if(!isEngaged)
+                if (player.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
                 {
-                    Engage();
-                }
-                else
-                {
-                    DisEngage();
+                    if (isInReserve && !isUsedThisTurn)
+                    {
+                        if (!isEngaged)
+                        {
+                            Engage();
+                        }
+                        else
+                        {
+                            DisEngage();
+                        }
+                    }
                 }
             }
         }

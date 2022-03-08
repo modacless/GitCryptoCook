@@ -34,7 +34,7 @@ public abstract class CardBehavior : NetworkBehaviour
         cardHalo.SetActive(false);
     }
 
-    public void OnMouseDown()
+    public virtual void OnMouseDown()
     {
         basePosition = transform.position;
         deckManager.dragPlane.SetActive(true);

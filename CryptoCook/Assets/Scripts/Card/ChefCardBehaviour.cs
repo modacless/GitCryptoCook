@@ -19,8 +19,11 @@ public class ChefCardBehaviour : CardBehavior
     [HideInInspector]
     [SyncVar] public int emplacementHand = -1;
 
+    public List<ChefCardScriptable.Cost> currentCost;
+
     public void InitializeCard(ChefCardScriptable card)
     {
+        currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
         textName.text = cardLogic.cardName;
@@ -54,7 +57,7 @@ public class ChefCardBehaviour : CardBehavior
                 if (hit.transform.tag == "Board" && !isOnBoard)
                 {
                     PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    if (pl.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
+                    if (pl.statePlayer == StatePlayer.PlayCardPhase)
                     {
                         isOnBoard = true;
                         pl.CmdDropCardOnBoard(this, pl.FindBoardPlaces(hit.transform.gameObject));

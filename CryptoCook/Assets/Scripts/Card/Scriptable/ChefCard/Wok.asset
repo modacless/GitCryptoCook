@@ -19,5 +19,22 @@ MonoBehaviour:
   TextDescription: "Un super wok styl\xE9"
   recipeType: 1
   recipeCulture: 0
+  cost:
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 1
+    specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 2
+    specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 2
+    specificCost: {fileID: 0}
+  - costType: 2
+    goutCost: 0
+    alimentTypeCost: 0
+    specificCost: {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   effect: {fileID: 11400000, guid: f5fcd00f7e620804c9638aaeb313854f, type: 2}
   pointEarn: 2

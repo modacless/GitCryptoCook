@@ -127,12 +127,12 @@ public class PlayerBehavior : NetworkBehaviour
 
         if (!isClientOnly)
         {
-            Debug.Log("Host pos" + deckManager.playerPosition[0].transform.position);
+            //Debug.Log("Host pos" + deckManager.playerPosition[0].transform.position);
             transform.position = deckManager.playerPosition[0].transform.position;
         }
         else
         {
-            Debug.Log("Client pos" + deckManager.playerPosition[1].transform.position);
+            //Debug.Log("Client pos" + deckManager.playerPosition[1].transform.position);
             transform.position = deckManager.playerPosition[1].transform.position;
         }
 
@@ -275,7 +275,7 @@ public class PlayerBehavior : NetworkBehaviour
         int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
         if (emplacement != -1)
         {
-            Debug.Log("Create Card");
+            //Debug.Log("Create Card");
             cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
             cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
             NetworkServer.Spawn(cardObj, playerobj);
@@ -335,7 +335,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         for(int i = 0; i< handCardsPositionIsNotEmpty.Length; i++)
         {
-            Debug.Log(i);
+            //Debug.Log(i);
             if (handCardsPositionIsNotEmpty[i] == false)
             {
                 card.emplacementHand = i;
@@ -509,12 +509,107 @@ public class PlayerBehavior : NetworkBehaviour
 
     }
 
-    public void NewTurn()
+    public void NewTurn()
     {
         statePlayer = StatePlayer.DrawPhase;
-        for (int i = 0; i < reserveCards.Count; i++)
-        {
-            reserveCards[i].ResetForTurn();
-        }
+        for (int i = 0; i < reserveCards.Count; i++)
+        {
+            reserveCards[i].ResetForTurn();
+        }
+    }
+
+    private bool[] alimentUsedInCost;
+    public bool CanPlayCard(ChefCardBehaviour card)
+    {
+        bool canPlayCard = false;
+        alimentUsedInCost = new bool[reserveCards.Count];
+        if(engagedAliment.Count == card.cardLogic.cost.Count)
+        {
+            if (TestCost(0, card))
+            {
+                canPlayCard = true;
+            }
+        }
+        else
+        {
+            if(engagedAliment.Count > card.cardLogic.cost.Count)
+            {
+                Debug.Log("There is too much aliment engaged");
+            }
+            else
+            {
+                Debug.Log("There is not enough aliment engaged");
+            }
+        }
+
+        return canPlayCard;
+    }
+
+    /// <summary>
+    /// The recursive fonction of hell, ask antoine if you want to understand
+    /// </summary>
+    /// <param name="costIndexToTest"></param>
+    /// <param name="card"></param>
+    /// <returns></returns>
+    private bool TestCost(int costIndexToTest, ChefCardBehaviour card)
+    {
+        ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
+        int currentCostIndex = costIndexToTest;
+        for (int i = 0; i < engagedAliment.Count; i++)
+        {
+            if (!alimentUsedInCost[i])
+            {
+                bool isValid = false;
+                switch (costToTest.costType)
+                {
+                    case ChefCardScriptable.Cost.CostType.Gout:
+                        if (engagedAliment[i].alimentLogic.gout == costToTest.goutCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    case ChefCardScriptable.Cost.CostType.AlimentType:
+                        if (engagedAliment[i].alimentLogic.alimentType == costToTest.alimentTypeCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    case ChefCardScriptable.Cost.CostType.Specific:
+                        if (engagedAliment[i].alimentLogic == costToTest.specificCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (isValid)
+                {
+                    alimentUsedInCost[i] = true;
+                    if (currentCostIndex == card.cardLogic.cost.Count - 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        currentCostIndex++;
+                        if (TestCost(currentCostIndex, card))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            alimentUsedInCost[i] = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -60,7 +60,7 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     private void UpdatePosition(int oldValue, int newValue)
     {
         transform.SetParent(lobbyPosition[newValue].transform);
-        Debug.Log("value + " + positionInLobby);
+        //Debug.Log("value + " + positionInLobby);
         GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
     }

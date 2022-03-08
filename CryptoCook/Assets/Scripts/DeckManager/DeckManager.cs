@@ -80,7 +80,7 @@ public class DeckManager : NetworkBehaviour
     [ClientRpc]
     private void RpcCreateCard(GameObject alimentObject, int emplacement)
     {
-        Debug.Log(alimentObject + " " + alimentDeck[0]);
+        //Debug.Log(alimentObject + " " + alimentDeck[0]);
         alimentObject.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main > nope c'est pas la main ici, c'est la table
         alimentObject.transform.rotation = Quaternion.Euler(90, 0, 0);
         alimentObject.GetComponent<AlimentBehavior>().InitializeCard(alimentDeck[0]);
