@@ -277,7 +277,7 @@ public class PlayerBehavior : NetworkBehaviour
         {
             Debug.Log("Create Card");
             cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
-            cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+            cardObj.transform.localRotation = Quaternion.Euler(50, 0, 0);
             NetworkServer.Spawn(cardObj, playerobj);
             RpcCreateCard(cardObj,emplacement);
         }
