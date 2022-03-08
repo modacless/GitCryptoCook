@@ -57,8 +57,9 @@ public class AlimentBehavior : CardBehavior
                     {
                         isInReserve = true;
                         pl.reserveCards.Add(this);
-                        deckManager.CmdPickInReserve(this);
+                        deckManager.CmdPickOnTable(this);
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
+                        // a toi mathis
                     }
                     else
                     {
@@ -71,5 +72,10 @@ public class AlimentBehavior : CardBehavior
                 transform.position = basePosition;
             }
         }
+    }
+
+    public void OnMouseUpAsButton()
+    {
+        
     }
 }
