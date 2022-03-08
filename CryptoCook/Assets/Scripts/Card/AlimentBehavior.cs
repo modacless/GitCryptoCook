@@ -6,14 +6,20 @@ using TMPro;
 
 public class AlimentBehavior : CardBehavior
 {
+    public GameObject engagedEffect;
+    public GameObject usedEffect;
     public TextMeshPro textName;
     public AlimentScriptable alimentLogic;
 
     public bool isInReserve = false;
+    public bool isEngaged;
+    public bool isUsedThisTurn;
 
     [HideInInspector]
     [SyncVar] public int emplacementFood = -1;
     public AlimentScriptable alimentData;
+
+
 
     public void InitializeCard(AlimentScriptable aliment)
     {
@@ -76,6 +82,54 @@ public class AlimentBehavior : CardBehavior
 
     public void OnMouseUpAsButton()
     {
-        
+        if(player.statePlayer == PlayerBehavior.StatePlayer.PlayCardPhase)
+        {
+            if(isInReserve && !isUsedThisTurn)
+            {
+                if(!isEngaged)
+                {
+                    Engage();
+                }
+                else
+                {
+                    DisEngage();
+                }
+            }
+        }
+    }
+
+    public void ResetForTurn()
+    {
+        isUsedThisTurn = false;
+        if(engagedEffect != null)
+            engagedEffect.SetActive(false);
+        if (usedEffect != null)
+            usedEffect.SetActive(false);
+    }
+
+    private void Engage()
+    {
+        isEngaged = true;
+        if (engagedEffect != null)
+            engagedEffect.SetActive(true);
+        player.engagedAliment.Add(this);
+    }
+
+    private void DisEngage()
+    {
+        isEngaged = false;
+        if (engagedEffect != null)
+            engagedEffect.SetActive(false);
+        player.engagedAliment.Remove(this);
+    }
+
+    public void UseToPlayCard()
+    {
+        isEngaged = false;
+        isUsedThisTurn = true;
+        if (usedEffect != null)
+            usedEffect.SetActive(true);
+        if (engagedEffect != null)
+            engagedEffect.SetActive(false);
     }
 }

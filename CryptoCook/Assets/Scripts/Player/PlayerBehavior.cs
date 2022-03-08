@@ -93,6 +93,8 @@ public class PlayerBehavior : NetworkBehaviour
     [HideInInspector]
     public AlimentBehavior selectedAliment;
 
+    public List<AlimentBehavior> engagedAliment;
+
     #endregion
 
     public class Repas
@@ -121,6 +123,7 @@ public class PlayerBehavior : NetworkBehaviour
         deckManager = gameManager.GetComponent<DeckManager>();
         buttonNextRound.SetActive(false);
         textStatePlayer.gameObject.SetActive(false);
+        engagedAliment = new List<AlimentBehavior>();
 
         if (!isClientOnly)
         {
@@ -504,5 +507,14 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
+    }
+
+    public void NewTurn()
+    {
+        statePlayer = StatePlayer.DrawPhase;
+        for (int i = 0; i < reserveCards.Count; i++)
+        {
+            reserveCards[i].ResetForTurn();
+        }
     }
 }

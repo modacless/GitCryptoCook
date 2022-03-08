@@ -114,7 +114,7 @@ public class DeckManager : NetworkBehaviour
     [ClientRpc]
     public void RpcNextTurn(PlayerBehavior player)
     {
-        player.statePlayer = PlayerBehavior.StatePlayer.DrawPhase;
+        player.NewTurn();
     }
 
     //Permet de changer l'autorithé des cartes au milieu
