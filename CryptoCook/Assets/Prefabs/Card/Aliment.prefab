@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3426019105324301486}
   - component: {fileID: 1571962261337925160}
   - component: {fileID: 7599082307879380884}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 4513671329609917007}
   - component: {fileID: 6387358727145726532}
   - component: {fileID: 1207350581059377017}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9633,7 +9633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8241126617020045690}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9669,7 +9669,7 @@ GameObject:
   - component: {fileID: 4271148997068388611}
   - component: {fileID: 1978827896743553002}
   - component: {fileID: 7718991172240633619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9844,7 +9844,7 @@ GameObject:
   - component: {fileID: 2632394404503819196}
   - component: {fileID: 6416646827090274108}
   - component: {fileID: 5692126618853228530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Aliment
   m_TagString: Card
   m_Icon: {fileID: 0}
@@ -9885,7 +9885,7 @@ MonoBehaviour:
   syncInterval: 0.1
   cardMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   deckManager: {fileID: 0}
   cardHalo: {fileID: 8935497065096123955}
   player: {fileID: 0}
@@ -9986,7 +9986,7 @@ GameObject:
   - component: {fileID: 5424471013235965662}
   - component: {fileID: 629240069086492072}
   - component: {fileID: 4313033616045019987}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_hallo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14907,6 +14907,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_Name
       value: SM_Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_IsActive

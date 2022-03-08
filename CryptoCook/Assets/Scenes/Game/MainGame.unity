@@ -2289,6 +2289,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  cardMask:
+    serializedVersion: 2
+    m_Bits: 256
   dragPlane: {fileID: 1428565820}
   cardObject: {fileID: 6694101996773000217, guid: 252d2bafc37ea924c86b49dcf64bdcf0, type: 3}
   alimentObject: {fileID: 6694101996773000217, guid: be4362c6dc9a354409ac560891f87e91, type: 3}

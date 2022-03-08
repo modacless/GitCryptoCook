@@ -26,6 +26,8 @@ public abstract class CardBehavior : NetworkBehaviour
 
     private UnityEvent OnUse;
 
+    
+
     void Start()
     {
         deckManager = GameObject.Find("GameManager").GetComponent<DeckManager>();
@@ -34,10 +36,18 @@ public abstract class CardBehavior : NetworkBehaviour
         cardHalo.SetActive(false);
     }
 
+    private void Update()
+    {
+        
+    }
+
+
     public void OnMouseDown()
     {
         basePosition = transform.position;
         deckManager.dragPlane.SetActive(true);
+
+        
     }
 
     public abstract void OnMouseDrag();

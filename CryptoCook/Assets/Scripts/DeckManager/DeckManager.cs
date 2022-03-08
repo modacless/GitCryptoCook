@@ -5,6 +5,9 @@ using Mirror;
 
 public class DeckManager : NetworkBehaviour
 {
+    public LayerMask cardMask;
+
+
     public GameObject dragPlane;
     [SerializeField]
     private GameObject cardObject;
@@ -28,6 +31,10 @@ public class DeckManager : NetworkBehaviour
 
 
     [SyncVar] public int tour = 0;
+
+    bool cardIsZoom = false;
+    GameObject zoomedCard = null;
+    Transform positionBeforeZoom;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -60,7 +67,36 @@ public class DeckManager : NetworkBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(1)) //Récupère la carte sur laquelle le joueur clique
+        {
 
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (!cardIsZoom)
+            {
+                Debug.Log("OUVRE FDP");
+                if (Physics.Raycast(ray, out hit, 100, cardMask))
+                {
+                    Debug.Log(hit.transform.position);
+                    zoomedCard = hit.transform.gameObject;
+                    positionBeforeZoom = hit.transform;
+
+                    hit.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 6f, Camera.main.transform.position.z + 4f);
+
+                    hit.transform.rotation = Camera.main.transform.rotation;
+                    cardIsZoom = true;
+                }
+            }
+            else if (cardIsZoom && zoomedCard != null)
+            {
+                Debug.Log("FERME BATARD");
+                zoomedCard.transform.position = positionBeforeZoom.position;
+                zoomedCard.transform.rotation = positionBeforeZoom.rotation;
+
+                cardIsZoom = false;
+            }
+        }
     }
 
     public void DrawAlimentToTable(int emplacement)
@@ -169,4 +205,5 @@ public class DeckManager : NetworkBehaviour
             tableAliments[i].cardHalo.SetActive(_state);
         }
     }
+
 }

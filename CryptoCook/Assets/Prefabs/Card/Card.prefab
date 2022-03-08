@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4394585118558085985}
   - component: {fileID: 5098283047428531181}
   - component: {fileID: 9164709761418689862}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 7642409324839519997}
   - component: {fileID: 8048879887759504047}
   - component: {fileID: 3869520400724572665}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9633,7 +9633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6733216248424596718}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9669,7 +9669,7 @@ GameObject:
   - component: {fileID: 862451086902409340}
   - component: {fileID: 3713091120450327488}
   - component: {fileID: 2176804138037717863}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_hallo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14539,7 +14539,7 @@ GameObject:
   - component: {fileID: 4271148997068388611}
   - component: {fileID: 1978827896743553002}
   - component: {fileID: 7718991172240633619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14714,7 +14714,7 @@ GameObject:
   - component: {fileID: 2632394404503819196}
   - component: {fileID: 6416646827090274108}
   - component: {fileID: 5692126618853228530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Card
   m_TagString: Card
   m_Icon: {fileID: 0}
@@ -14755,7 +14755,7 @@ MonoBehaviour:
   syncInterval: 0.1
   cardMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   deckManager: {fileID: 0}
   cardHalo: {fileID: 4097911862243750560}
   player: {fileID: 0}
@@ -14854,7 +14854,7 @@ GameObject:
   - component: {fileID: 7239707193673260044}
   - component: {fileID: 1300496276171437605}
   - component: {fileID: 3199850270306599715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Graph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
