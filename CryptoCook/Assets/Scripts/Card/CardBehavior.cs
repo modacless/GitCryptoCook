@@ -9,6 +9,8 @@ using Mirror;
 
 public abstract class CardBehavior : NetworkBehaviour
 {
+    public LayerMask cardMask;
+
     #region références
     public DeckManager deckManager;
     #endregion
@@ -26,12 +28,12 @@ public abstract class CardBehavior : NetworkBehaviour
     {
         deckManager = GameObject.Find("GameManager").GetComponent<DeckManager>();
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
-
     }
 
     public void OnMouseDown()
     {
         basePosition = transform.position;
+        deckManager.dragPlane.SetActive(true);
     }
 
     public abstract void OnMouseDrag();

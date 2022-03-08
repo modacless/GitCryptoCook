@@ -5,6 +5,7 @@ using Mirror;
 
 public class DeckManager : NetworkBehaviour
 {
+    public GameObject dragPlane;
     [SerializeField]
     private GameObject cardObject;
     [SerializeField]

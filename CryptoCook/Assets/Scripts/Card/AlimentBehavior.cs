@@ -39,6 +39,7 @@ public class AlimentBehavior : CardBehavior
 
     public override void OnMouseUp()
     {
+        deckManager.dragPlane.SetActive(false);
         if (hasAuthority)
         {
             RaycastHit hit;

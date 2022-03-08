@@ -363,6 +363,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd9bad232df97b14493bbf012c817994, type: 2}
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_Name
       value: SM_Card
