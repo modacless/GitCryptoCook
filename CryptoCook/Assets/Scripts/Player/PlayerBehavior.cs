@@ -245,7 +245,7 @@ public class PlayerBehavior : NetworkBehaviour
         if (hasAuthority)
         {
             PickupInDeckCuisine();
-            // a toi mathis
+            deckManager.UpdateAlimentCardHalo(true);
         }
     }
 

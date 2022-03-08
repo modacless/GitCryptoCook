@@ -2316,6 +2316,7 @@ MonoBehaviour:
   - {fileID: 830763941}
   - {fileID: 41187078}
   boardCards: []
+  tableAliments: []
   playerHost: {fileID: 0}
   playerClient: {fileID: 0}
   tour: 0

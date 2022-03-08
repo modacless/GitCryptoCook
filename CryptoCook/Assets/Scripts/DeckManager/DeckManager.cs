@@ -158,7 +158,15 @@ public class DeckManager : NetworkBehaviour
     {
         boardCards.Remove(card);
         tableAliments.Remove((AlimentBehavior)card);
+
+        UpdateAlimentCardHalo(false);
     }
 
-
+    public void UpdateAlimentCardHalo(bool _state)
+    {
+        for(int i = 0; i < tableAliments.Count; i++)
+        {
+            tableAliments[i].cardHalo.SetActive(_state);
+        }
+    }
 }
