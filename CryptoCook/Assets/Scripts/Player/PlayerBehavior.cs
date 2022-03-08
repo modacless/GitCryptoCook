@@ -241,9 +241,11 @@ public class PlayerBehavior : NetworkBehaviour
     public void RpcDrawCard()
     {
         statePlayer = StatePlayer.PickupFoodPhase;
+
         if (hasAuthority)
         {
             PickupInDeckCuisine();
+            deckManager.UpdateAlimentCardHalo(true);
         }
     }
 

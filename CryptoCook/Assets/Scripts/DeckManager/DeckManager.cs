@@ -21,6 +21,7 @@ public class DeckManager : NetworkBehaviour
     private GameObject[] cardsPosition;
 
     public List<CardBehavior> boardCards = new List<CardBehavior>(); // for network purpose
+    public List<AlimentBehavior> tableAliments = new List<AlimentBehavior>();
 
     [SyncVar] public GameObject playerHost;
     [SyncVar] public GameObject playerClient;
@@ -84,7 +85,9 @@ public class DeckManager : NetworkBehaviour
         alimentObject.transform.rotation = Quaternion.Euler(90, 0, 0);
         alimentObject.GetComponent<AlimentBehavior>().InitializeCard(alimentDeck[0]);
         alimentObject.GetComponent<AlimentBehavior>().emplacementFood = emplacement;
+        tableAliments.Add(alimentObject.GetComponent<AlimentBehavior>());
         boardCards.Add(alimentObject.GetComponent<CardBehavior>());
+
         alimentDeck.RemoveAt(0);
     }
 
@@ -141,9 +144,9 @@ public class DeckManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPickInReserve(AlimentBehavior aliment)
+    public void CmdPickOnTable(AlimentBehavior aliment)
     {
-        RpcPickInReserve(aliment);
+        RpcPickOnTable(aliment);
         if (alimentDeck.Count > 0)
         {
             DrawAlimentToTable(aliment.emplacementFood);
@@ -151,10 +154,19 @@ public class DeckManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcPickInReserve(CardBehavior card)
+    private void RpcPickOnTable(CardBehavior card)
     {
         boardCards.Remove(card);
+        tableAliments.Remove((AlimentBehavior)card);
+
+        UpdateAlimentCardHalo(false);
     }
 
-
+    public void UpdateAlimentCardHalo(bool _state)
+    {
+        for(int i = 0; i < tableAliments.Count; i++)
+        {
+            tableAliments[i].cardHalo.SetActive(_state);
+        }
+    }
 }
