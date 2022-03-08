@@ -1732,47 +1732,13 @@ MonoBehaviour:
   statePlayer: 0
   handCards: []
   handCardsPositionIsNotEmpty: 
-  deckCards:
-  - {fileID: 11400000, guid: 397ffe4d84478ea4f9d77dad578e91f9, type: 2}
-  - {fileID: 11400000, guid: 397ffe4d84478ea4f9d77dad578e91f9, type: 2}
-  - {fileID: 11400000, guid: 397ffe4d84478ea4f9d77dad578e91f9, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
-  - {fileID: 11400000, guid: e76401ac7c066c44788444575219857c, type: 2}
+  chefDeck:
+  - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
+  - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
+  - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
+  - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
+  - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
+  - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   reserveCards: []
   boardCardsEmplacement:
   - {fileID: 3634484340328891273}
@@ -1780,7 +1746,8 @@ MonoBehaviour:
   - {fileID: 1253591587167620494}
   - {fileID: 1159593643574024802}
   - {fileID: 6928820454952563113}
-  selectedCard: {fileID: 0}
+  selectedChefCard: {fileID: 0}
+  selectedAliment: {fileID: 0}
 --- !u!114 &2653777060473528998
 MonoBehaviour:
   m_ObjectHideFlags: 0

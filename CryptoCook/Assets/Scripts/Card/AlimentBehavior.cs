@@ -1,33 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class AlimentBehavior : CardBehavior
 {
-    // Start is called before the first frame update
-    public enum AlimentType
+    public AlimentScriptable alimentLogic;
+
+    public bool isInReserve = false;
+
+    [HideInInspector]
+    [SyncVar] public int emplacementFood = -1;
+    public AlimentScriptable alimentData;
+
+    public void InitializeCard(AlimentScriptable aliment)
     {
-        Légume,
-        Fruit,
-        Viande,
-        Féculent,
-        Poisson
+        alimentLogic = aliment;
+        textName.text = alimentLogic.cardName;
     }
 
-    public AlimentType alimentType;
-
-    public enum Gout
+    public override void OnMouseDrag()
     {
-        Salé,
-        Sucré,
-        Viande,
-        Féculent,
-        Poisson
+        if (hasAuthority && !isInReserve)
+        {
+            Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
+            Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
+            transform.position = newWorldPosition;
+        }
     }
 
-    public Gout gout;
-
-    /*public void OnMouseUp()
+    public override void OnMouseUp()
     {
         if (hasAuthority)
         {
@@ -35,7 +37,7 @@ public class AlimentBehavior : CardBehavior
             int emplacementMask = LayerMask.GetMask("DropCard");
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, emplacementMask))
             {
-                if (hit.transform.tag == "Reserve" && !isInReserve && cardLogic.cardType == CardType.Aliment)
+                if (hit.transform.tag == "Reserve" && !isInReserve)
                 {
                     PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
                     Debug.Log(pl.pseudo);
@@ -43,7 +45,7 @@ public class AlimentBehavior : CardBehavior
                     {
                         isInReserve = true;
                         pl.reserveCards.Add(this);
-                        deckManager.CmdPickInReserve((AlimentBehavior)this);
+                        deckManager.CmdPickInReserve(this);
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
                     }
                     else
@@ -51,11 +53,11 @@ public class AlimentBehavior : CardBehavior
                         transform.position = basePosition;
                     }
                 }
-
             }
-
+            else
+            {
+                transform.position = basePosition;
+            }
         }
-        
-    }*/
-
+    }
 }

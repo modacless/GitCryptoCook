@@ -7,7 +7,9 @@ public abstract class ScriptableEffect : ScriptableObject
     [TextArea]
     public string effectDescription;
 
-    public abstract IEnumerator OnUse(CardBehavior card);
+    public abstract IEnumerator OnUse(ChefCardBehaviour card);
 
-    public abstract IEnumerator OnBoardChange(CardBehavior card);
+    public abstract IEnumerator OnBoardChange(ChefCardBehaviour card);
+
+    public abstract IEnumerator OnNewCardPlayed(ChefCardBehaviour card, ChefCardBehaviour newCard);
 }

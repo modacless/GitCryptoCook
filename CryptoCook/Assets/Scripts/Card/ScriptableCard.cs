@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Card",menuName = "Cards/New card")]
+//[CreateAssetMenu(fileName = "New Card",menuName = "Cards/New card")]
 public class ScriptableCard : ScriptableObject
 {
     public enum CardType
@@ -11,14 +11,6 @@ public class ScriptableCard : ScriptableObject
         Recette,
         Effet
     }
-    public enum RecipeType
-    {
-        Entree,
-        Plat,
-        Dessert
-    }
-
-    public RecipeType recipeType;
 
     public CardType cardType;
      
@@ -27,9 +19,5 @@ public class ScriptableCard : ScriptableObject
 
     public string cardName;
     public string TextDescription;
-
-    public ScriptableEffect effect;
-    public int pointEarn;
-
 }
 

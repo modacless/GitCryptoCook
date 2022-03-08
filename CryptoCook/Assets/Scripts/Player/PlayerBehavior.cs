@@ -34,11 +34,14 @@ public class PlayerBehavior : NetworkBehaviour
 
     [Header("Paramètres")]
     //Variables venant du lobby
+    [HideInInspector]
     [SyncVar(hook = nameof(ChangePseudo))] public string pseudo;
 
     //Permet de choisir le deck que l'on a
+    [HideInInspector]
     [SyncVar] public string deck;
 
+    [HideInInspector]
     [SyncVar] public int gamePoint; //variables représentant les points gagnés par le joueur
 
     //Carte pioché au début de la partie
@@ -46,9 +49,11 @@ public class PlayerBehavior : NetworkBehaviour
 
     private int maxCardsInHand = 7;
 
+    [HideInInspector]
     public int currentPoint = 0; //Point du joueur
     public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
 
+    [HideInInspector]
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
 
     public enum StatePlayer
@@ -67,25 +72,32 @@ public class PlayerBehavior : NetworkBehaviour
     /// </summary>
 
     // Liste de cartes dans la main du joueur
-    public List<CardBehavior> handCards = new List<CardBehavior>();
+    [HideInInspector]
+    public List<ChefCardBehaviour> handCards = new List<ChefCardBehaviour>();
+    [HideInInspector]
     public bool[] handCardsPositionIsNotEmpty;
     // Liste de cartes dans le deck du joueur, dois agir comme une pile
     [SerializeField]
-    private List<ScriptableCard> deckCards;
+    private List<ChefCardScriptable> chefDeck;
     //Liste de toutes les cartes aliments
-    public List<CardBehavior> reserveCards;
+    [HideInInspector]
+    public List<AlimentBehavior> reserveCards;
     //Emplacement des cartes, permet de savoir dans quel plats on met les recettes
     public GameObject[] boardCardsEmplacement;
     //Recete sur le plateau
+    [HideInInspector]
     public List<Repas> boardRepas = new List<Repas>();
 
-    public CardBehavior selectedCard;
+    [HideInInspector]
+    public ChefCardBehaviour selectedChefCard;
+    [HideInInspector]
+    public AlimentBehavior selectedAliment;
 
     #endregion
 
     public class Repas
     {
-        public List<CardBehavior> allRecipes = new List<CardBehavior>();
+        public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
         public int points;
     }
 
@@ -237,7 +249,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     private void PickupInDeckCuisine()
     {
-        if(deckCards.Count > 0)
+        if(chefDeck.Count > 0)
         {
             CmdCreateCard(this.gameObject);
         }
@@ -245,7 +257,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     private void ShuffleDeckCuisine()
     {
-        deckCards.OrderBy(item => Random.Range(0, deckCards.Count));
+        chefDeck.OrderBy(item => Random.Range(0, chefDeck.Count));
     }
 
     //Permet de créer une carte, côté client et server
@@ -254,8 +266,8 @@ public class PlayerBehavior : NetworkBehaviour
     {
         //RpcCreateCard();
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-        cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        int emplacement = FindPlaceInHand(cardObj.GetComponent<CardBehavior>());
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
         if (emplacement != -1)
         {
             Debug.Log("Create Card");
@@ -274,10 +286,10 @@ public class PlayerBehavior : NetworkBehaviour
     [ClientRpc]
     private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
-        cardObj.GetComponent<CardBehavior>().player = this;
-        cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        handCards.Add(cardObj.GetComponent<CardBehavior>());
-        deckCards.RemoveAt(0);
+        cardObj.GetComponent<ChefCardBehaviour>().player = this;
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        handCards.Add(cardObj.GetComponent<ChefCardBehaviour>());
+        chefDeck.RemoveAt(0);
     }
 
     #endregion
@@ -314,7 +326,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     #region hand and Card
 
-    private int FindPlaceInHand(CardBehavior card)
+    private int FindPlaceInHand(ChefCardBehaviour card)
     {
         for(int i = 0; i< handCardsPositionIsNotEmpty.Length; i++)
         {
@@ -331,13 +343,13 @@ public class PlayerBehavior : NetworkBehaviour
     }
 
     [Command]
-    public void CmdDropCardOnBoard(CardBehavior card,int emplacement)
+    public void CmdDropCardOnBoard(ChefCardBehaviour card,int emplacement)
     {
         RpcDropCardOnBoard(card,emplacement);
     }
 
     [ClientRpc]
-    public void RpcDropCardOnBoard(CardBehavior card,int emplacement)
+    public void RpcDropCardOnBoard(ChefCardBehaviour card,int emplacement)
     {
         boardRepas[emplacement].allRecipes.Add(card);
         card.repas = boardRepas[emplacement];
@@ -426,16 +438,16 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffetPhase;
         textStatePlayer.text = "Select Receipe ally";
         
-        while (selectedCard == null)
+        while (selectedChefCard == null)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
-                    selectedCard = hit.transform.GetComponent<CardBehavior>();
-                    Debug.Log("Carte sélectionné : " + selectedCard);
+                    selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
+                    Debug.Log("Carte sélectionné : " + selectedChefCard);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -454,16 +466,16 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffetPhase;
         textStatePlayer.text = "Select Receipe Enemy";
 
-        while (selectedCard == null)
+        while (selectedChefCard == null)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<CardBehavior>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
-                    selectedCard = hit.transform.GetComponent<CardBehavior>();
-                    Debug.Log("Carte sélectionné : " + selectedCard);
+                    selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
+                    Debug.Log("Carte sélectionné : " + selectedChefCard);
                 }
             }
             yield return new WaitForEndOfFrame();

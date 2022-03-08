@@ -5,23 +5,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewTestSelectEffect", menuName = "Cards/New Test Select Effect")]
 public class EffetTestSelect : ScriptableEffect
 {
-    public override IEnumerator OnBoardChange(CardBehavior card)
+    public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
         yield return null;
     }
 
-    public override IEnumerator OnUse(CardBehavior card)
+    public override IEnumerator OnNewCardPlayed(ChefCardBehaviour card, ChefCardBehaviour newCard)
+    {
+        yield return null;
+    }
+
+    public override IEnumerator OnUse(ChefCardBehaviour card)
     {
         //code pour effet pour détruire une recette adverse
 
-        card.player.selectedCard = null;
+        card.player.selectedChefCard = null;
         card.player.StartSelectRecipeEnemy();
-        while (card.player.selectedCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
+        while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
         {
             yield return new WaitForEndOfFrame();
         }
 
-        if (card.player.selectedCard != null)
+        if (card.player.selectedChefCard != null)
         {
             //card.player.selectedCard.RemoveFromBoard();
         }

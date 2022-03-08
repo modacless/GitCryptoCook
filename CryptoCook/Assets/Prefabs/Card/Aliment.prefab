@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 6416646827090274108}
   - component: {fileID: 5692126618853228530}
   m_Layer: 0
-  m_Name: Card
+  m_Name: Aliment
   m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6694101996773000217}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30c7efb3ac764c847a59f0ac19206244, type: 3}
+  m_Script: {fileID: 11500000, guid: ac7c521b54a4c244bbc614ca844cecac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
@@ -227,11 +227,10 @@ MonoBehaviour:
   deckManager: {fileID: 0}
   textName: {fileID: 0}
   player: {fileID: 0}
-  cardLogic: {fileID: 0}
-  isOnBoard: 0
-  basePoint: 0
-  variablePoint: 0
-  emplacementHand: -1
+  alimentLogic: {fileID: 0}
+  isInReserve: 0
+  emplacementFood: -1
+  alimentData: {fileID: 0}
 --- !u!114 &1249341536468256839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +259,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 252d2bafc37ea924c86b49dcf64bdcf0
+  m_AssetId: be4362c6dc9a354409ac560891f87e91
   hasSpawned: 0
 --- !u!114 &6416646827090274108
 MonoBehaviour:

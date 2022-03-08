@@ -8,16 +8,18 @@ public class DeckManager : NetworkBehaviour
     [SerializeField]
     private GameObject cardObject;
     [SerializeField]
+    private GameObject alimentObject;
+    [SerializeField]
     private GameObject deckObject;
     [SerializeField]
     public GameObject[] playerPosition;
 
     [SerializeField]
-    private List<ScriptableCard> deckCards;
+    private List<AlimentScriptable> alimentDeck;
     [SerializeField]
     private GameObject[] cardsPosition;
 
-    public List<CardBehavior> boardCards = new List<CardBehavior>();
+    public List<CardBehavior> boardCards = new List<CardBehavior>(); // for network purpose
 
     [SyncVar] public GameObject playerHost;
     [SyncVar] public GameObject playerClient;
@@ -34,7 +36,7 @@ public class DeckManager : NetworkBehaviour
 
             for (int i = 0; i < cardsPosition.Length; i++)
             {
-                PickupAliment(i);
+                DrawAlimentToTable(i);
             }
 
             yield return new WaitUntil(() => playerHost != null);
@@ -59,7 +61,7 @@ public class DeckManager : NetworkBehaviour
 
     }
 
-    public void PickupAliment(int emplacement)
+    public void DrawAlimentToTable(int emplacement)
     {
         CmdCreateCard(emplacement);
     }
@@ -67,23 +69,22 @@ public class DeckManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void CmdCreateCard(int emplacement)
     {
-        GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-        //cardObj.AddComponent<CardBehavior>();
-        cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        NetworkServer.Spawn(cardObj,netIdentity.connectionToClient);
-        RpcCreateCard(cardObj,emplacement);
+        GameObject newAlimentObject = Instantiate(alimentObject, deckObject.transform.position, Quaternion.identity);
+        newAlimentObject.GetComponent<AlimentBehavior>().InitializeCard(alimentDeck[0]);
+        NetworkServer.Spawn(newAlimentObject,netIdentity.connectionToClient);
+        RpcCreateCard(newAlimentObject, emplacement);
     }
 
     [ClientRpc]
-    private void RpcCreateCard(GameObject cardObj, int emplacement)
+    private void RpcCreateCard(GameObject alimentObject, int emplacement)
     {
-        Debug.Log(cardObj + " " + deckCards[0]);
-        cardObj.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
-        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-        cardObj.GetComponent<CardBehavior>().InitializeCard(deckCards[0]);
-        cardObj.GetComponent<CardBehavior>().emplacementFood = emplacement;
-        boardCards.Add(cardObj.GetComponent<CardBehavior>());
-        deckCards.RemoveAt(0);
+        Debug.Log(alimentObject + " " + alimentDeck[0]);
+        alimentObject.transform.position = cardsPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main > nope c'est pas la main ici, c'est la table
+        alimentObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+        alimentObject.GetComponent<AlimentBehavior>().InitializeCard(alimentDeck[0]);
+        alimentObject.GetComponent<AlimentBehavior>().emplacementFood = emplacement;
+        boardCards.Add(alimentObject.GetComponent<CardBehavior>());
+        alimentDeck.RemoveAt(0);
     }
 
     [Command(requiresAuthority = false)]
@@ -139,12 +140,12 @@ public class DeckManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdPickInReserve(CardBehavior card)
+    public void CmdPickInReserve(AlimentBehavior aliment)
     {
-        RpcPickInReserve(card);
-        if (deckCards.Count > 0)
+        RpcPickInReserve(aliment);
+        if (alimentDeck.Count > 0)
         {
-            PickupAliment(card.emplacementFood);
+            DrawAlimentToTable(aliment.emplacementFood);
         }
     }
 
