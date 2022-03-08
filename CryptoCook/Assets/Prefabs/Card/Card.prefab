@@ -14753,7 +14753,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  cardMask:
+    serializedVersion: 2
+    m_Bits: 0
   deckManager: {fileID: 0}
+  cardHalo: {fileID: 4097911862243750560}
   player: {fileID: 0}
   textName: {fileID: 7718991172240633619}
   cardLogic: {fileID: 0}

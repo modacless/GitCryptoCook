@@ -8,8 +8,8 @@ using System.Linq;
 public class PlayerBehavior : NetworkBehaviour
 {
 
-    #region Références
-    [Header("Références")]
+    #region Rï¿½fï¿½rences
+    [Header("Rï¿½fï¿½rences")]
 
     [SerializeField]
     private GameObject buttonNextRound;
@@ -30,9 +30,9 @@ public class PlayerBehavior : NetworkBehaviour
 
     #endregion
 
-    #region paramètres
+    #region paramï¿½tres
 
-    [Header("Paramètres")]
+    [Header("Paramï¿½tres")]
     //Variables venant du lobby
     [HideInInspector]
     [SyncVar(hook = nameof(ChangePseudo))] public string pseudo;
@@ -42,9 +42,9 @@ public class PlayerBehavior : NetworkBehaviour
     [SyncVar] public string deck;
 
     [HideInInspector]
-    [SyncVar] public int gamePoint; //variables représentant les points gagnés par le joueur
+    [SyncVar] public int gamePoint; //variables reprï¿½sentant les points gagnï¿½s par le joueur
 
-    //Carte pioché au début de la partie
+    //Carte piochï¿½ au dï¿½but de la partie
     private int startHand = 5;
 
     private int maxCardsInHand = 7;
@@ -68,7 +68,7 @@ public class PlayerBehavior : NetworkBehaviour
     [SyncVar] public StatePlayer statePlayer;
 
     /// <summary>
-    /// Stockage des différentes cartes
+    /// Stockage des diffï¿½rentes cartes
     /// </summary>
 
     // Liste de cartes dans la main du joueur
@@ -248,7 +248,7 @@ public class PlayerBehavior : NetworkBehaviour
         if (hasAuthority)
         {
             PickupInDeckCuisine();
-            // a toi mathis
+            deckManager.UpdateAlimentCardHalo(true);
         }
     }
 
@@ -265,7 +265,7 @@ public class PlayerBehavior : NetworkBehaviour
         chefDeck.OrderBy(item => Random.Range(0, chefDeck.Count));
     }
 
-    //Permet de créer une carte, côté client et server
+    //Permet de crï¿½er une carte, cï¿½tï¿½ client et server
     [Command]
     private void CmdCreateCard(GameObject playerobj)
     {
@@ -276,7 +276,7 @@ public class PlayerBehavior : NetworkBehaviour
         if (emplacement != -1)
         {
             Debug.Log("Create Card");
-            cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioché étant, la taille de la main
+            cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte piochï¿½ ï¿½tant, la taille de la main
             cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
             NetworkServer.Spawn(cardObj, playerobj);
             RpcCreateCard(cardObj,emplacement);
@@ -287,7 +287,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
-    //Permet de répliquer la création de la carte
+    //Permet de rï¿½pliquer la crï¿½ation de la carte
     [ClientRpc]
     private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
@@ -452,7 +452,7 @@ public class PlayerBehavior : NetworkBehaviour
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
-                    Debug.Log("Carte sélectionné : " + selectedChefCard);
+                    Debug.Log("Carte sï¿½lectionnï¿½ : " + selectedChefCard);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -480,7 +480,7 @@ public class PlayerBehavior : NetworkBehaviour
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
-                    Debug.Log("Carte sélectionné : " + selectedChefCard);
+                    Debug.Log("Carte sï¿½lectionnï¿½ : " + selectedChefCard);
                 }
             }
             yield return new WaitForEndOfFrame();
@@ -509,12 +509,12 @@ public class PlayerBehavior : NetworkBehaviour
 
     }
 
-    public void NewTurn()
+    public void NewTurn()
     {
-        statePlayer = StatePlayer.DrawPhase;
-        for (int i = 0; i < reserveCards.Count; i++)
-        {
-            reserveCards[i].ResetForTurn();
-        }
+        statePlayer = StatePlayer.DrawPhase;
+        for (int i = 0; i < reserveCards.Count; i++)
+        {
+            reserveCards[i].ResetForTurn();
+        }
     }
 }

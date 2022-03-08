@@ -13,6 +13,8 @@ public abstract class CardBehavior : NetworkBehaviour
 
     #region références
     public DeckManager deckManager;
+
+    public GameObject cardHalo;
     #endregion
 
     #region Drag parameters
@@ -28,6 +30,8 @@ public abstract class CardBehavior : NetworkBehaviour
     {
         deckManager = GameObject.Find("GameManager").GetComponent<DeckManager>();
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
+
+        cardHalo.SetActive(false);
     }
 
     public void OnMouseDown()

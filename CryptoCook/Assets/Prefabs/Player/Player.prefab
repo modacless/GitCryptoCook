@@ -1145,9 +1145,9 @@ GameObject:
   - component: {fileID: 7267432002180267667}
   - component: {fileID: 4689001583973015385}
   - component: {fileID: 6864794163123076790}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
