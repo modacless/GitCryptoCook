@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using TMPro;
 using static ScriptableCard;
 using static PlayerBehavior;
 using UnityEngine;
@@ -12,7 +11,6 @@ public abstract class CardBehavior : NetworkBehaviour
 {
     #region références
     public DeckManager deckManager;
-    public TextMeshPro textName;
     #endregion
 
     #region Drag parameters

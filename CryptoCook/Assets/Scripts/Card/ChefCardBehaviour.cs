@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using TMPro;
 using static PlayerBehavior;
 
 public class ChefCardBehaviour : CardBehavior
 {
+    public TextMeshPro textName;
     public ChefCardScriptable cardLogic;
 
     public bool isOnBoard = false;
@@ -28,9 +30,16 @@ public class ChefCardBehaviour : CardBehavior
     {
         if (hasAuthority && !isOnBoard)
         {
-            Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
-            Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
-            transform.position = newWorldPosition;
+            //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
+            //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
+            //transform.position = newWorldPosition;
+
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
+            {
+                transform.position = hit.point;
+            }
         }
     }
 
@@ -39,8 +48,7 @@ public class ChefCardBehaviour : CardBehavior
         if (hasAuthority)
         {
             RaycastHit hit;
-            int emplacementMask = LayerMask.GetMask("DropCard");
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, emplacementMask))
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, LayerMask.GetMask("DropCard")))
             {
                 if (hit.transform.tag == "Board" && !isOnBoard)
                 {

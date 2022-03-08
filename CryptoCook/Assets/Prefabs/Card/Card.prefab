@@ -225,8 +225,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   deckManager: {fileID: 0}
-  textName: {fileID: 0}
   player: {fileID: 0}
+  textName: {fileID: 7718991172240633619}
   cardLogic: {fileID: 0}
   isOnBoard: 0
   basePoint: 0
