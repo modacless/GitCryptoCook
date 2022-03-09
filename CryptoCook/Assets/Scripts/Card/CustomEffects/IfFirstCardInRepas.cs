@@ -2,17 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IfFirstCardInRepas : MonoBehaviour
+[CreateAssetMenu(fileName = "IfFirstCardInRepas", menuName = "Cards/IfFirstCardInRepas")]
+public class IfFirstCardInRepas : ScriptableEffect
 {
-    // Start is called before the first frame update
-    void Start()
+    public int numberOfCardToDraw;
+    public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
-        
+        yield return null;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override IEnumerator OnNewCardPlayed(ChefCardBehaviour card, ChefCardBehaviour newCard)
     {
-        
+       
+        yield return null;
+    }
+
+    public override IEnumerator OnUse(ChefCardBehaviour card)
+    {
+        if (card.repas.allRecipes.Count == 0)
+        {
+            for (int i = 0; i < numberOfCardToDraw; i++)
+            {
+                card.player.PickupInDeckCuisine();
+            } 
+        }
+        yield return null;
     }
 }

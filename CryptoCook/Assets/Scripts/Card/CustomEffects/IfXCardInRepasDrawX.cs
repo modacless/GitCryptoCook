@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Mirror.Examples.Chat;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "IfXCardInRepasDrawX", menuName = "Cards/IfXCardInRepasDrawX")]
+
 public class IfXCardInRepasDrawX : ScriptableEffect
 {
     public int numberOfRecetteInRepas;
     public int numberOfCardToDraw;
-    private int numberOfPlatInRepas = 0;
+    
     public bool isCulture;
     public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
@@ -21,6 +23,7 @@ public class IfXCardInRepasDrawX : ScriptableEffect
 
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
+      int numberOfPlatInRepas = 0;
         if (!isCulture)
         {
             for (int i = 0; i < card.repas.allRecipes.Count; i++)
