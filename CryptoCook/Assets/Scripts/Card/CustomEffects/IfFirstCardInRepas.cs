@@ -19,7 +19,7 @@ public class IfFirstCardInRepas : ScriptableEffect
 
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
-        if (card.repas.allRecipes.Count == 0)
+        if (card.repas.allRecipes.Count == 1)
         {
             for (int i = 0; i < numberOfCardToDraw; i++)
             {
