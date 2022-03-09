@@ -689,10 +689,8 @@ public class PlayerBehavior : NetworkBehaviour
 
             if (cardIsZoom == false && !isDraggingCard)
             {
-                Debug.Log("OUVRE FDP");
                 if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
                 {
-                    Debug.Log(hit.transform.position);
                     zoomedCard = hit.transform.GetComponent<CardBehavior>();
 
                     hit.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 6f, Camera.main.transform.position.z + 4f);
@@ -705,7 +703,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
             else if (cardIsZoom == true)
             {
-                Debug.Log("FERME BATARD");
                 zoomedCard.ResetPos();
                 cardIsZoom = false;
 

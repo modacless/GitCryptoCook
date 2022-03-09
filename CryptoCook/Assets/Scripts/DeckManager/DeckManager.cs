@@ -105,12 +105,21 @@ public class DeckManager : NetworkBehaviour
             Debug.Log("Host auto");
         }
 
-        playerClient.GetComponent<PlayerBehavior>().yourTurn = !playerClient.GetComponent<PlayerBehavior>().yourTurn;
-        if (playerClient.GetComponent<PlayerBehavior>().yourTurn)
+        if(playerClient != null)
         {
-            ChangeBoardAuthority(playerClient.GetComponent<NetworkIdentity>().connectionToClient);
-            RpcNextTurn(playerClient.GetComponent<PlayerBehavior>());
-            Debug.Log("Client auto");
+            playerClient.GetComponent<PlayerBehavior>().yourTurn = !playerClient.GetComponent<PlayerBehavior>().yourTurn;
+            if (playerClient.GetComponent<PlayerBehavior>().yourTurn)
+            {
+                ChangeBoardAuthority(playerClient.GetComponent<NetworkIdentity>().connectionToClient);
+                RpcNextTurn(playerClient.GetComponent<PlayerBehavior>());
+                Debug.Log("Client auto");
+            }
+        }
+        else
+        {
+            playerHost.GetComponent<PlayerBehavior>().yourTurn = true;
+            ChangeBoardAuthority(playerHost.GetComponent<NetworkIdentity>().connectionToClient);
+            RpcNextTurn(playerHost.GetComponent<PlayerBehavior>());
         }
     }
 

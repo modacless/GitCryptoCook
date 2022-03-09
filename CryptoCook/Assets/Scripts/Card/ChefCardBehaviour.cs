@@ -67,7 +67,8 @@ public class ChefCardBehaviour : CardBehavior
             textCostFood.text = foodCost;
             textRecipeType.text = cardLogic.recipeType.ToString();
             textCulture.text = cardLogic.recipeCulture.ToString();
-            textDescription.text = cardLogic.effect.effectDescription;
+            if(cardLogic.effect != null)
+                textDescription.text = cardLogic.effect.effectDescription;
         }
 
         if(cardLogic.cardType == ScriptableCard.CardType.Effet)
@@ -101,7 +102,8 @@ public class ChefCardBehaviour : CardBehavior
             }
             textName.text = cardLogic.cardName;
             textCostFood.text = foodCost;
-            textDescription.text = cardLogic.effect.effectDescription;
+            if (cardLogic.effect != null)
+                textDescription.text = cardLogic.effect.effectDescription;
 
         }
         
