@@ -152,7 +152,8 @@ public class PlayerBehavior : NetworkBehaviour
                 CmdInitializeDeckHost();
                 //CmdChangePlayerPosition(deckManager.playerPosition[0].transform.position);
                 deckManager.ChangeBoardAuthority(netIdentity.connectionToClient);
-                
+                Camera.main.transform.rotation = deckManager.posCamP1.transform.rotation;
+                Camera.main.transform.position = deckManager.posCamP1.transform.position;
             }
 
             if (isClientOnly)
@@ -160,8 +161,8 @@ public class PlayerBehavior : NetworkBehaviour
                 statePlayer = StatePlayer.EnnemyPhase;
                 CmdInitializeDeckClient();
                 //CmdChangePlayerPosition(deckManager.playerPosition[1].transform.position);
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-                Camera.main.transform.rotation = Quaternion.Euler(90, 0, 180);
+                Camera.main.transform.rotation = deckManager.posCamP2.transform.rotation;
+                Camera.main.transform.position = deckManager.posCamP2.transform.position;
             }
 
             //On attend que les joueurs se positionnent correctement
@@ -517,7 +518,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     public void NewTurn()
     {
-        statePlayer = StatePlayer.DrawPhase;
+        statePlayer = StatePlayer.DrawPhase;
+
         for (int i = 0; i < reserveCards.Count; i++)
         {
             reserveCards[i].ResetForTurn();

@@ -2626,6 +2626,8 @@ MonoBehaviour:
   playerPosition:
   - {fileID: 1749000333}
   - {fileID: 1346745042}
+  posCamP1: {fileID: 1018898910}
+  posCamP2: {fileID: 805624787}
   alimentDeck:
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
