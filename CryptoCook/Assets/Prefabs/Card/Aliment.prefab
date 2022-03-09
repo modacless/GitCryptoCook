@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3426019105324301486}
   - component: {fileID: 1571962261337925160}
   - component: {fileID: 7599082307879380884}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,8 +109,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062618198245078151}
   m_LocalRotation: {x: -0, y: -0.000000010536713, z: -0.000000010536713, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 20, y: 20, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8241126617020045690}
@@ -4989,7 +4989,7 @@ GameObject:
   - component: {fileID: 4513671329609917007}
   - component: {fileID: 6387358727145726532}
   - component: {fileID: 1207350581059377017}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5005,7 +5005,7 @@ Transform:
   m_GameObject: {fileID: 2783944692891044537}
   m_LocalRotation: {x: -0, y: -0.000000010536713, z: -0.000000010536713, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 0.5860086}
+  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 0.14650215}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8241126617020045690}
@@ -9799,7 +9799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8241126617020045690}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9815,7 +9815,7 @@ Transform:
   m_GameObject: {fileID: 4645821261621467391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06666667, y: 0.06666667, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4513671329609917007}
@@ -9835,7 +9835,7 @@ GameObject:
   - component: {fileID: 4271148997068388611}
   - component: {fileID: 1978827896743553002}
   - component: {fileID: 7718991172240633619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10010,7 +10010,7 @@ GameObject:
   - component: {fileID: 2632394404503819196}
   - component: {fileID: 6416646827090274108}
   - component: {fileID: 5692126618853228530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Aliment
   m_TagString: Card
   m_Icon: {fileID: 0}
@@ -10053,12 +10053,12 @@ MonoBehaviour:
   syncInterval: 0.1
   cardMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   deckManager: {fileID: 0}
   cardHalo: {fileID: 8935497065096123955}
   player: {fileID: 0}
-  engagedEffect: {fileID: 1660434368579841594}
-  usedEffect: {fileID: 2420041587700985161}
+  engagedEffect: {fileID: 0}
+  usedEffect: {fileID: 0}
   textName: {fileID: 7718991172240633619}
   alimentLogic: {fileID: 0}
   isInReserve: 0
@@ -10154,7 +10154,7 @@ GameObject:
   - component: {fileID: 5424471013235965662}
   - component: {fileID: 629240069086492072}
   - component: {fileID: 4313033616045019987}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particule_trail_Legend_hallo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10168,14 +10168,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8935497065096123955}
-  m_LocalRotation: {x: 0.9999993, y: -0.000000010523615, z: 0.0000000105498, w: -0.0012429057}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 16, y: 16, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.018}
+  m_LocalScale: {x: 16, y: 16, z: 16}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8241126617020045690}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 180.142, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &629240069086492072
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -15075,6 +15075,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_Name
       value: SM_Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_IsActive

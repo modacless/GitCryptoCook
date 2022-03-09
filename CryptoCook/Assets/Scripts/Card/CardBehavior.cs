@@ -11,7 +11,7 @@ public abstract class CardBehavior : NetworkBehaviour
 {
     public LayerMask cardMask;
 
-    #region références
+    #region rï¿½fï¿½rences
     public DeckManager deckManager;
 
     public GameObject cardHalo;
@@ -25,6 +25,8 @@ public abstract class CardBehavior : NetworkBehaviour
     public PlayerBehavior player;
 
     private UnityEvent OnUse;
+
+    
 
     void Start()
     {
