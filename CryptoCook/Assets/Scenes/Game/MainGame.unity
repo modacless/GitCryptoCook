@@ -2629,14 +2629,14 @@ MonoBehaviour:
   posCamP1: {fileID: 1018898910}
   posCamP2: {fileID: 805624787}
   alimentDeck:
-  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
+  - {fileID: 11400000, guid: 6e32fa249b261c94da49146ef1feb52d, type: 2}
   - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
   - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
   - {fileID: 11400000, guid: 450993f6d08d672438b41036c55f79b6, type: 2}
+  - {fileID: 11400000, guid: 6e32fa249b261c94da49146ef1feb52d, type: 2}
+  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 450993f6d08d672438b41036c55f79b6, type: 2}
-  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
-  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
-  - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
+  - {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
   - {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
@@ -2650,6 +2650,7 @@ MonoBehaviour:
   tableAliments: []
   playerHost: {fileID: 0}
   playerClient: {fileID: 0}
+  authorityPlayer: {fileID: 0}
   tour: 0
 --- !u!114 &1479302355
 MonoBehaviour:

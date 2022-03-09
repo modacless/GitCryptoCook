@@ -9,21 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
-  m_Name: Frite
+  m_Script: {fileID: 11500000, guid: 4a29ca79da19337439a9c9ba7d3324d4, type: 3}
+  m_Name: Oignon
   m_EditorClassIdentifier: 
-  cardType: 1
+  cardType: 0
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
-  cardName: Frite
+  cardName: Oignon
   TextDescription: 
+  alimentType: 0
+  gout: 1
   sprite: {fileID: 0}
-  recipeType: 1
-  recipeCulture: 1
-  cost:
-  - costType: 1
-    goutCost: 0
-    alimentTypeCost: 3
-    specificCost: {fileID: 0}
-  effect: {fileID: 11400000, guid: 33036eef91182f841b622fce137c6693, type: 2}
-  pointEarn: 1
