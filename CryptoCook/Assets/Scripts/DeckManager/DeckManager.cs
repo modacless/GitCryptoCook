@@ -32,6 +32,8 @@ public class DeckManager : NetworkBehaviour
     [SyncVar] public GameObject playerHost;
     [SyncVar] public GameObject playerClient;
 
+    public PlayerBehavior authorityPlayer;
+
 
     [SyncVar] public int tour = 0;
 

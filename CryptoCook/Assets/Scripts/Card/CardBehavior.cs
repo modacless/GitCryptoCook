@@ -38,7 +38,7 @@ public abstract class CardBehavior : NetworkBehaviour
 
     public virtual void OnMouseDown()
     {
-        if(!player.cardIsZoom)
+        if(!deckManager.authorityPlayer.cardIsZoom)
         {
             SetCurrentPosAsBase();
             deckManager.dragPlane.SetActive(true);

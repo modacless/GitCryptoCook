@@ -32,12 +32,12 @@ public class ChefCardBehaviour : CardBehavior
 
     public override void OnMouseDrag()
     {
-        if (hasAuthority && !isOnBoard && !player.cardIsZoom)
+        if (hasAuthority && !isOnBoard && !deckManager.authorityPlayer.cardIsZoom)
         {
             //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
             //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
             //transform.position = newWorldPosition;
-
+            deckManager.authorityPlayer.isDraggingCard = true;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
@@ -52,10 +52,11 @@ public class ChefCardBehaviour : CardBehavior
         deckManager.dragPlane.SetActive(false);
         if (hasAuthority)
         {
+            deckManager.authorityPlayer.isDraggingCard = false;
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, LayerMask.GetMask("DropCard")))
             {
-                if (hit.transform.tag == "Board" && !isOnBoard && player.statePlayer != PlayerBehavior.StatePlayer.ZoomPhase)
+                if (hit.transform.tag == "Board" && !isOnBoard)
                 {
                     if (player.statePlayer == StatePlayer.PlayCardPhase)
                     {

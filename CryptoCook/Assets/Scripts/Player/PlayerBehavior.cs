@@ -62,7 +62,6 @@ public class PlayerBehavior : NetworkBehaviour
         PickupFoodPhase,
         PlayCardPhase,
         EffetPhase,
-        ZoomPhase,
         EnnemyPhase
     }
 
@@ -141,6 +140,7 @@ public class PlayerBehavior : NetworkBehaviour
 
         if (hasAuthority)
         {
+            deckManager.authorityPlayer = this;
             ChangePseudo(pseudo, pseudo);
             textStatePlayer.gameObject.SetActive(true);
             textPoint.gameObject.SetActive(true);
@@ -641,6 +641,7 @@ public class PlayerBehavior : NetworkBehaviour
     }
 
     [HideInInspector] public bool cardIsZoom = false;
+    [HideInInspector] public bool isDraggingCard = false;
     [HideInInspector] public CardBehavior zoomedCard = null;
     public void CardZoom()
     {
@@ -650,7 +651,7 @@ public class PlayerBehavior : NetworkBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (cardIsZoom == false)
+            if (cardIsZoom == false && !isDraggingCard)
             {
                 Debug.Log("OUVRE FDP");
                 if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
