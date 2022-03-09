@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c04cc332e731197478e827a6b7297c95, type: 3}
+  m_Name: EffetBurger
+  m_EditorClassIdentifier: 
+  effectDescription: Add One if Frite in recette
+  recette1: {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
+  recette2: {fileID: 0}
