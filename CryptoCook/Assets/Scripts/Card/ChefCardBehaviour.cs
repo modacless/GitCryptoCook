@@ -16,6 +16,8 @@ public class ChefCardBehaviour : CardBehavior
     public int basePoint;
     public int variablePoint;
 
+    public bool isEffectActive;
+
     [HideInInspector]
     [SyncVar] public int emplacementHand = -1;
 
@@ -23,6 +25,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
+        isEffectActive = true;
         player = _player;
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
@@ -113,5 +116,16 @@ public class ChefCardBehaviour : CardBehavior
         variablePoint = 0;
         if(cardLogic.effect != null)
             StartCoroutine(cardLogic.effect.OnBoardChange(this));
+    }
+
+    public void DestroyCard()
+    {
+        player.DestroyCardFromBoard(this);
+    }
+
+    public void AddCost(ChefCardScriptable.Cost addedCost)
+    {
+        currentCost.Add(addedCost);
+        // refersh affichage
     }
 }

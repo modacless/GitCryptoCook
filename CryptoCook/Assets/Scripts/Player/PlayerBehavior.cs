@@ -687,4 +687,11 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
     }
+
+    [Command]
+    public void DestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
+    {
+        chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+        NetworkServer.Destroy(chefCardBehaviour.gameObject);
+    }
 }
