@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
+  m_Name: Nuggets
+  m_EditorClassIdentifier: 
+  cardType: 1
+  meshFilterModel: {fileID: 0}
+  meshRendererModel: {fileID: 0}
+  cardName: Nugets
+  TextDescription: 
+  sprite: {fileID: 0}
+  recipeType: 1
+  recipeCulture: 1
+  cost:
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 2
+    specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 3
+    specificCost: {fileID: 0}
+  effect: {fileID: 11400000, guid: d784976144a5e2740abd8dd9537036dc, type: 2}
+  pointEarn: 2

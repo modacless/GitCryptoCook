@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a5be1fdd9e62da46929e55cc1f53af4, type: 2}
+  - {fileID: 2100000, guid: 3922db8bd3d8974448afebfff3707114, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4956,7 +4956,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e4d33b9435927941b88e568006c65ef, type: 2}
+  - {fileID: 2100000, guid: af3b6f530492f384fbb0f8fec29e279b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10179,7 +10179,7 @@ GameObject:
   - component: {fileID: 4271148997068388611}
   - component: {fileID: 1978827896743553002}
   - component: {fileID: 7718991172240633619}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10277,8 +10277,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10414,7 +10414,6 @@ MonoBehaviour:
   isEngaged: 0
   isUsedThisTurn: 0
   emplacementFood: -1
-  alimentData: {fileID: 0}
 --- !u!114 &2632394404503819196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15498,7 +15497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a3cbcf4c32ba0384980514a0eb193050, type: 3}
       propertyPath: m_IsActive

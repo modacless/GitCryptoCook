@@ -389,7 +389,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: localhost
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -532,6 +532,7 @@ MonoBehaviour:
   - {fileID: 6694101996773000217, guid: 252d2bafc37ea924c86b49dcf64bdcf0, type: 3}
   - {fileID: 6694101996773000217, guid: be4362c6dc9a354409ac560891f87e91, type: 3}
   - {fileID: 8667703452763311355, guid: 340cd2ef2375ebb489ff45249dc96c80, type: 3}
+  - {fileID: 6694101996773000217, guid: 8c054f7b7b1fe2b448ae24831df362bc, type: 3}
   lobbyPlayerPrefs: {fileID: 6458310247147389016, guid: cf5a3c054e753084080dfaf74966a480, type: 3}
   pseudoText: {fileID: 911640120}
   PlayerInGame: {fileID: 8667703452763311355, guid: 340cd2ef2375ebb489ff45249dc96c80, type: 3}
@@ -656,7 +657,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u200B"
+  m_text: "localhost\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1392,7 +1393,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931076290}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 

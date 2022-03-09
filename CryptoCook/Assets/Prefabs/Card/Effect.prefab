@@ -14795,7 +14795,7 @@ GameObject:
   - component: {fileID: 1537436294032831308}
   - component: {fileID: 8465702945013728651}
   - component: {fileID: 1037813119339776987}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: TextCostFood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14967,7 +14967,7 @@ GameObject:
   - component: {fileID: 4271148997068388611}
   - component: {fileID: 1978827896743553002}
   - component: {fileID: 7718991172240633619}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: TextName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15065,8 +15065,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15195,10 +15195,12 @@ MonoBehaviour:
   textRecipeType: {fileID: 0}
   textCulture: {fileID: 0}
   textDescription: {fileID: 977782713221814007}
+  spriteBackgroud: {fileID: 0}
   cardLogic: {fileID: 0}
   isOnBoard: 0
   basePoint: 0
   variablePoint: 0
+  isEffectActive: 0
   emplacementHand: -1
   currentCost: []
 --- !u!114 &2632394404503819196
@@ -15276,8 +15278,7 @@ GameObject:
   - component: {fileID: 6170064299953282587}
   - component: {fileID: 7239707193673260044}
   - component: {fileID: 1300496276171437605}
-  - component: {fileID: 3199850270306599715}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Graph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15349,16 +15350,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3199850270306599715
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7753767878575863721}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.9999999}
-  m_Center: {x: 0, y: 0, z: -0.00000023841856}
