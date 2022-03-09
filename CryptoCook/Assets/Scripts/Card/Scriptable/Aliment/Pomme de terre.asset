@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a29ca79da19337439a9c9ba7d3324d4, type: 3}
-  m_Name: Piment
+  m_Name: Pomme de terre
   m_EditorClassIdentifier: 
   cardType: 0
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
-  cardName: Piment
+  cardName: Pomme de terre
   TextDescription: 
-  alimentType: 0
-  gout: 2
-  sprite: {fileID: 2100000, guid: d0c8f2833c2ebdb43b6820f970cd5b79, type: 2}
+  alimentType: 3
+  gout: 1
+  sprite: {fileID: 2100000, guid: da43939c1d481a445bebf4357a04008b, type: 2}

@@ -18,5 +18,5 @@ MonoBehaviour:
   cardName: Oignon
   TextDescription: 
   alimentType: 0
-  gout: 1
-  sprite: {fileID: 0}
+  gout: 0
+  sprite: {fileID: 2100000, guid: e80e0ed41a73f97498ea2cffe20156d6, type: 2}
