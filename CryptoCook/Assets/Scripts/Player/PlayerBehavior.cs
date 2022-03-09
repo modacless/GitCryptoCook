@@ -744,5 +744,6 @@ public class PlayerBehavior : NetworkBehaviour
     {
         chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
         NetworkServer.Destroy(chefCardBehaviour.gameObject);
+        RefreshBoard();
     }
 }
