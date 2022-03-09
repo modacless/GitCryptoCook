@@ -6,6 +6,8 @@ using static AlimentScriptable;
 [CreateAssetMenu(fileName = "NewChefCard", menuName = "Cards/New Chef Card")]
 public class ChefCardScriptable : ScriptableCard
 {
+
+    public Sprite sprite;
     public enum RecipeType
     {
         Entree,

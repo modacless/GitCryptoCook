@@ -26,4 +26,5 @@ public class AlimentScriptable : ScriptableCard
     }
 
     public Gout gout;
+    public Sprite sprite;
 }

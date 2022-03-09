@@ -8,6 +8,13 @@ using static PlayerBehavior;
 public class ChefCardBehaviour : CardBehavior
 {
     public TextMeshPro textName;
+    public TextMeshPro textCost;
+    public TextMeshPro textCostFood;
+    public TextMeshPro textRecipeType;
+    public TextMeshPro textCulture;
+    public TextMeshPro textDescription;
+    public SpriteRenderer spriteBackgroud;
+
     public ChefCardScriptable cardLogic;
 
     public bool isOnBoard = false;
@@ -23,10 +30,79 @@ public class ChefCardBehaviour : CardBehavior
 
     public void InitializeCard(ChefCardScriptable card)
     {
+        Debug.Log(card.cardName);
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
-        textName.text = cardLogic.cardName;
-        currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
+
+        if(cardLogic.cardType == ScriptableCard.CardType.Recette)
+        {
+            //Text Assignement
+            textName.text = cardLogic.cardName;
+            currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
+            textCost.text = (basePoint + variablePoint).ToString();
+            string foodCost = "";
+            for (int i = 0; i < currentCost.Count; i++)
+            {
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
+                {
+                    foodCost = currentCost[i].alimentTypeCost.ToString() + " + ";
+                }
+
+
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
+                {
+                    foodCost = currentCost[i].goutCost.ToString() + " + ";
+                }
+
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
+                {
+                    foodCost = currentCost[i].specificCost.cardName + " + ";
+                }
+
+
+            }
+            textCostFood.text = foodCost;
+            textRecipeType.text = cardLogic.recipeType.ToString();
+            textCulture.text = cardLogic.recipeCulture.ToString();
+            textDescription.text = cardLogic.effect.effectDescription;
+        }
+
+        if(cardLogic.cardType == ScriptableCard.CardType.Effet)
+        {
+
+            if(cardLogic.sprite != null)
+            {
+                spriteBackgroud.sprite = cardLogic.sprite;
+            }
+            
+            string foodCost = "";
+            for (int i = 0; i < currentCost.Count; i++)
+            {
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
+                {
+                    foodCost = currentCost[i].alimentTypeCost.ToString() + " + ";
+                }
+
+
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
+                {
+                    foodCost = currentCost[i].goutCost.ToString() + " + ";
+                }
+
+                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
+                {
+                    foodCost = currentCost[i].specificCost.cardName + " + ";
+                }
+
+
+            }
+            textName.text = cardLogic.cardName;
+            textCostFood.text = foodCost;
+            textDescription.text = cardLogic.effect.effectDescription;
+
+        }
+        
+
     }
 
     public override void OnMouseDrag()
