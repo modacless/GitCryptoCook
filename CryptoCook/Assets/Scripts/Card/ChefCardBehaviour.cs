@@ -17,7 +17,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public ChefCardScriptable cardLogic;
 
-    public bool isOnBoard = false;
+    [SyncVar] public bool isOnBoard = false;
 
     public Repas repas;
     public int basePoint;
@@ -142,7 +142,7 @@ public class ChefCardBehaviour : CardBehavior
                     {
                         if(player.CanPlayCard(this))
                         {
-                            isOnBoard = true;
+                            CmdPutOnBoard(true);
                             player.CmdDropCardOnBoard(this, player.FindBoardPlaces(hit.transform.gameObject));
                             player.UseEngagedAliment();
                         }
@@ -167,6 +167,12 @@ public class ChefCardBehaviour : CardBehavior
                 ResetToHand();
             }
         }
+    }
+
+    [Command]
+    public void CmdPutOnBoard(bool isOn)
+    {
+        isOnBoard = isOn;
     }
 
     public void ResetToHand()
