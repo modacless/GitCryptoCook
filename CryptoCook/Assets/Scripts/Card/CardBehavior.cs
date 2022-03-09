@@ -10,6 +10,7 @@ using Mirror;
 public abstract class CardBehavior : NetworkBehaviour
 {
     public LayerMask cardMask;
+    public float hoverScaleMultiplier;
 
     #region r�f�rences
     public DeckManager deckManager;
@@ -35,6 +36,8 @@ public abstract class CardBehavior : NetworkBehaviour
         mZCoord = Camera.main.WorldToScreenPoint(transform.position).z;
 
         cardHalo.SetActive(false);
+        baseScale = transform.localScale;
+        targetScale = baseScale;
     }
 
     public virtual void OnMouseDown()
@@ -59,6 +62,27 @@ public abstract class CardBehavior : NetworkBehaviour
 
     public abstract void OnMouseUp();
 
+    private void Update()
+    {
+        UpdateHover();
+    }
+
+    private void OnMouseExit()
+    {
+        targetScale = baseScale;
+    }
+
+    private void OnMouseEnter()
+    {
+        targetScale = baseScale * hoverScaleMultiplier;
+    }
+
+    private Vector3 baseScale;
+    private Vector3 targetScale;
+    public void UpdateHover()
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 30 * Time.deltaTime);
+    }
 
     public void ResetPos()
     {

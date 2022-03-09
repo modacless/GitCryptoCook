@@ -15186,6 +15186,7 @@ MonoBehaviour:
   cardMask:
     serializedVersion: 2
     m_Bits: 256
+  hoverScaleMultiplier: 1.1
   deckManager: {fileID: 0}
   cardHalo: {fileID: 4097911862243750560}
   player: {fileID: 0}

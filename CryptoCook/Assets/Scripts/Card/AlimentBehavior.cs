@@ -60,15 +60,11 @@ public class AlimentBehavior : CardBehavior
             {
                 if (hit.transform.tag == "Reserve" && !isInReserve)
                 {
-                    PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    Debug.Log(pl.pseudo);
+                    PlayerBehavior pl = deckManager.authorityPlayer;
                     if (pl.statePlayer == PlayerBehavior.StatePlayer.PickupFoodPhase)
                     {
-                        isInReserve = true;
                         player = pl;
-                        pl.reserveCards.Add(this);
-                        deckManager.CmdPickOnTable(this);
-                        pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
+                        player.PlaceAlimentInReserve(this);
                         SetCurrentPosAsBase();
                     }
                     else
