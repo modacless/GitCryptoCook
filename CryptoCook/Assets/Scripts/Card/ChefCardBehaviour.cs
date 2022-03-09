@@ -82,8 +82,20 @@ public class ChefCardBehaviour : CardBehavior
 
     public void ResetToHand()
     {
+        GameObject camRef = deckManager.posCamP2;
+
+        if(isClient)
+        {
+            camRef = deckManager.posCamP1;
+        }
+
         transform.position = basePosition;
-        transform.localRotation = Quaternion.Euler(50f, 0, 0);
+        float angle = Vector3.Angle(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(camRef.transform.position.x, 0, camRef.transform.position.z));
+        if (transform.position.x <= camRef.transform.position.x)
+        {
+            angle = -angle;
+        }
+        transform.localRotation = Quaternion.Euler(50, angle, 0);
     }
 
     public void RefreshEffect()

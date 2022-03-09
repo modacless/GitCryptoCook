@@ -125,6 +125,8 @@ public class PlayerBehavior : NetworkBehaviour
         textStatePlayer.gameObject.SetActive(false);
         engagedAliment = new List<AlimentBehavior>();
 
+        yield return new WaitUntil(() => deckManager != null);
+
         if (!isClientOnly)
         {
             //Debug.Log("Host pos" + deckManager.playerPosition[0].transform.position);
@@ -158,6 +160,8 @@ public class PlayerBehavior : NetworkBehaviour
                 statePlayer = StatePlayer.EnnemyPhase;
                 CmdInitializeDeckClient();
                 //CmdChangePlayerPosition(deckManager.playerPosition[1].transform.position);
+                transform.localRotation = Quaternion.Euler(0, 180, 0);
+
                 Camera.main.transform.rotation = deckManager.posCamP2.transform.rotation;
                 Camera.main.transform.position = deckManager.posCamP2.transform.position;
             }
@@ -278,7 +282,14 @@ public class PlayerBehavior : NetworkBehaviour
         {
             //Debug.Log("Create Card");
             cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
-            cardObj.transform.localRotation = Quaternion.Euler(50, 0, 0);
+            
+            float angle = Vector3.Angle(new Vector3(cardObj.transform.position.x, 0, cardObj.transform.position.z), new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            if(cardObj.transform.position.x <= Camera.main.transform.position.x)
+            {
+                angle = -angle;
+            }
+            cardObj.transform.localRotation = Quaternion.Euler(50, angle, 0);
+            
             NetworkServer.Spawn(cardObj, playerobj);
             RpcCreateCard(cardObj,emplacement);
         }
