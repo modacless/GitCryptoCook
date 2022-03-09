@@ -21,7 +21,6 @@ public class EffectForNextTurn : ScriptableEffect
 
     public override IEnumerator OnNewCardPlayed(ChefCardBehaviour card, ChefCardBehaviour newCard)
     {
-        if(newCard)
 
         yield return null;
     }
