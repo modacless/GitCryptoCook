@@ -15,7 +15,8 @@ MonoBehaviour:
   cardType: 0
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
-  cardName: Rizepice
+  cardName: "Riz \xC9pic\xE9"
   TextDescription: 
   alimentType: 3
   gout: 2
+  sprite: {fileID: 2100000, guid: 35a4a4c98bc208445b3425e0a71ce505, type: 2}

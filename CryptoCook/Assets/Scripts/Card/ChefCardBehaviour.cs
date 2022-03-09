@@ -30,6 +30,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public List<ChefCardScriptable.Cost> currentCost;
 
+
     public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
         isEffectActive = true;
@@ -127,6 +128,21 @@ public class ChefCardBehaviour : CardBehavior
             {
                 transform.position = hit.point;
             }
+
+            if (Physics.Raycast(transform.position + Vector3.up * 20f, Vector3.down, out hit, 200f, LayerMask.GetMask("DropCard")))
+            {
+                if (hit.transform.tag == "Board")
+                {
+                    if (player.statePlayer == StatePlayer.PlayCardPhase)
+                    {
+                        player.HighlightRepas(player.FindBoardPlaces(hit.transform.gameObject), true);
+                    }
+                }
+            }
+            else
+            {
+                player.LowLightAllRepas();
+            }
         }
     }
 
@@ -135,9 +151,10 @@ public class ChefCardBehaviour : CardBehavior
         deckManager.dragPlane.SetActive(false);
         if (hasAuthority)
         {
+            player.LowLightAllRepas();
             deckManager.authorityPlayer.isDraggingCard = false;
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, LayerMask.GetMask("DropCard")))
+            if (Physics.Raycast(transform.position + Vector3.up * 20f, Vector3.down, out hit, 200f, LayerMask.GetMask("DropCard")))
             {
                 if (hit.transform.tag == "Board" && !isOnBoard)
                 {
@@ -180,21 +197,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void ResetToHand()
     {
-        GameObject camRef = deckManager.posCamP2;
-
-        if(isClient)
-        {
-            camRef = deckManager.posCamP1;
-        }
-
         ResetPos();
-        float angle = Vector3.Angle(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(camRef.transform.position.x, 0, camRef.transform.position.z));
-        if (transform.position.x <= camRef.transform.position.x)
-        {
-            angle = -angle;
-        }
-        transform.localRotation = Quaternion.Euler(50, angle, 0);
-        
     }
 
     public void RefreshEffect()

@@ -170,6 +170,7 @@ public class DeckManager : NetworkBehaviour
     {
         boardCards.Remove(card);
         tableAliments.Remove((AlimentBehavior)card);
+        card.cardHalo.SetActive(false);
 
         UpdateAlimentCardHalo(false);
     }
@@ -181,6 +182,4 @@ public class DeckManager : NetworkBehaviour
             tableAliments[i].cardHalo.SetActive(_state);
         }
     }
-
-    
 }

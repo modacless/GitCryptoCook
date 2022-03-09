@@ -9,7 +9,7 @@ public class AlimentBehavior : CardBehavior
     public TextMeshPro textName;
     public TextMeshPro textType;
     public TextMeshPro textGout;
-    public SpriteRenderer foodSprite;
+    public MeshRenderer foodSprite;
 
     public GameObject engagedEffect;
     public GameObject usedEffect;
@@ -30,11 +30,7 @@ public class AlimentBehavior : CardBehavior
         textName.text = alimentLogic.cardName;
         textType.text = alimentLogic.alimentType.ToString();
         textGout.text = alimentLogic.gout.ToString();
-
-        if(alimentLogic.sprite != null)
-        {
-            foodSprite.sprite = alimentLogic.sprite;
-        }
+        foodSprite.GetComponent<MeshRenderer>().material = alimentLogic.sprite;
 
     }
 
@@ -64,15 +60,11 @@ public class AlimentBehavior : CardBehavior
             {
                 if (hit.transform.tag == "Reserve" && !isInReserve)
                 {
-                    PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    Debug.Log(pl.pseudo);
+                    PlayerBehavior pl = deckManager.authorityPlayer;
                     if (pl.statePlayer == PlayerBehavior.StatePlayer.PickupFoodPhase)
                     {
-                        isInReserve = true;
                         player = pl;
-                        pl.reserveCards.Add(this);
-                        deckManager.CmdPickOnTable(this);
-                        pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
+                        player.PlaceAlimentInReserve(this);
                         SetCurrentPosAsBase();
                     }
                     else

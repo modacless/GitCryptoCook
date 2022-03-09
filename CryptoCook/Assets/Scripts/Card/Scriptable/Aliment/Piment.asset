@@ -19,3 +19,4 @@ MonoBehaviour:
   TextDescription: 
   alimentType: 0
   gout: 2
+  sprite: {fileID: 2100000, guid: d0c8f2833c2ebdb43b6820f970cd5b79, type: 2}
