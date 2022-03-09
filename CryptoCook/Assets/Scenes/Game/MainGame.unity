@@ -3935,7 +3935,7 @@ GameObject:
   - component: {fileID: 834252100465328348}
   m_Layer: 0
   m_Name: Grande Planche
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

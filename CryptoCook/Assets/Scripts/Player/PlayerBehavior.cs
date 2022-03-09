@@ -62,6 +62,7 @@ public class PlayerBehavior : NetworkBehaviour
         PickupFoodPhase,
         PlayCardPhase,
         EffetPhase,
+        ZoomPhase,
         EnnemyPhase
     }
 
