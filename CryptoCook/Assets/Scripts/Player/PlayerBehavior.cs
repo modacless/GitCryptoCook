@@ -14,7 +14,9 @@ public class PlayerBehavior : NetworkBehaviour
     [SerializeField]
     private GameObject buttonNextRound;
     [SerializeField]
-    private GameObject cardObject;
+    private GameObject cardObjectRecipe;
+    [SerializeField]
+    private GameObject cardObjectEffect;
     [SerializeField]
     private GameObject deckObject;
     [SerializeField]
@@ -55,6 +57,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     [HideInInspector]
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
+
+    private bool isPickingInDeck = false;
 
     public enum StatePlayer
     {
@@ -102,7 +106,8 @@ public class PlayerBehavior : NetworkBehaviour
     public class Repas
     {
         public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
-        public int points;
+        public int basePoint;
+        public int variablePoint;
     }
 
 
@@ -175,6 +180,7 @@ public class PlayerBehavior : NetworkBehaviour
             for (int i = 0; i < startHand; i++)
             {
                 PickupInDeckCuisine();
+                yield return new WaitUntil(() => isPickingInDeck == false);
             }
         }
         else
@@ -266,6 +272,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if(chefDeck.Count > 0)
         {
+            isPickingInDeck = true;
             CmdCreateCard(this.gameObject);
         }
     }
@@ -279,9 +286,20 @@ public class PlayerBehavior : NetworkBehaviour
     [Command]
     private void CmdCreateCard(GameObject playerobj)
     {
+        
         //RpcCreateCard();
-        GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
+        GameObject cardToChoose = null;
+        if(chefDeck[0].cardType == ScriptableCard.CardType.Effet)
+        {
+            cardToChoose = cardObjectEffect;
+            Debug.Log("EFFECT " + chefDeck[0].cardName);
+        }
+        else if(chefDeck[0].cardType == ScriptableCard.CardType.Recette)
+        {
+            cardToChoose = cardObjectRecipe;
+            Debug.Log("Recette " + chefDeck[0].cardName);
+        }
+        GameObject cardObj = Instantiate(cardToChoose, deckObject.transform.position, Quaternion.identity);
         int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
         if (emplacement != -1)
         {
@@ -312,6 +330,13 @@ public class PlayerBehavior : NetworkBehaviour
         cardObj.GetComponent<ChefCardBehaviour>().player = this;
         cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
         handCards.Add(cardObj.GetComponent<ChefCardBehaviour>());
+        chefDeck.RemoveAt(0);
+        isPickingInDeck = false;
+    }
+
+    [ClientRpc]
+    private void RpcDestroyCard()
+    {
         chefDeck.RemoveAt(0);
     }
 

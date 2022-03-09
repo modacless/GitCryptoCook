@@ -6,9 +6,13 @@ using TMPro;
 
 public class AlimentBehavior : CardBehavior
 {
+    public TextMeshPro textName;
+    public TextMeshPro textType;
+    public TextMeshPro textGout;
+    public SpriteRenderer foodSprite;
+
     public GameObject engagedEffect;
     public GameObject usedEffect;
-    public TextMeshPro textName;
     public AlimentScriptable alimentLogic;
 
     public bool isInReserve = false;
@@ -24,6 +28,14 @@ public class AlimentBehavior : CardBehavior
     {
         alimentLogic = aliment;
         textName.text = alimentLogic.cardName;
+        textType.text = alimentLogic.cardType.ToString();
+        textGout.text = alimentLogic.gout.ToString();
+
+        if(alimentLogic.sprite != null)
+        {
+            foodSprite.sprite = alimentLogic.sprite;
+        }
+
     }
 
     public override void OnMouseDrag()
