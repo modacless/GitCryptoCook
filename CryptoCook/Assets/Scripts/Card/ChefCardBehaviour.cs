@@ -21,8 +21,9 @@ public class ChefCardBehaviour : CardBehavior
 
     public List<ChefCardScriptable.Cost> currentCost;
 
-    public void InitializeCard(ChefCardScriptable card)
+    public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
+        player = _player;
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
         textName.text = cardLogic.cardName;
@@ -56,11 +57,18 @@ public class ChefCardBehaviour : CardBehavior
             {
                 if (hit.transform.tag == "Board" && !isOnBoard && player.statePlayer != PlayerBehavior.StatePlayer.ZoomPhase)
                 {
-                    PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    if (pl.statePlayer == StatePlayer.PlayCardPhase)
+                    if (player.statePlayer == StatePlayer.PlayCardPhase)
                     {
-                        isOnBoard = true;
-                        pl.CmdDropCardOnBoard(this, pl.FindBoardPlaces(hit.transform.gameObject));
+                        if(player.CanPlayCard(this))
+                        {
+                            isOnBoard = true;
+                            player.CmdDropCardOnBoard(this, player.FindBoardPlaces(hit.transform.gameObject));
+                            player.UseEngagedAliment();
+                        }
+                        else
+                        {
+                            ResetToHand();
+                        }
                     }
                     else
                     {
@@ -89,6 +97,7 @@ public class ChefCardBehaviour : CardBehavior
     public void RefreshEffect()
     {
         variablePoint = 0;
-        StartCoroutine(cardLogic.effect.OnBoardChange(this));
+        if(cardLogic.effect != null)
+            StartCoroutine(cardLogic.effect.OnBoardChange(this));
     }
 }

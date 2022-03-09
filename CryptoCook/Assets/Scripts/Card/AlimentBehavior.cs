@@ -17,7 +17,6 @@ public class AlimentBehavior : CardBehavior
 
     [HideInInspector]
     [SyncVar] public int emplacementFood = -1;
-    public AlimentScriptable alimentData;
 
 
 
