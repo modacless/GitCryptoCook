@@ -68,11 +68,19 @@ public class ChefCardBehaviour : CardBehavior
                 }
 
             }
+
             textCostFood.text = foodCost;
             textRecipeType.text = cardLogic.recipeType.ToString();
             textCulture.text = cardLogic.recipeCulture.ToString();
             if(cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
+            if (cardLogic.modelPrefab != null)
+            {
+                GameObject go = Instantiate(cardLogic.modelPrefab).gameObject;
+                go.transform.SetParent(transform);
+                go.transform.localPosition = Vector3.zero;
+
+            }
         }
 
         if(cardLogic.cardType == ScriptableCard.CardType.Effet)
