@@ -21,8 +21,9 @@ public class ChefCardBehaviour : CardBehavior
 
     public List<ChefCardScriptable.Cost> currentCost;
 
-    public void InitializeCard(ChefCardScriptable card)
+    public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
+        player = _player;
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
         textName.text = cardLogic.cardName;
@@ -31,12 +32,12 @@ public class ChefCardBehaviour : CardBehavior
 
     public override void OnMouseDrag()
     {
-        if (hasAuthority && !isOnBoard)
+        if (hasAuthority && !isOnBoard && !deckManager.authorityPlayer.cardIsZoom)
         {
             //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
             //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
             //transform.position = newWorldPosition;
-
+            deckManager.authorityPlayer.isDraggingCard = true;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
@@ -51,16 +52,24 @@ public class ChefCardBehaviour : CardBehavior
         deckManager.dragPlane.SetActive(false);
         if (hasAuthority)
         {
+            deckManager.authorityPlayer.isDraggingCard = false;
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, LayerMask.GetMask("DropCard")))
             {
                 if (hit.transform.tag == "Board" && !isOnBoard)
                 {
-                    PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
-                    if (pl.statePlayer == StatePlayer.PlayCardPhase)
+                    if (player.statePlayer == StatePlayer.PlayCardPhase)
                     {
-                        isOnBoard = true;
-                        pl.CmdDropCardOnBoard(this, pl.FindBoardPlaces(hit.transform.gameObject));
+                        if(player.CanPlayCard(this))
+                        {
+                            isOnBoard = true;
+                            player.CmdDropCardOnBoard(this, player.FindBoardPlaces(hit.transform.gameObject));
+                            player.UseEngagedAliment();
+                        }
+                        else
+                        {
+                            ResetToHand();
+                        }
                     }
                     else
                     {
@@ -89,18 +98,20 @@ public class ChefCardBehaviour : CardBehavior
             camRef = deckManager.posCamP1;
         }
 
-        transform.position = basePosition;
+        ResetPos();
         float angle = Vector3.Angle(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(camRef.transform.position.x, 0, camRef.transform.position.z));
         if (transform.position.x <= camRef.transform.position.x)
         {
             angle = -angle;
         }
         transform.localRotation = Quaternion.Euler(50, angle, 0);
+        
     }
 
     public void RefreshEffect()
     {
         variablePoint = 0;
-        StartCoroutine(cardLogic.effect.OnBoardChange(this));
+        if(cardLogic.effect != null)
+            StartCoroutine(cardLogic.effect.OnBoardChange(this));
     }
 }

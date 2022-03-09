@@ -97,6 +97,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     #endregion
 
+    
+
     public class Repas
     {
         public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
@@ -140,6 +142,7 @@ public class PlayerBehavior : NetworkBehaviour
 
         if (hasAuthority)
         {
+            deckManager.authorityPlayer = this;
             ChangePseudo(pseudo, pseudo);
             textStatePlayer.gameObject.SetActive(true);
             textPoint.gameObject.SetActive(true);
@@ -233,6 +236,8 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 textStatePlayer.text = "Ennemy Turn";
             }
+
+            CardZoom();
         }
 
     }
@@ -276,7 +281,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         //RpcCreateCard();
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
         int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
         if (emplacement != -1)
         {
@@ -290,6 +295,7 @@ public class PlayerBehavior : NetworkBehaviour
             }
             cardObj.transform.localRotation = Quaternion.Euler(50, angle, 0);
             
+            cardObj.GetComponent<ChefCardBehaviour>().SetCurrentPosAsBase();
             NetworkServer.Spawn(cardObj, playerobj);
             RpcCreateCard(cardObj,emplacement);
         }
@@ -304,7 +310,7 @@ public class PlayerBehavior : NetworkBehaviour
     private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
         cardObj.GetComponent<ChefCardBehaviour>().player = this;
-        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
         handCards.Add(cardObj.GetComponent<ChefCardBehaviour>());
         chefDeck.RemoveAt(0);
     }
@@ -372,7 +378,8 @@ public class PlayerBehavior : NetworkBehaviour
         card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
-        StartCoroutine(card.cardLogic.effect.OnUse(card));
+        if(card.cardLogic.effect != null)
+            StartCoroutine(card.cardLogic.effect.OnUse(card));
         RefreshBoard();
     }
 
@@ -542,6 +549,10 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 canPlayCard = true;
             }
+            else
+            {
+                Debug.Log("The aliments engaged do not correspond to the cost of the card");
+            }
         }
         else
         {
@@ -556,6 +567,16 @@ public class PlayerBehavior : NetworkBehaviour
         }
 
         return canPlayCard;
+    }
+
+    public void UseEngagedAliment()
+    {
+        for (int i = 0; i < engagedAliment.Count; i++)
+        {
+            engagedAliment[i].UseToPlayCard();
+        }
+
+        engagedAliment.Clear();
     }
 
     /// <summary>
@@ -617,12 +638,53 @@ public class PlayerBehavior : NetworkBehaviour
                         else
                         {
                             alimentUsedInCost[i] = false;
+                            currentCostIndex--;
                         }
                     }
                 }
             }
+            else
+            {
+                //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
+            }
         }
-
         return false;
+    }
+
+    [HideInInspector] public bool cardIsZoom = false;
+    [HideInInspector] public bool isDraggingCard = false;
+    [HideInInspector] public CardBehavior zoomedCard = null;
+    public void CardZoom()
+    {
+        if (Input.GetMouseButtonDown(1)) //Récupère la carte sur laquelle le joueur clique
+        {
+
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (cardIsZoom == false && !isDraggingCard)
+            {
+                Debug.Log("OUVRE FDP");
+                if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
+                {
+                    Debug.Log(hit.transform.position);
+                    zoomedCard = hit.transform.GetComponent<CardBehavior>();
+
+                    hit.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 6f, Camera.main.transform.position.z + 4f);
+
+                    hit.transform.rotation = Camera.main.transform.rotation;
+
+                    cardIsZoom = true;
+
+                }
+            }
+            else if (cardIsZoom == true)
+            {
+                Debug.Log("FERME BATARD");
+                zoomedCard.ResetPos();
+                cardIsZoom = false;
+
+            }
+        }
     }
 }

@@ -24,5 +24,5 @@ MonoBehaviour:
     goutCost: 0
     alimentTypeCost: 0
     specificCost: {fileID: 0}
-  effect: {fileID: 11400000, guid: edd81709af5c1c743931d6c599605ca1, type: 2}
-  pointEarn: 0
+  effect: {fileID: 0}
+  pointEarn: 3

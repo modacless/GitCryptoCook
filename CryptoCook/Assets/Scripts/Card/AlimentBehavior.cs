@@ -17,7 +17,6 @@ public class AlimentBehavior : CardBehavior
 
     [HideInInspector]
     [SyncVar] public int emplacementFood = -1;
-    public AlimentScriptable alimentData;
 
 
 
@@ -29,8 +28,9 @@ public class AlimentBehavior : CardBehavior
 
     public override void OnMouseDrag()
     {
-        if (hasAuthority && !isInReserve)
+        if (hasAuthority && !isInReserve && !deckManager.authorityPlayer.cardIsZoom)
         {
+            deckManager.authorityPlayer.isDraggingCard = true;
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
@@ -45,6 +45,7 @@ public class AlimentBehavior : CardBehavior
         deckManager.dragPlane.SetActive(false);
         if (hasAuthority)
         {
+            deckManager.authorityPlayer.isDraggingCard = false;
             RaycastHit hit;
             int emplacementMask = LayerMask.GetMask("DropCard");
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, emplacementMask))
@@ -60,17 +61,20 @@ public class AlimentBehavior : CardBehavior
                         pl.reserveCards.Add(this);
                         deckManager.CmdPickOnTable(this);
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
-                        // a toi mathis
                     }
                     else
                     {
-                        transform.position = basePosition;
+                        ResetPos();
                     }
+                }
+                else
+                {
+                    ResetPos();
                 }
             }
             else
             {
-                transform.position = basePosition;
+                ResetPos();
             }
         }
     }

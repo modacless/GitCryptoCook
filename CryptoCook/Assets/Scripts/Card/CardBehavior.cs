@@ -38,20 +38,36 @@ public abstract class CardBehavior : NetworkBehaviour
 
     public virtual void OnMouseDown()
     {
-        basePosition = transform.position;
-        deckManager.dragPlane.SetActive(true);
-        transform.localRotation = Quaternion.Euler(90, 180, 0);
+        if(!deckManager.authorityPlayer.cardIsZoom)
+        {
+            SetCurrentPosAsBase();
+            deckManager.dragPlane.SetActive(true);
+            transform.localRotation = Quaternion.Euler(90, 180, 0);
 
         if (isServer)
         {
             transform.localRotation = Quaternion.Euler(90, 0, 0);
         }
+        }
+       
+        
     }
+
 
     public abstract void OnMouseDrag();
 
     public abstract void OnMouseUp();
 
+
+    public void ResetPos()
+    {
+        transform.position = basePosition;
+    }
+
+    public void SetCurrentPosAsBase()
+    {
+        basePosition = transform.position;
+    }
 
     protected Vector3 GetMouseWorldPos()
     {

@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 6409651694268784098}
   m_Layer: 0
   m_Name: Reserve
-  m_TagString: Untagged
+  m_TagString: Reserve
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2002,7 +2002,10 @@ MonoBehaviour:
   chefDeck:
   - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
   - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
-  - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
