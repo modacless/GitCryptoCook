@@ -20,6 +20,7 @@ public abstract class CardBehavior : NetworkBehaviour
     #region Drag parameters
     protected float mZCoord;
     protected Vector3 basePosition;
+    protected Quaternion baseRotation;
     #endregion
 
     public PlayerBehavior player;
@@ -44,10 +45,10 @@ public abstract class CardBehavior : NetworkBehaviour
             deckManager.dragPlane.SetActive(true);
             transform.localRotation = Quaternion.Euler(90, 180, 0);
 
-        if (isServer)
-        {
-            transform.localRotation = Quaternion.Euler(90, 0, 0);
-        }
+            if (isServer)
+            {
+                transform.localRotation = Quaternion.Euler(90, 0, 0);
+            }
         }
        
         
@@ -62,11 +63,13 @@ public abstract class CardBehavior : NetworkBehaviour
     public void ResetPos()
     {
         transform.position = basePosition;
+        transform.rotation = baseRotation;
     }
 
     public void SetCurrentPosAsBase()
     {
         basePosition = transform.position;
+        baseRotation = transform.rotation;
     }
 
     protected Vector3 GetMouseWorldPos()

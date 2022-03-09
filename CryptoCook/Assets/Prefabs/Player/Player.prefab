@@ -2029,6 +2029,9 @@ MonoBehaviour:
   selectedChefCard: {fileID: 0}
   selectedAliment: {fileID: 0}
   engagedAliment: []
+  cardIsZoom: 0
+  isDraggingCard: 0
+  zoomedCard: {fileID: 0}
 --- !u!114 &2653777060473528998
 MonoBehaviour:
   m_ObjectHideFlags: 0
