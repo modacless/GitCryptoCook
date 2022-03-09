@@ -28,7 +28,7 @@ public class EffetTestSelect : ScriptableEffect
 
         if (card.player.selectedChefCard != null)
         {
-            //card.player.selectedCard.RemoveFromBoard();
+            card.player.selectedChefCard.DestroyCard();
         }
         yield return null;
     }
