@@ -9,7 +9,7 @@ public class AlimentBehavior : CardBehavior
     public TextMeshPro textName;
     public TextMeshPro textType;
     public TextMeshPro textGout;
-    public SpriteRenderer foodSprite;
+    public MeshRenderer foodSprite;
 
     public GameObject engagedEffect;
     public GameObject usedEffect;
@@ -28,13 +28,9 @@ public class AlimentBehavior : CardBehavior
     {
         alimentLogic = aliment;
         textName.text = alimentLogic.cardName;
-        textType.text = alimentLogic.cardType.ToString();
+        textType.text = alimentLogic.alimentType.ToString();
         textGout.text = alimentLogic.gout.ToString();
-
-        if(alimentLogic.sprite != null)
-        {
-            foodSprite.sprite = alimentLogic.sprite;
-        }
+        foodSprite.GetComponent<MeshRenderer>().material = alimentLogic.sprite;
 
     }
 
