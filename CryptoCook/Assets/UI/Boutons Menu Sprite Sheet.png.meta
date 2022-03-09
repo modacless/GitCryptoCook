@@ -1,0 +1,543 @@
+fileFormatVersion: 2
+guid: f102ce51658f9d24d8a485b7b1cfe92c
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 3577
+        width: 1214
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec1a291be28925841b2f518e5970dada
+      internalID: 1763457568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 1459
+        y: 3807
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0a81b203829ffc4fb94768923a31199
+      internalID: 1443491726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 1573
+        y: 3577
+        width: 396
+        height: 386
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ce4e574508ea644ab882cc2479c9a6a
+      internalID: 2092038136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 3577
+        width: 1646
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6625d62056b32d54eae55ba433456847
+      internalID: -146687522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 1461
+        y: 3785
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0ebee7dd238f394bbb4b00843d3dbb1
+      internalID: -16730720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 1461
+        y: 3749
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1709101a43ce4f428e8025342a19a94
+      internalID: 140560255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 1459
+        y: 3727
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f277fac50b236f841b706edfc4333b70
+      internalID: -1843963902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 3083
+        width: 1214
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43f917ddbf7d1cc48b04a4e0b707b217
+      internalID: 1409124116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 3083
+        width: 1646
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9fba330b2a5d794284b7636f6fc2e67
+      internalID: 1693799745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 2581
+        width: 1503
+        height: 337
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5f5204b3d41c4e4f83ae789bd1470f0
+      internalID: 1871397981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 2581
+        width: 1646
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ff76f4ac79f7c149acc2af3b100957e
+      internalID: 54802828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 2159
+        width: 1355
+        height: 333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a479167fe62e1741a8ea1f04318e9ee
+      internalID: 1642006687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 2045
+        width: 1646
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5558605b48ce254eb30d14303e48bd0
+      internalID: -1020951422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 989
+        width: 1798
+        height: 840
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cdb041ec8af9af40bf0647bd7a14585
+      internalID: -1014901724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 2189
+        y: 1571
+        width: 1842
+        height: 406
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 250408b88fe8ebf4d8a95ee3597db798
+      internalID: 1336796142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 1043
+        width: 1646
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 905f981727999ee499e53bc4638df885
+      internalID: -1196749076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 139
+        width: 1840
+        height: 814
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbebf4b95fccede40b1a1977e55a0730
+      internalID: -26966024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 539
+        width: 1646
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5ea15ae47de87b4a98a6f4ecdfc4678
+      internalID: 2084325670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boutons Menu Sprite Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 49
+        width: 1646
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64082626a4da2c248b58d40400cbabec
+      internalID: 1274848988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: fcbb2b63b12e6ab44b05d940f2839916
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Boutons Menu Sprite Sheet_2: 2092038136
+      Boutons Menu Sprite Sheet_5: 140560255
+      Boutons Menu Sprite Sheet_6: -1843963902
+      Boutons Menu Sprite Sheet_21: 1274848988
+      Boutons Menu Sprite Sheet_11: 1110533179
+      Boutons Menu Sprite Sheet_18: -1196749076
+      Boutons Menu Sprite Sheet_7: 1409124116
+      Boutons Menu Sprite Sheet_13: 1642006687
+      Boutons Menu Sprite Sheet_4: -16730720
+      Boutons Menu Sprite Sheet_12: 54802828
+      Boutons Menu Sprite Sheet_0: 1763457568
+      Boutons Menu Sprite Sheet_20: 2084325670
+      Boutons Menu Sprite Sheet_14: -1170285128
+      Boutons Menu Sprite Sheet_1: 1443491726
+      Boutons Menu Sprite Sheet_16: -1014901724
+      Boutons Menu Sprite Sheet_9: 1066552559
+      Boutons Menu Sprite Sheet_10: 1871397981
+      Boutons Menu Sprite Sheet_19: -26966024
+      Boutons Menu Sprite Sheet_17: 1336796142
+      Boutons Menu Sprite Sheet_15: -1020951422
+      Boutons Menu Sprite Sheet_8: 1693799745
+      Boutons Menu Sprite Sheet_3: -146687522
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
