@@ -58,6 +58,8 @@ public class PlayerBehavior : NetworkBehaviour
     [HideInInspector]
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
 
+    private bool isPickingInDeck = false;
+
     public enum StatePlayer
     {
         DrawPhase,
@@ -170,6 +172,7 @@ public class PlayerBehavior : NetworkBehaviour
             for (int i = 0; i < startHand; i++)
             {
                 PickupInDeckCuisine();
+                yield return new WaitUntil(() => isPickingInDeck == false);
             }
         }
         else
@@ -259,6 +262,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if(chefDeck.Count > 0)
         {
+            isPickingInDeck = true;
             CmdCreateCard(this.gameObject);
         }
     }
@@ -309,6 +313,7 @@ public class PlayerBehavior : NetworkBehaviour
         cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
         handCards.Add(cardObj.GetComponent<ChefCardBehaviour>());
         chefDeck.RemoveAt(0);
+        isPickingInDeck = false;
     }
 
     [ClientRpc]
