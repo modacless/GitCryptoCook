@@ -8,14 +8,11 @@ public class MenuBehavior : MonoBehaviour
 {
     #region Références
     public GameObject menuCanvas;
-    public GameObject lobbyCanvas;
-    public TMP_InputField ipText;
     #endregion
 
     void Start()
     {
-        menuCanvas.SetActive(true);
-        lobbyCanvas.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -24,39 +21,14 @@ public class MenuBehavior : MonoBehaviour
         
     }
 
-    //Boutton Host
     public void OnPressedHost()
     {
         menuCanvas.SetActive(false);
-        lobbyCanvas.SetActive(true);
-        NetworkManager.singleton.StartHost();
     }
-
-    //Boutton Join
 
     public void OnPressedClient()
     {
         menuCanvas.SetActive(false);
-        lobbyCanvas.SetActive(true);
-        NetworkManager.singleton.networkAddress = ipText.text;
-        NetworkManager.singleton.StartClient();
-    }
-
-    public void OnPressedDisconnect()
-    {
-        if (NetManager.isHost)
-        {
-            NetworkManager.singleton.StopHost();
-        }
-        else
-        {
-            NetworkManager.singleton.StopClient();
-        }
-
-        menuCanvas.SetActive(true);
-        lobbyCanvas.SetActive(false);
-
-        NetManager.isHost = false;
     }
 
 
