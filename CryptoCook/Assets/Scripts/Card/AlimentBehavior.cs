@@ -73,6 +73,7 @@ public class AlimentBehavior : CardBehavior
                         pl.reserveCards.Add(this);
                         deckManager.CmdPickOnTable(this);
                         pl.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
+                        SetCurrentPosAsBase();
                     }
                     else
                     {

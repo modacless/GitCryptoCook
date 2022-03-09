@@ -99,9 +99,11 @@ public class PlayerBehavior : NetworkBehaviour
 
     public List<AlimentBehavior> engagedAliment;
 
+    public List<ScriptableEffect> effectActiveThisTurn;
+
     #endregion
 
-    
+
 
     public class Repas
     {
@@ -403,8 +405,11 @@ public class PlayerBehavior : NetworkBehaviour
         card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
-        if(card.cardLogic.effect != null)
+        if(card.cardLogic.effect != null && card.isEffectActive)
             StartCoroutine(card.cardLogic.effect.OnUse(card));
+
+        OnNewCardRefreshBoard(card);
+
         RefreshBoard();
     }
 
@@ -532,9 +537,30 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = oldState;
     }
 
+    public void OnNewCardRefreshBoard(ChefCardBehaviour newChefCard)
+    {
+        for (int i = 0; i < effectActiveThisTurn.Count; i++)
+        {
+            StartCoroutine(effectActiveThisTurn[i].OnNewCardPlayed(null, newChefCard));
+        }
+
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
+            {
+                StartCoroutine(boardRepas[i].allRecipes[j].cardLogic.effect.OnNewCardPlayed(boardRepas[i].allRecipes[j], newChefCard));
+            }
+        }
+    }
+
     public void RefreshBoard()
     {
         currentPoint = 0;
+
+        for (int k = 0; k < effectActiveThisTurn.Count; k++)
+        {
+            StartCoroutine(effectActiveThisTurn[k].OnBoardChange(null));
+        }
 
         for (int i = 0; i < boardRepas.Count; i++)
         {
@@ -557,6 +583,7 @@ public class PlayerBehavior : NetworkBehaviour
     public void NewTurn()
     {
         statePlayer = StatePlayer.DrawPhase;
+        effectActiveThisTurn.Clear();
 
         for (int i = 0; i < reserveCards.Count; i++)
         {
@@ -693,6 +720,7 @@ public class PlayerBehavior : NetworkBehaviour
                 if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
                 {
                     zoomedCard = hit.transform.GetComponent<CardBehavior>();
+                    zoomedCard.SetCurrentPosAsBase();
 
                     hit.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 6f, Camera.main.transform.position.z + 4f);
 

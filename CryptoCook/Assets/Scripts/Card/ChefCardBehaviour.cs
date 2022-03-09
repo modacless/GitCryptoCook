@@ -191,7 +191,7 @@ public class ChefCardBehaviour : CardBehavior
     public void RefreshEffect()
     {
         variablePoint = 0;
-        if(cardLogic.effect != null)
+        if(cardLogic.effect != null && isEffectActive)
             StartCoroutine(cardLogic.effect.OnBoardChange(this));
     }
 
