@@ -18,6 +18,9 @@ public class DeckManager : NetworkBehaviour
     [SerializeField]
     public GameObject[] playerPosition;
 
+    public GameObject posCamP1;
+    public GameObject posCamP2;
+
     [SerializeField]
     private List<AlimentScriptable> alimentDeck;
     [SerializeField]
