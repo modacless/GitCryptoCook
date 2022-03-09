@@ -38,6 +38,7 @@ public abstract class CardBehavior : NetworkBehaviour
     {
         basePosition = transform.position;
         deckManager.dragPlane.SetActive(true);
+        transform.localRotation = Quaternion.Euler(90, 0, 0);
     }
 
     public abstract void OnMouseDrag();

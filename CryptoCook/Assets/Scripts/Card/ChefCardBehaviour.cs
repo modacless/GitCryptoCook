@@ -64,20 +64,26 @@ public class ChefCardBehaviour : CardBehavior
                     }
                     else
                     {
-                        transform.position = basePosition;
+                        ResetToHand();
                     }
 
                 }
                 else
                 {
-                    transform.position = basePosition;
+                    ResetToHand();
                 }
             }
             else
             {
-                transform.position = basePosition;
+                ResetToHand();
             }
         }
+    }
+
+    public void ResetToHand()
+    {
+        transform.position = basePosition;
+        transform.localRotation = Quaternion.Euler(50f, 0, 0);
     }
 
     public void RefreshEffect()
