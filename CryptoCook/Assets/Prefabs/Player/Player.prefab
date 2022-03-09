@@ -2002,7 +2002,10 @@ MonoBehaviour:
   chefDeck:
   - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
   - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
-  - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: d0643bade9a8fa641b3558bf384daf44, type: 2}
+  - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
   - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
@@ -2015,6 +2018,7 @@ MonoBehaviour:
   - {fileID: 6928820454952563113}
   selectedChefCard: {fileID: 0}
   selectedAliment: {fileID: 0}
+  engagedAliment: []
 --- !u!114 &2653777060473528998
 MonoBehaviour:
   m_ObjectHideFlags: 0

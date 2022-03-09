@@ -9,20 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
-  m_Name: SauceEpice
+  m_Script: {fileID: 11500000, guid: 4a29ca79da19337439a9c9ba7d3324d4, type: 3}
+  m_Name: Pomme
   m_EditorClassIdentifier: 
-  cardType: 2
+  cardType: 0
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
-  cardName: "Sauce \xC9pic\xE9"
-  TextDescription: "Tr\xE8s risqu\xE9"
-  recipeType: 0
-  recipeCulture: 0
-  cost:
-  - costType: 0
-    goutCost: 0
-    alimentTypeCost: 0
-    specificCost: {fileID: 0}
-  effect: {fileID: 0}
-  pointEarn: 3
+  cardName: Pomme
+  TextDescription: 
+  alimentType: 1
+  gout: 1

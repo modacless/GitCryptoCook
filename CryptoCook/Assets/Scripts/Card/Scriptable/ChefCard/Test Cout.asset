@@ -10,19 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
-  m_Name: SauceEpice
+  m_Name: Test Cout
   m_EditorClassIdentifier: 
-  cardType: 2
+  cardType: 1
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
-  cardName: "Sauce \xC9pic\xE9"
-  TextDescription: "Tr\xE8s risqu\xE9"
+  cardName: Test cout
+  TextDescription: 
   recipeType: 0
   recipeCulture: 0
   cost:
   - costType: 0
-    goutCost: 0
+    goutCost: 2
     alimentTypeCost: 0
     specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 2
+    specificCost: {fileID: 0}
   effect: {fileID: 0}
-  pointEarn: 3
+  pointEarn: 1

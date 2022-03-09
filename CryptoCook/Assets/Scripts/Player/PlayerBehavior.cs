@@ -271,7 +271,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         //RpcCreateCard();
         GameObject cardObj = Instantiate(cardObject, deckObject.transform.position, Quaternion.identity);
-        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
         int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
         if (emplacement != -1)
         {
@@ -292,7 +292,7 @@ public class PlayerBehavior : NetworkBehaviour
     private void RpcCreateCard(GameObject cardObj,int emplacement)
     {
         cardObj.GetComponent<ChefCardBehaviour>().player = this;
-        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0]);
+        cardObj.GetComponent<ChefCardBehaviour>().InitializeCard(chefDeck[0], this);
         handCards.Add(cardObj.GetComponent<ChefCardBehaviour>());
         chefDeck.RemoveAt(0);
     }
@@ -360,7 +360,8 @@ public class PlayerBehavior : NetworkBehaviour
         card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
-        StartCoroutine(card.cardLogic.effect.OnUse(card));
+        if(card.cardLogic.effect != null)
+            StartCoroutine(card.cardLogic.effect.OnUse(card));
         RefreshBoard();
     }
 
@@ -529,6 +530,10 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 canPlayCard = true;
             }
+            else
+            {
+                Debug.Log("The aliments engaged do not correspond to the cost of the card");
+            }
         }
         else
         {
@@ -543,6 +548,16 @@ public class PlayerBehavior : NetworkBehaviour
         }
 
         return canPlayCard;
+    }
+
+    public void UseEngagedAliment()
+    {
+        for (int i = 0; i < engagedAliment.Count; i++)
+        {
+            engagedAliment[i].UseToPlayCard();
+        }
+
+        engagedAliment.Clear();
     }
 
     /// <summary>
@@ -604,12 +619,16 @@ public class PlayerBehavior : NetworkBehaviour
                         else
                         {
                             alimentUsedInCost[i] = false;
+                            currentCostIndex--;
                         }
                     }
                 }
             }
+            else
+            {
+                //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
+            }
         }
-
         return false;
     }
 }
