@@ -32,10 +32,6 @@ public class DeckManager : NetworkBehaviour
 
     [SyncVar] public int tour = 0;
 
-    bool cardIsZoom = false;
-    GameObject zoomedCard = null;
-    Vector3 positionBeforeZoom;
-    Quaternion rotationBeforeZoom;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -65,12 +61,6 @@ public class DeckManager : NetworkBehaviour
         yield return null;
     }
 
-    
-    private void Update()
-    {
-        
-    }
-
     public void DrawAlimentToTable(int emplacement)
     {
         CmdCreateCard(emplacement);
@@ -95,7 +85,7 @@ public class DeckManager : NetworkBehaviour
         alimentObject.GetComponent<AlimentBehavior>().emplacementFood = emplacement;
         tableAliments.Add(alimentObject.GetComponent<AlimentBehavior>());
         boardCards.Add(alimentObject.GetComponent<CardBehavior>());
-
+        alimentObject.GetComponent<AlimentBehavior>().SetCurrentPosAsBase();
         alimentDeck.RemoveAt(0);
     }
 
@@ -178,4 +168,5 @@ public class DeckManager : NetworkBehaviour
         }
     }
 
+    
 }

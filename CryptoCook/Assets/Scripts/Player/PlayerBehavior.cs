@@ -98,6 +98,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     #endregion
 
+    
+
     public class Repas
     {
         public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
@@ -229,6 +231,8 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 textStatePlayer.text = "Ennemy Turn";
             }
+
+            CardZoom();
         }
 
     }
@@ -279,6 +283,7 @@ public class PlayerBehavior : NetworkBehaviour
             //Debug.Log("Create Card");
             cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
             cardObj.transform.localRotation = Quaternion.Euler(50, 0, 0);
+            cardObj.GetComponent<ChefCardBehaviour>().SetCurrentPosAsBase();
             NetworkServer.Spawn(cardObj, playerobj);
             RpcCreateCard(cardObj,emplacement);
         }
@@ -612,5 +617,41 @@ public class PlayerBehavior : NetworkBehaviour
         }
 
         return false;
+    }
+
+    [HideInInspector] public bool cardIsZoom = false;
+    [HideInInspector] public CardBehavior zoomedCard = null;
+    public void CardZoom()
+    {
+        if (Input.GetMouseButtonDown(1)) //Récupère la carte sur laquelle le joueur clique
+        {
+
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (cardIsZoom == false)
+            {
+                Debug.Log("OUVRE FDP");
+                if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
+                {
+                    Debug.Log(hit.transform.position);
+                    zoomedCard = hit.transform.GetComponent<CardBehavior>();
+
+                    hit.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 6f, Camera.main.transform.position.z + 4f);
+
+                    hit.transform.rotation = Camera.main.transform.rotation;
+
+                    cardIsZoom = true;
+
+                }
+            }
+            else if (cardIsZoom == true)
+            {
+                Debug.Log("FERME BATARD");
+                zoomedCard.ResetPos();
+                cardIsZoom = false;
+
+            }
+        }
     }
 }

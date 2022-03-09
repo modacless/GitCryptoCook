@@ -31,7 +31,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public override void OnMouseDrag()
     {
-        if (hasAuthority && !isOnBoard)
+        if (hasAuthority && !isOnBoard && !player.cardIsZoom)
         {
             //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
             //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
@@ -54,7 +54,7 @@ public class ChefCardBehaviour : CardBehavior
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, LayerMask.GetMask("DropCard")))
             {
-                if (hit.transform.tag == "Board" && !isOnBoard)
+                if (hit.transform.tag == "Board" && !isOnBoard && player.statePlayer != PlayerBehavior.StatePlayer.ZoomPhase)
                 {
                     PlayerBehavior pl = hit.transform.parent.parent.GetComponent<PlayerBehavior>();
                     if (pl.statePlayer == StatePlayer.PlayCardPhase)
@@ -82,7 +82,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void ResetToHand()
     {
-        transform.position = basePosition;
+        ResetPos();
         transform.localRotation = Quaternion.Euler(50f, 0, 0);
     }
 

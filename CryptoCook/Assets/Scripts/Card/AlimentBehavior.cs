@@ -29,7 +29,7 @@ public class AlimentBehavior : CardBehavior
 
     public override void OnMouseDrag()
     {
-        if (hasAuthority && !isInReserve)
+        if (hasAuthority && !isInReserve && !player.cardIsZoom)
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -64,13 +64,13 @@ public class AlimentBehavior : CardBehavior
                     }
                     else
                     {
-                        transform.position = basePosition;
+                        ResetPos();
                     }
                 }
             }
             else
             {
-                transform.position = basePosition;
+                ResetPos();
             }
         }
     }
