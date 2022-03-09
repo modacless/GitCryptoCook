@@ -42,6 +42,9 @@ public class PlayerBehavior : NetworkBehaviour
     //Permet de choisir le deck que l'on a
     [HideInInspector]
     [SyncVar] public string deck;
+    public float repasRecipeStackingOffset;
+    public float repasRecipeStartOffset;
+    public float alimentReserveDuplicataOffset;
 
     [HideInInspector]
     [SyncVar] public int gamePoint; //variables repr�sentant les points gagn�s par le joueur
@@ -91,6 +94,11 @@ public class PlayerBehavior : NetworkBehaviour
     //Recete sur le plateau
     [HideInInspector]
     public List<Repas> boardRepas = new List<Repas>();
+    //Emplacement des aliment dans la réserve
+    public GameObject[] reservesSlotsPositions;
+
+    public List<GameObject> repasHighlight;
+    private List<List<AlimentBehavior>> reserveSlots;
 
     [HideInInspector]
     public ChefCardBehaviour selectedChefCard;
@@ -110,6 +118,12 @@ public class PlayerBehavior : NetworkBehaviour
         public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
         public int basePoint;
         public int variablePoint;
+        public GameObject highlight;
+
+        public Repas(GameObject _highlight)
+        {
+            highlight = _highlight;
+        }
     }
 
 
@@ -125,7 +139,7 @@ public class PlayerBehavior : NetworkBehaviour
         //Inutile je pense
         for (int i = 0; i < boardCardsEmplacement.Length; i++)
         {
-            boardRepas.Add(new Repas());
+            boardRepas.Add(new Repas(repasHighlight[i]));
         }
 
         gameManager = GameObject.Find("GameManager");
@@ -133,6 +147,7 @@ public class PlayerBehavior : NetworkBehaviour
         buttonNextRound.SetActive(false);
         textStatePlayer.gameObject.SetActive(false);
         engagedAliment = new List<AlimentBehavior>();
+        reserveSlots = new List<List<AlimentBehavior>>();
 
         yield return new WaitUntil(() => deckManager != null);
 
@@ -405,7 +420,12 @@ public class PlayerBehavior : NetworkBehaviour
         card.repas = boardRepas[emplacement];
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
-        if(card.cardLogic.effect != null && card.isEffectActive)
+
+        card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.forward * repasRecipeStartOffset + Vector3.back * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
+        card.transform.rotation = Quaternion.Euler(85, 0, 0);
+        card.SetCurrentPosAsBase();
+
+        if (card.cardLogic.effect != null && card.isEffectActive)
             StartCoroutine(card.cardLogic.effect.OnUse(card));
 
         OnNewCardRefreshBoard(card);
@@ -419,7 +439,7 @@ public class PlayerBehavior : NetworkBehaviour
         {
             if(boardCardsEmplacement[i] == card)
             {
-                Debug.Log("Empacement sur le board + " + i);
+                //Debug.Log("Empacement sur le board + " + i);
                 return i;
             }
         }
@@ -739,11 +759,57 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    public void PlaceAlimentInReserve(AlimentBehavior newAliment)
+    {
+        newAliment.isInReserve = true;
+        reserveCards.Add(newAliment);
+        deckManager.CmdPickOnTable(newAliment);
+        statePlayer = StatePlayer.PlayCardPhase;
+
+        bool alimentTypeAlreadyInReserve = false;
+        int reserveSlotIndex = 0;
+        int reserveSlotDuplicataIndex = 0;
+        for (int i = 0; i < reserveSlots.Count; i++)
+        {
+            if(reserveSlots[i][0].alimentLogic == newAliment.alimentLogic)
+            {
+                alimentTypeAlreadyInReserve = true;
+                reserveSlotIndex = i;
+                reserveSlotDuplicataIndex = reserveSlots[i].Count;
+                reserveSlots[i].Add(newAliment);
+            }
+        }
+
+        if(!alimentTypeAlreadyInReserve)
+        {
+            reserveSlots.Add(new List<AlimentBehavior>());
+            reserveSlots[reserveSlots.Count - 1].Add(newAliment);
+            reserveSlotIndex = reserveSlots.Count - 1;
+            reserveSlotDuplicataIndex = reserveSlots[reserveSlots.Count - 1].Count - 1;
+        }
+
+        newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + Vector3.left * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
+    }
+
     [Command]
     public void DestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
         chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
         NetworkServer.Destroy(chefCardBehaviour.gameObject);
         RefreshBoard();
+    }
+
+    public void HighlightRepas(int index, bool active)
+    {
+        LowLightAllRepas();
+        boardRepas[index].highlight.SetActive(active);
+    }
+
+    public void LowLightAllRepas()
+    {
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            boardRepas[i].highlight.SetActive(false);
+        }
     }
 }
