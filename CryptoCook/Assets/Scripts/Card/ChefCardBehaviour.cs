@@ -48,20 +48,23 @@ public class ChefCardBehaviour : CardBehavior
             {
                 if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
                 {
-                    foodCost = currentCost[i].alimentTypeCost.ToString() + " + ";
+                    foodCost += currentCost[i].alimentTypeCost.ToString();
                 }
-
 
                 if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
                 {
-                    foodCost = currentCost[i].goutCost.ToString() + " + ";
+                    foodCost += currentCost[i].goutCost.ToString();
                 }
 
                 if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
                 {
-                    foodCost = currentCost[i].specificCost.cardName + " + ";
+                    foodCost += currentCost[i].specificCost.cardName;
                 }
 
+                if(i < currentCost.Count - 1)
+                {
+                    foodCost += " + ";
+                }
 
             }
             textCostFood.text = foodCost;
@@ -197,7 +200,7 @@ public class ChefCardBehaviour : CardBehavior
     public void RefreshEffect()
     {
         variablePoint = 0;
-        if(cardLogic.effect != null)
+        if(cardLogic.effect != null && isEffectActive)
             StartCoroutine(cardLogic.effect.OnBoardChange(this));
     }
 
