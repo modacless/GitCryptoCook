@@ -253,7 +253,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
-    private void PickupInDeckCuisine()
+    public void PickupInDeckCuisine()
     {
         if(chefDeck.Count > 0)
         {
