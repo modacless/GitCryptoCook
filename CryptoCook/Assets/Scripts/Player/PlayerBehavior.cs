@@ -30,6 +30,8 @@ public class PlayerBehavior : NetworkBehaviour
     private GameObject gameManager;
     private DeckManager deckManager;
 
+    public List<TextMeshPro> repasScores;
+
     #endregion
 
     #region param�tres
@@ -231,6 +233,19 @@ public class PlayerBehavior : NetworkBehaviour
         {
             textPoint.text = currentPoint.ToString();
 
+            for (int i = 0; i < boardRepas.Count; i++)
+            {
+                repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
+                if (boardRepas[i].allRecipes.Count > 0)
+                {
+                    repasScores[i].transform.parent.gameObject.SetActive(true);
+                }
+                else
+                {
+                    repasScores[i].transform.parent.gameObject.SetActive(false);
+                }
+            }
+
             if (statePlayer == StatePlayer.DrawPhase)
             {
                 textStatePlayer.text = "Draw phase";
@@ -428,7 +443,15 @@ public class PlayerBehavior : NetworkBehaviour
         if (card.cardLogic.effect != null && card.isEffectActive)
             StartCoroutine(card.cardLogic.effect.OnUse(card));
 
-        OnNewCardRefreshBoard(card);
+        if(card.cardLogic.cardType == ScriptableCard.CardType.Recette)
+        {
+            OnNewCardRefreshBoard(card);
+        }
+        else
+        {
+            card.DestroyCard();
+        }
+
 
         RefreshBoard();
     }
