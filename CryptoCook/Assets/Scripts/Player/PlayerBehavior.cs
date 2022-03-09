@@ -534,23 +534,24 @@ public class PlayerBehavior : NetworkBehaviour
 
     public void RefreshBoard()
     {
+        currentPoint = 0;
+
         for (int i = 0; i < boardRepas.Count; i++)
         {
             for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
             {
                 boardRepas[i].allRecipes[j].RefreshEffect();
             }
-        }
 
-        currentPoint = 0;
-        for (int i = 0; i < boardRepas.Count; i++)
-        {
+            boardRepas[i].variablePoint = 0;
+
             for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
             {
-                currentPoint += boardRepas[i].allRecipes[j].basePoint + boardRepas[i].allRecipes[j].variablePoint;
+                boardRepas[i].variablePoint += boardRepas[i].allRecipes[j].basePoint + boardRepas[i].allRecipes[j].variablePoint;
             }
-        }
 
+            currentPoint += boardRepas[i].variablePoint + boardRepas[i].basePoint;
+        }
     }
 
     public void NewTurn()

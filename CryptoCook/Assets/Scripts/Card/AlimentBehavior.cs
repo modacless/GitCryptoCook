@@ -151,4 +151,15 @@ public class AlimentBehavior : CardBehavior
         if (engagedEffect != null)
             engagedEffect.SetActive(false);
     }
+
+    public bool UnUse()
+    {
+        bool wasUsed = isUsedThisTurn;
+        if(isUsedThisTurn)
+        {
+            ResetForTurn();
+        }
+
+        return isUsedThisTurn;
+    }
 }
