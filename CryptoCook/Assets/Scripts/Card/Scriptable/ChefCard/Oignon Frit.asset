@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
   m_Name: Oignon Frit
   m_EditorClassIdentifier: 
-  cardType: 0
+  cardType: 1
   meshFilterModel: {fileID: 0}
   meshRendererModel: {fileID: 0}
   cardName: Oignon Frit
@@ -33,5 +33,5 @@ MonoBehaviour:
     goutCost: 0
     alimentTypeCost: 3
     specificCost: {fileID: 0}
-  effect: {fileID: 0}
-  pointEarn: 0
+  effect: {fileID: 11400000, guid: 1f111ebbbf9b5f8408b67655400bb9ca, type: 2}
+  pointEarn: 1

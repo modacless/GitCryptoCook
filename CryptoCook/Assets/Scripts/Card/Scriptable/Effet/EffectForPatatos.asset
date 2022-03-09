@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5398321dbcb2084f8bc8605ed0fe9aa, type: 3}
-  m_Name: EffetPatatos
+  m_Script: {fileID: 11500000, guid: 219e4d6f6bcc5ea44936d38884f64011, type: 3}
+  m_Name: EffectForPatatos
   m_EditorClassIdentifier: 
-  effectDescription: "Si seulement 2 recettes am\xE9ricaine pioche 2 cartes"
+  effectDescription: oui
   numberOfRecetteInRepas: 3
   numberOfCardToDraw: 2
-  isCulture: 1
+  isCulture: 0

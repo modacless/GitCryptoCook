@@ -9,8 +9,7 @@ public class IfXCardInRepasDrawX : ScriptableEffect
 {
     public int numberOfRecetteInRepas;
     public int numberOfCardToDraw;
-    
-    public bool isCulture;
+
     public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
         yield return null;
@@ -24,9 +23,8 @@ public class IfXCardInRepasDrawX : ScriptableEffect
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
       int numberOfPlatInRepas = 0;
-        if (!isCulture)
-        {
-            for (int i = 0; i < card.repas.allRecipes.Count; i++)
+      
+      for (int i = 0; i < card.repas.allRecipes.Count; i++)
             {
                 if (card.repas.allRecipes[i].cardLogic.recipeType == ChefCardScriptable.RecipeType.Plat)
                 {
@@ -40,25 +38,6 @@ public class IfXCardInRepasDrawX : ScriptableEffect
                     card.player.PickupInDeckCuisine();
                 } 
             }
-            else if(isCulture)
-            {
-                for (int i = 0; i < card.repas.allRecipes.Count; i++)
-                {
-                    if (card.repas.allRecipes[i].cardLogic.recipeCulture == ChefCardScriptable.Culture.Americain)
-                    {
-                        numberOfPlatInRepas += 1;
-                    }
-                }
-                if ( numberOfPlatInRepas == numberOfRecetteInRepas)
-                {
-                    for (int i = 0; i < numberOfCardToDraw; i++)
-                    {
-                        card.player.PickupInDeckCuisine();
-                    } 
-                }
-            }
-            
-        }
-        yield return null;
+            yield return null;
     }
 }
