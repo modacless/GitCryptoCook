@@ -20,7 +20,7 @@ public class EffetTestSelect : ScriptableEffect
         //code pour effet pour détruire une recette adverse
 
         card.player.selectedChefCard = null;
-        card.player.StartSelectRecipeEnemy();
+        card.player.StartSelectRecipeAlly();
         while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
         {
             yield return new WaitForEndOfFrame();

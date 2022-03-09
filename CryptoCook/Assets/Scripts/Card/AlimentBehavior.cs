@@ -28,7 +28,7 @@ public class AlimentBehavior : CardBehavior
     {
         alimentLogic = aliment;
         textName.text = alimentLogic.cardName;
-        textType.text = alimentLogic.cardType.ToString();
+        textType.text = alimentLogic.alimentType.ToString();
         textGout.text = alimentLogic.gout.ToString();
 
         if(alimentLogic.sprite != null)
