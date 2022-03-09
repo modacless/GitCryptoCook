@@ -23,10 +23,10 @@ public class ChefCardBehaviour : CardBehavior
 
     public void InitializeCard(ChefCardScriptable card)
     {
-        currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
         textName.text = cardLogic.cardName;
+        currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
     }
 
     public override void OnMouseDrag()
