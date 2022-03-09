@@ -10057,8 +10057,8 @@ MonoBehaviour:
   deckManager: {fileID: 0}
   cardHalo: {fileID: 8935497065096123955}
   player: {fileID: 0}
-  engagedEffect: {fileID: 0}
-  usedEffect: {fileID: 0}
+  engagedEffect: {fileID: 1660434368579841594}
+  usedEffect: {fileID: 2420041587700985161}
   textName: {fileID: 7718991172240633619}
   alimentLogic: {fileID: 0}
   isInReserve: 0
