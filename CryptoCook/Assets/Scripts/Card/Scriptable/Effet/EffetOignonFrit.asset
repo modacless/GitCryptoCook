@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e7ae74e5c7f8454f969d19123d80f5e, type: 3}
   m_Name: EffetOignonFrit
   m_EditorClassIdentifier: 
-  effectDescription: If first card in repas draw 1 card
+  effectDescription: "Si cette recette est le d\xE9but d'un nouveau repas piocher
+    une carte."
   numberOfCardToDraw: 1

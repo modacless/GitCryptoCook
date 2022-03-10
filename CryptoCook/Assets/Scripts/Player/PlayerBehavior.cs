@@ -1069,7 +1069,6 @@ public class PlayerBehavior : NetworkBehaviour
                 {
                     if (hit.transform.GetComponent<ChefCardBehaviour>())
                     {
-                       
                         ChefCardBehaviour chefCardZoom = hit.transform.GetComponent<ChefCardBehaviour>();
                         if(chefCardZoom.cardLogic.cardType == ScriptableCard.CardType.Effect)
                         {
@@ -1080,8 +1079,15 @@ public class PlayerBehavior : NetworkBehaviour
                         {
                             cardToZoom = Instantiate(cardObjectRecipe);
                         }
-                        cardToZoom.GetComponent<ChefCardBehaviour>().InitializeCard(chefCardZoom.cardLogic, this);
+
+                        ChefCardBehaviour behaviourZoom = cardToZoom.GetComponent<ChefCardBehaviour>();
+
+                        behaviourZoom.InitializeCard(chefCardZoom.cardLogic, this);
                         cardToZoom.GetComponent<CardBehavior>().SetCurrentPosAsBase();
+
+                        behaviourZoom.effectBackground.gameObject.SetActive(true);
+
+                        cardToZoom.transform.position = -cardToZoom.transform.right * 2.5f;
                     }
 
                     if (hit.transform.GetComponent<AlimentBehavior>())
@@ -1097,6 +1103,10 @@ public class PlayerBehavior : NetworkBehaviour
                         cardToZoom.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f;
                         cardToZoom.transform.rotation = Camera.main.transform.rotation;
                         cardIsZoom = true;
+
+                        ChefCardBehaviour behaviourZoom = cardToZoom.GetComponent<ChefCardBehaviour>();
+                        if(behaviourZoom != null)
+                            cardToZoom.transform.position = cardToZoom.transform.position - cardToZoom.transform.right * 3.5f;
                     }
                 }
             }
@@ -1106,7 +1116,6 @@ public class PlayerBehavior : NetworkBehaviour
                 Destroy(cardToZoom);
                 cardToZoom = null;
                 cardIsZoom = false;
-
             }
         }
     }

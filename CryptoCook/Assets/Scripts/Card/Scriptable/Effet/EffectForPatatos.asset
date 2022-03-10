@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219e4d6f6bcc5ea44936d38884f64011, type: 3}
   m_Name: EffectForPatatos
   m_EditorClassIdentifier: 
-  effectDescription: oui
+  effectDescription: "Lorsque pos\xE9 : s'il y a seulement 2 recettes am\xE9ricaine
+    dans le repas : pioch\xE9 2."
   numberOfRecetteInRepas: 3
   numberOfCardToDraw: 2
   isCulture: 0
