@@ -27591,6 +27591,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
   - name: Asian
     allCards:
+    - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
     - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
     - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
     - {fileID: 11400000, guid: 4ec0765733c3af24dae8fc89f7355731, type: 2}

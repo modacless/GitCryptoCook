@@ -221,7 +221,7 @@ public class PlayerBehavior : NetworkBehaviour
                 Camera.main.transform.position = deckManager.posCamP2.transform.position;
             }
 
-            CmdShuffleDeckCuisine();
+            //CmdShuffleDeckCuisine();
 
             //On attend que les joueurs se positionnent correctement
             yield return new WaitForSeconds(1f);
@@ -230,13 +230,6 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 PickupInDeckCuisine();
                 yield return new WaitUntil(() => isPickingInDeck == false);
-            }
-        }
-        else
-        {
-            if (isServer)
-            {
-
             }
         }
 
@@ -279,14 +272,8 @@ public class PlayerBehavior : NetworkBehaviour
 
         if (hasAuthority)
         {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Debug.Log("r");
-                StartSelectTableIngredient(AlimentScriptable.Gout.Salé);
-            }
 
             textPoint.text = currentPoint.ToString();
-
 
             if (statePlayer == StatePlayer.DrawPhase)
             {
@@ -612,6 +599,42 @@ public class PlayerBehavior : NetworkBehaviour
         transform.position = newPosition;
     }
 
+    [Command]
+    public void CmdStealRecipe(PlayerBehavior playerThatOwnAuth,ChefCardBehaviour chefCardBehaviour)
+    {
+        RpcStealRecipe(chefCardBehaviour);
+        chefCardBehaviour.netIdentity.RemoveClientAuthority();
+        chefCardBehaviour.netIdentity.AssignClientAuthority(playerThatOwnAuth.netIdentity.connectionToClient);
+    }
+    [ClientRpc]
+    public void RpcStealRecipe(ChefCardBehaviour chefCardBehaviour)
+    {
+        int emplacement = FindPlaceInHand(chefCardBehaviour);
+        if(emplacement != -1)
+        {
+            chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+            handCards.Add(chefCardBehaviour);
+            chefCardBehaviour.isOnBoard = false;
+            chefCardBehaviour.transform.position = cardPosition[emplacement].transform.position;
+            
+            float angle = Vector3.Angle(new Vector3(chefCardBehaviour.transform.position.x, 0, chefCardBehaviour.transform.position.z), new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+            if (chefCardBehaviour.transform.position.x <= Camera.main.transform.position.x)
+            {
+                angle = -angle;
+            }
+            chefCardBehaviour.transform.localRotation = Quaternion.Euler(50, angle, 0);
+
+            chefCardBehaviour.SetCurrentPosAsBase();
+
+        }
+        else
+        {
+            chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+            Destroy(chefCardBehaviour.gameObject);
+        }
+        
+    }
+
     public void StartSelectRecipeAlly()
     {
         StartCoroutine(SelectRecipeAlly());
@@ -639,6 +662,7 @@ public class PlayerBehavior : NetworkBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        selectedChefCard = null;
         cancelEffect = false;
         statePlayer = oldState;
     }
@@ -665,11 +689,11 @@ public class PlayerBehavior : NetworkBehaviour
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>() != null && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
-                    Debug.Log("Carte s�lectionn� : " + selectedChefCard);
                 }
             }
             yield return new WaitForEndOfFrame();
         }
+        selectedChefCard = null;
         statePlayer = oldState;
         cancelEffect = false;
     }
@@ -1169,6 +1193,8 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    #region Destruction Card
+
     [Command(requiresAuthority = false)]
     public void CmdDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
@@ -1218,8 +1244,23 @@ public class PlayerBehavior : NetworkBehaviour
         RefreshBoard();
     }
 
+    [Command]
+    public void CmdDestroyFood(AlimentBehavior alimentCardBehaviour)
+    {
+        if (alimentCardBehaviour.isInReserve)
+        {
+            RpcDestroyFood(alimentCardBehaviour);
+            NetworkServer.Destroy(alimentCardBehaviour.gameObject);
+        }
+    }
 
+    [ClientRpc]
+    public void RpcDestroyFood(AlimentBehavior alimentCardBehaviour)
+    {
+        reserveCards.Remove(alimentCardBehaviour);
+    }
 
+    #endregion
     public void HighlightRepas(int index, bool active)
     {
         LowLightAllRepas();
@@ -1233,6 +1274,7 @@ public class PlayerBehavior : NetworkBehaviour
             boardRepas[i].highlight.SetActive(false);
         }
     }
+
 
     #region victory management
 
