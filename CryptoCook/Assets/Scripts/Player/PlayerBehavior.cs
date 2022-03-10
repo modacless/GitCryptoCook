@@ -250,6 +250,20 @@ public class PlayerBehavior : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
+            if (boardRepas[i].allRecipes.Count > 0)
+            {
+                repasScores[i].transform.parent.gameObject.SetActive(true);
+            }
+            else
+            {
+                repasScores[i].transform.parent.gameObject.SetActive(false);
+            }
+        }
+
         if (hasAuthority)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -259,19 +273,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
 
             textPoint.text = currentPoint.ToString();
-
-            for (int i = 0; i < boardRepas.Count; i++)
-            {
-                repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
-                if (boardRepas[i].allRecipes.Count > 0)
-                {
-                    repasScores[i].transform.parent.gameObject.SetActive(true);
-                }
-                else
-                {
-                    repasScores[i].transform.parent.gameObject.SetActive(false);
-                }
-            }
 
             if (statePlayer == StatePlayer.DrawPhase)
             {
@@ -346,35 +347,38 @@ public class PlayerBehavior : NetworkBehaviour
     private void CmdCreateCard(GameObject playerobj)
     {
         
-        //RpcCreateCard();
-        GameObject cardToChoose = null;
-        if(chefDeck[0].cardType == ScriptableCard.CardType.Effet)
+        if(handCards.Count < 7)
         {
-            cardToChoose = cardObjectEffect;
-            Debug.Log("EFFECT " + chefDeck[0].cardName);
-        }
-        else if(chefDeck[0].cardType == ScriptableCard.CardType.Recette)
-        {
-            cardToChoose = cardObjectRecipe;
-            Debug.Log("Recette " + chefDeck[0].cardName);
-        }
-        GameObject cardObj = Instantiate(cardToChoose, deckObject.transform.position, Quaternion.identity);
-        int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
-        if (emplacement != -1)
-        {
-            //Debug.Log("Create Card");
-            cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
-            
-            float angle = Vector3.Angle(new Vector3(cardObj.transform.position.x, 0, cardObj.transform.position.z), new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
-            if(cardObj.transform.position.x <= Camera.main.transform.position.x)
+
+            GameObject cardToChoose = null;
+            if(chefDeck[0].cardType == ScriptableCard.CardType.Effet)
             {
-                angle = -angle;
+                cardToChoose = cardObjectEffect;
+                Debug.Log("EFFECT " + chefDeck[0].cardName);
             }
-            cardObj.transform.localRotation = Quaternion.Euler(50, angle, 0);
+            else if(chefDeck[0].cardType == ScriptableCard.CardType.Recette)
+            {
+                cardToChoose = cardObjectRecipe;
+                Debug.Log("Recette " + chefDeck[0].cardName);
+            }
+            GameObject cardObj = Instantiate(cardToChoose, deckObject.transform.position, Quaternion.identity);
+            int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
+            if (emplacement != -1 )
+            {
+                Debug.Log(handCards.Count);
+                cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
             
-            cardObj.GetComponent<ChefCardBehaviour>().SetCurrentPosAsBase();
-            NetworkServer.Spawn(cardObj, playerobj);
-            RpcCreateCard(cardObj,emplacement);
+                float angle = Vector3.Angle(new Vector3(cardObj.transform.position.x, 0, cardObj.transform.position.z), new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
+                if(cardObj.transform.position.x <= Camera.main.transform.position.x)
+                {
+                    angle = -angle;
+                }
+                cardObj.transform.localRotation = Quaternion.Euler(50, angle, 0);
+            
+                cardObj.GetComponent<ChefCardBehaviour>().SetCurrentPosAsBase();
+                NetworkServer.Spawn(cardObj, playerobj);
+                RpcCreateCard(cardObj,emplacement);
+            }
         }
         else
         {
