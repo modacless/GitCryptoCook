@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
   m_Name: Menu Enfant
   m_EditorClassIdentifier: 
-  cardType: 0
+  cardType: 1
   meshFilterModel: {fileID: 0}
-  meshRendererModel: {fileID: 0}
+  modelPrefab: {fileID: 0}
   cardName: Menu Enfant
   TextDescription: "Parce qu'on \xE0 tous aimer ouvrir le petit jouet."
   sprite: {fileID: 0}
@@ -33,5 +33,5 @@ MonoBehaviour:
     goutCost: 0
     alimentTypeCost: 3
     specificCost: {fileID: 0}
-  effect: {fileID: 0}
+  effect: {fileID: 11400000, guid: e6c65e92614766f44be146ce4ec4f9fb, type: 2}
   pointEarn: 1

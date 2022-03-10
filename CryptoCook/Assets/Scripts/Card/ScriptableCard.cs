@@ -15,7 +15,7 @@ public class ScriptableCard : ScriptableObject
     public CardType cardType;
      
     public MeshFilter meshFilterModel;
-    public MeshRenderer meshRendererModel;
+    public GameObject modelPrefab;
 
     public string cardName;
     public string TextDescription;
