@@ -49,6 +49,8 @@ public abstract class CardBehavior : NetworkBehaviour
             deckManager.dragPlane.SetActive(true);
             transform.localRotation = Quaternion.Euler(90, 180, 0);
 
+            AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.PickCardSFX, 2f);
+
             if (isServer)
             {
                 transform.localRotation = Quaternion.Euler(90, 0, 0);
@@ -75,6 +77,7 @@ public abstract class CardBehavior : NetworkBehaviour
 
     public virtual void OnMouseEnter()
     {
+        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.mouseOverCardSFX, 0.1f);
         targetScale = baseScale * hoverScaleMultiplier;
     }
 

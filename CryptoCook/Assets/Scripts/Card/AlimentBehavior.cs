@@ -66,6 +66,8 @@ public class AlimentBehavior : CardBehavior
                         targetScale = baseScale * (isInReserve ? scaleReserveMultiplier : 1);
                         player.PlaceAlimentInReserve(this);
                         SetCurrentPosAsBase();
+
+                        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.dropCardSFX, 1.2f);
                     }
                     else
                     {

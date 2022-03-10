@@ -91,6 +91,8 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     {
         if (!isReady)
         {
+            AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.readySFX, 1);
+
             networkManager.pseudoPlayer = pseudo;
             networkManager.deckPlayer = deck;
 

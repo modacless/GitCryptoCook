@@ -29,6 +29,9 @@ public class MenuBehavior : MonoBehaviour
     {
         menuCanvas.SetActive(false);
         lobbyCanvas.SetActive(true);
+
+        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.navigateSFX, 1);
+
         NetworkManager.singleton.StartHost();
     }
 
@@ -38,6 +41,9 @@ public class MenuBehavior : MonoBehaviour
     {
         menuCanvas.SetActive(false);
         lobbyCanvas.SetActive(true);
+
+        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.navigateSFX, 1);
+
         NetworkManager.singleton.networkAddress = ipText.text;
         NetworkManager.singleton.StartClient();
     }

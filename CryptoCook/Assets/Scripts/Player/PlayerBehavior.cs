@@ -342,6 +342,8 @@ public class PlayerBehavior : NetworkBehaviour
         {
             isPickingInDeck = true;
             CmdCreateCard(this.gameObject);
+
+            AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.drawCardSFX, 2f);
         }
     }
 
@@ -537,6 +539,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         deckManager.CmdNextTurn();
         statePlayer = StatePlayer.EnnemyPhase;
+        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.nextTurnSFX, 1f);
     }
 
     private void ShowButtonTurn(bool oldValue, bool newValue)
