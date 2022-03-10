@@ -14,8 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectDescription: "Les recettes de la mains de votre adversaires demandent un
     Poulet en plus pour \xEAtre jou\xE9"
-  addedCost:
-    costType: 2
-    goutCost: 0
-    alimentTypeCost: 0
-    specificCost: {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
+  addedCost: Poulet

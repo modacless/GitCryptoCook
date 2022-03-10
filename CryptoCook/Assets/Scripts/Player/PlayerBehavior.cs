@@ -913,7 +913,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdAddPoint(int pointToAdd)
     {
         currentPoint += pointToAdd;

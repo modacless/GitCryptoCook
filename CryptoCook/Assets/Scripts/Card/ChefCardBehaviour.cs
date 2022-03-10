@@ -208,6 +208,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void RefreshCostDisplay()
     {
+        Debug.Log("Cost display refresh");
         string cotsTextString = "";
         for (int i = 0; i < currentCost.Count; i++)
         {
@@ -240,7 +241,7 @@ public class ChefCardBehaviour : CardBehavior
         scoreText.text = (basePoint + variablePoint).ToString();
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdAddCost(string addedCost)
     {
         RpcAddCost(addedCost);
@@ -251,7 +252,7 @@ public class ChefCardBehaviour : CardBehavior
     [ClientRpc]
     public void RpcAddCost(string addedCost)
     {
-        if(addedCost == "Poulet")
+        if (addedCost == "Poulet")
         {
             AddCost(pouletCost);
         }
