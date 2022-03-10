@@ -208,7 +208,6 @@ public class ChefCardBehaviour : CardBehavior
 
     public void RefreshCostDisplay()
     {
-        Debug.Log("Cost display refresh");
         string cotsTextString = "";
         for (int i = 0; i < currentCost.Count; i++)
         {

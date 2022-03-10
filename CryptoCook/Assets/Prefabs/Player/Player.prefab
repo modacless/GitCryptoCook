@@ -27499,17 +27499,7 @@ MonoBehaviour:
   statePlayer: 0
   handCards: []
   handCardsPositionIsNotEmpty: 
-  chefDeck:
-  - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
-  - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
-  - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
-  - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
-  - {fileID: 11400000, guid: 4911a4f81b6bf514889f9537dc8fe174, type: 2}
-  - {fileID: 11400000, guid: 4911a4f81b6bf514889f9537dc8fe174, type: 2}
-  - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
-  - {fileID: 11400000, guid: 4eb65ce86568a6347adc890bbf4f4521, type: 2}
-  - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
-  - {fileID: 11400000, guid: 4ec0765733c3af24dae8fc89f7355731, type: 2}
+  chefDeck: []
   reserveCards: []
   boardCardsEmplacement:
   - {fileID: 3634484340328891273}

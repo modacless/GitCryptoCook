@@ -221,6 +221,8 @@ public class PlayerBehavior : NetworkBehaviour
                 Camera.main.transform.position = deckManager.posCamP2.transform.position;
             }
 
+            CmdShuffleDeckCuisine();
+
             //On attend que les joueurs se positionnent correctement
             yield return new WaitForSeconds(1f);
 
@@ -359,10 +361,25 @@ public class PlayerBehavior : NetworkBehaviour
             AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.drawCardSFX, 2f);
         }
     }
-
-    private void ShuffleDeckCuisine()
+    [Command]
+    private void CmdShuffleDeckCuisine()
     {
-        chefDeck.OrderBy(item => Random.Range(0, chefDeck.Count));
+        
+        for (int i = 0; i < chefDeck.Count; i++)
+        {
+            int randomPosition = Random.Range(0, chefDeck.Count);
+            RpcShuffleDeckCuisine(i,randomPosition);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcShuffleDeckCuisine(int i, int rand)
+    {
+        //chefDeck.OrderBy(item => Random.Range(0, chefDeck.Count));
+        ChefCardScriptable cardToShuffle;
+        cardToShuffle = chefDeck[i];
+        chefDeck[i] = chefDeck[rand];
+        chefDeck[rand] = cardToShuffle;
     }
 
     //Permet de cr�er une carte, c�t� client et server

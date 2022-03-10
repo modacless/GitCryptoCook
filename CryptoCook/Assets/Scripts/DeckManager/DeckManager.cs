@@ -52,6 +52,8 @@ public class DeckManager : NetworkBehaviour
         {
             yield return new WaitUntil(() => allPlayersReady());
 
+            CmdShuffleDeckAliment();
+
             for (int i = 0; i < cardsPosition.Length; i++)
             {
                 DrawAlimentToTable(i);
@@ -71,6 +73,25 @@ public class DeckManager : NetworkBehaviour
                 break;
         }
         yield return null;
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdShuffleDeckAliment()
+    {
+        for (int i = 0; i < alimentDeck.Count; i++)
+        {
+            int randomPosition = Random.Range(0, alimentDeck.Count);
+            RpcShuffleDeckCuisine(i, randomPosition);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcShuffleDeckCuisine(int i, int rand)
+    {
+        AlimentScriptable cardToShuffle;
+        cardToShuffle = alimentDeck[i];
+        alimentDeck[i] = alimentDeck[rand];
+        alimentDeck[rand] = cardToShuffle;
     }
 
     public void DrawAlimentToTable(int emplacement)
