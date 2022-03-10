@@ -9,13 +9,14 @@ public class AudioManager : MonoBehaviour
     private AudioSource sfxSource;
     private AudioSource musicSource;
 
-    private bool musicSourceIsPlaying = false;
-
     [Header("SFX")]
-    public AudioClip draxCardSFX;
+    public AudioClip drawCardSFX;
     public AudioClip PickCardSFX;
     public AudioClip dropCardSFX;
     public AudioClip mouseOverCardSFX;
+
+    [Header("Music")]
+    public AudioClip gameMusic;
 
 
     private void Awake()
@@ -40,13 +41,27 @@ public class AudioManager : MonoBehaviour
 
     }//Instance
 
+    private void Start()
+    {
+        SetMusicVolume(0.5f);
+        PlayMusic(gameMusic);
+    }
+
 
     public void PlayMusic(AudioClip musicClip)
     {
-        musicSource.clip = musicClip;
-        musicSource.Play();
-
-        musicSourceIsPlaying = true;
+        if(!musicSource.isPlaying)
+        {
+            musicSource.clip = musicClip;
+            musicSource.Play();
+        }
+        else
+        {
+            musicSource.Stop();
+            musicSource.clip = musicClip;
+            musicSource.Play();
+        }
+        
     }
     public void SetMusicVolume(float volume)
     {

@@ -173,6 +173,8 @@ public class ChefCardBehaviour : CardBehavior
                             CmdPutOnBoard(true);
                             player.CmdDropCardOnBoard(this, player.FindBoardPlaces(hit.transform.gameObject));
                             player.UseEngagedAliment();
+
+                            AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.dropCardSFX, 1.2f);
                         }
                         else
                         {

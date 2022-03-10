@@ -323,6 +323,8 @@ public class PlayerBehavior : NetworkBehaviour
         {
             isPickingInDeck = true;
             CmdCreateCard(this.gameObject);
+
+            AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.drawCardSFX, 2f);
         }
     }
 
