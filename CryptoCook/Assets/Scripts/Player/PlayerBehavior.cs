@@ -5,6 +5,7 @@ using TMPro;
 using Mirror;
 using System.Linq;
 
+
 public class PlayerBehavior : NetworkBehaviour
 {
 
@@ -36,14 +37,15 @@ public class PlayerBehavior : NetworkBehaviour
 
     #region param�tres
 
-    [Header("Param�tres")]
+    [Header("Paramètres")]
     //Variables venant du lobby
     [HideInInspector]
     [SyncVar(hook = nameof(ChangePseudo))] public string pseudo;
 
-    //Permet de choisir le deck que l'on a
-    [HideInInspector]
+    //Permet de choisir le deck que l'on veut joueur
     [SyncVar] public string deck;
+    public Decks DeckChoosen;
+
     public float repasRecipeStackingOffset;
     public float repasRecipeStartOffset;
     public float alimentReserveDuplicataOffset;
@@ -106,6 +108,8 @@ public class PlayerBehavior : NetworkBehaviour
     public ChefCardBehaviour selectedChefCard;
     [HideInInspector]
     public AlimentBehavior selectedAliment;
+    [HideInInspector]
+    public Repas selectMeal;
 
     public List<AlimentBehavior> engagedAliment;
 
@@ -114,10 +118,10 @@ public class PlayerBehavior : NetworkBehaviour
     #endregion
 
 
-
     public class Repas
     {
         public List<ChefCardBehaviour> allRecipes = new List<ChefCardBehaviour>();
+        public GameObject sceneObject;
         public int basePoint;
         public int variablePoint;
         public GameObject highlight;
@@ -126,6 +130,7 @@ public class PlayerBehavior : NetworkBehaviour
         {
             highlight = _highlight;
         }
+
     }
 
 
@@ -134,6 +139,9 @@ public class PlayerBehavior : NetworkBehaviour
         if (isServer)
             yield return new WaitUntil(() => allPlayersReady());
 
+        DeckChoosen.decks.TryGetValue(deck, out List<ChefCardScriptable> deckFind);
+        chefDeck = deckFind;
+
         textPoint.gameObject.SetActive(false);
         handCardsPositionIsNotEmpty = new bool[maxCardsInHand];
         handCardsPositionIsNotEmpty.Count(v => (v = false));
@@ -141,7 +149,10 @@ public class PlayerBehavior : NetworkBehaviour
         //Inutile je pense
         for (int i = 0; i < boardCardsEmplacement.Length; i++)
         {
-            boardRepas.Add(new Repas(repasHighlight[i]));
+            Repas r = new Repas(repasHighlight[i]);
+            r.sceneObject = boardCardsEmplacement[i];
+            boardRepas.Add(r);
+
         }
 
         gameManager = GameObject.Find("GameManager");
@@ -231,6 +242,12 @@ public class PlayerBehavior : NetworkBehaviour
     {
         if (hasAuthority)
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Debug.Log("r");
+                StartSelectTableIngredient(AlimentScriptable.Gout.Salé);
+            }
+
             textPoint.text = currentPoint.ToString();
 
             for (int i = 0; i < boardRepas.Count; i++)
@@ -497,6 +514,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     #endregion
 
+    #region Sélection des cartes (effets)
+
     [ServerCallback]
     private bool allPlayersReady()
     {
@@ -528,7 +547,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         StartCoroutine(SelectRecipeAlly());
     }
-
+    //Permet de sélectionner une recette sur la planche Allié
     private IEnumerator SelectRecipeAlly()
     {
         StatePlayer oldState = statePlayer;
@@ -538,8 +557,9 @@ public class PlayerBehavior : NetworkBehaviour
         while (selectedChefCard == null)
         {
             RaycastHit hit;
+            int layerMask = LayerMask.GetMask("Card");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
@@ -557,6 +577,7 @@ public class PlayerBehavior : NetworkBehaviour
         StartCoroutine(SelectRecipeEnemy());
     }
 
+    //Permet de sélectionner une recette sur la planche énemie
     private IEnumerator SelectRecipeEnemy()
     {
         StatePlayer oldState = statePlayer;
@@ -566,8 +587,9 @@ public class PlayerBehavior : NetworkBehaviour
         while (selectedChefCard == null)
         {
             RaycastHit hit;
+            int layerMask = LayerMask.GetMask("Card");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
@@ -579,6 +601,194 @@ public class PlayerBehavior : NetworkBehaviour
         }
         statePlayer = oldState;
     }
+    //Permet de sélectionner un repas sur la planche allié
+    public void StartSelectMealAlly()
+    {
+        StartCoroutine(SelecMealAlly());
+    }
+
+    private IEnumerator SelecMealAlly()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Meal Ally";
+
+        while (selectMeal == null)
+        {
+            RaycastHit hit;
+            int layerMask = LayerMask.GetMask("DropCard");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.transform.tag == "Board" && Input.GetMouseButton(0))
+                {
+                    GameObject root = hit.transform.parent.parent.gameObject;
+                    if (root.transform.GetComponent<NetworkIdentity>().hasAuthority) {
+                        for (int i = 0; i < boardRepas.Count; i++)
+                        {
+                            if (boardRepas[i].sceneObject == hit.transform.gameObject)
+                            {
+                                selectMeal = boardRepas[i];
+                            }
+                        }
+
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        selectMeal = null;
+        statePlayer = oldState;
+    }
+
+    public void StartSelectMealEnemy()
+    {
+        StartCoroutine(SelecMealEnemy());
+    }
+    //Permet de sélectionner un repas sur la planche énemie
+    private IEnumerator SelecMealEnemy()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Meal Enemy";
+
+        while (selectMeal == null)
+        {
+            RaycastHit hit;
+            int layerMask = LayerMask.GetMask("DropCard");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.transform.tag == "Board" && Input.GetMouseButton(0))
+                {
+                    GameObject root = hit.transform.parent.parent.gameObject;
+                    if (!root.GetComponent<NetworkIdentity>().hasAuthority)
+                    {
+                        Debug.Log("board Enemie");
+                        for (int i = 0; i < root.GetComponent<PlayerBehavior>().boardRepas.Count; i++)
+                        {
+                            if (root.GetComponent<PlayerBehavior>().boardRepas[i].sceneObject == hit.transform.gameObject)
+                            {
+                                selectMeal = root.GetComponent<PlayerBehavior>().boardRepas[i];
+                            }
+                        }
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+    public void StartSelectTableIngredient(AlimentScriptable.Gout flavor)
+    {
+        StartCoroutine(SelectTableIngredient(flavor));
+    }
+
+    private IEnumerator SelectTableIngredient(AlimentScriptable.Gout flavor)
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Food On table";
+
+        while (selectedChefCard == null)
+        {
+            RaycastHit hit;
+            int layerMask = LayerMask.GetMask("Card");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0))
+                {
+                    if(hit.transform.GetComponent<AlimentBehavior>() != null)
+                    {
+                        AlimentBehavior alim = hit.transform.GetComponent<AlimentBehavior>();
+                        if (alim.alimentLogic.cardType == ScriptableCard.CardType.Aliment && hit.transform.GetComponent<NetworkIdentity>().hasAuthority && !alim.isInReserve && flavor == alim.alimentLogic.gout)
+                        {
+                            selectedAliment = hit.transform.GetComponent<AlimentBehavior>();
+                            Debug.Log("Carte s�lectionn� : " + selectedAliment);
+                        }
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+    public void StartSelectIngredientAlly()
+    {
+        StartCoroutine(SelectIngredientAlly());
+    }
+
+    private IEnumerator SelectIngredientAlly()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Food On ally Reserve";
+
+        while (selectedChefCard == null)
+        {
+            RaycastHit hit;
+            int layerMask = LayerMask.GetMask("Card");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0))
+                {
+                    if (hit.transform.GetComponent<AlimentBehavior>() != null)
+                    {
+                        AlimentBehavior alim = hit.transform.GetComponent<AlimentBehavior>();
+                        if (alim.alimentLogic.cardType == ScriptableCard.CardType.Aliment && hit.transform.GetComponent<NetworkIdentity>().hasAuthority && alim.isInReserve)
+                        {
+                            selectedAliment = hit.transform.GetComponent<AlimentBehavior>();
+                            Debug.Log("Carte s�lectionn� : " + selectedAliment);
+                        }
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+    public void StartSelectIngredientEnemy()
+    {
+        StartCoroutine(SelectIngredientEnemy());
+    }
+
+    private IEnumerator SelectIngredientEnemy()
+    {
+        StatePlayer oldState = statePlayer;
+        statePlayer = StatePlayer.EffetPhase;
+        textStatePlayer.text = "Select Food On Enemy Reserve";
+
+        while (selectedChefCard == null)
+        {
+            RaycastHit hit;
+            int layerMask = LayerMask.GetMask("Card");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0))
+                {
+                    if (hit.transform.GetComponent<AlimentBehavior>() != null)
+                    {
+                        AlimentBehavior alim = hit.transform.GetComponent<AlimentBehavior>();
+                        if (alim.alimentLogic.cardType == ScriptableCard.CardType.Aliment && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority && alim.isInReserve)
+                        {
+                            selectedAliment = hit.transform.GetComponent<AlimentBehavior>();
+                            Debug.Log("Carte s�lectionn� : " + selectedAliment);
+                        }
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        statePlayer = oldState;
+    }
+
+    #endregion
 
     public void OnNewCardRefreshBoard(ChefCardBehaviour newChefCard)
     {
@@ -683,68 +893,72 @@ public class PlayerBehavior : NetworkBehaviour
     /// <returns></returns>
     private bool TestCost(int costIndexToTest, ChefCardBehaviour card)
     {
-        ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
-        int currentCostIndex = costIndexToTest;
-        for (int i = 0; i < engagedAliment.Count; i++)
+        if(costIndexToTest > 0)
         {
-            if (!alimentUsedInCost[i])
+            ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
+            int currentCostIndex = costIndexToTest;
+            for (int i = 0; i < engagedAliment.Count; i++)
             {
-                bool isValid = false;
-                switch (costToTest.costType)
+                if (!alimentUsedInCost[i])
                 {
-                    case ChefCardScriptable.Cost.CostType.Gout:
-                        if (engagedAliment[i].alimentLogic.gout == costToTest.goutCost)
-                        {
-                            isValid = true;
-                        }
-                        break;
-
-                    case ChefCardScriptable.Cost.CostType.AlimentType:
-                        if (engagedAliment[i].alimentLogic.alimentType == costToTest.alimentTypeCost)
-                        {
-                            isValid = true;
-                        }
-                        break;
-
-                    case ChefCardScriptable.Cost.CostType.Specific:
-                        if (engagedAliment[i].alimentLogic == costToTest.specificCost)
-                        {
-                            isValid = true;
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-
-                if (isValid)
-                {
-                    alimentUsedInCost[i] = true;
-                    if (currentCostIndex == card.cardLogic.cost.Count - 1)
+                    bool isValid = false;
+                    switch (costToTest.costType)
                     {
-                        return true;
+                        case ChefCardScriptable.Cost.CostType.Gout:
+                            if (engagedAliment[i].alimentLogic.gout == costToTest.goutCost)
+                            {
+                                isValid = true;
+                            }
+                            break;
+
+                        case ChefCardScriptable.Cost.CostType.AlimentType:
+                            if (engagedAliment[i].alimentLogic.alimentType == costToTest.alimentTypeCost)
+                            {
+                                isValid = true;
+                            }
+                            break;
+
+                        case ChefCardScriptable.Cost.CostType.Specific:
+                            if (engagedAliment[i].alimentLogic == costToTest.specificCost)
+                            {
+                                isValid = true;
+                            }
+                            break;
+
+                        default:
+                            break;
                     }
-                    else
+
+                    if (isValid)
                     {
-                        currentCostIndex++;
-                        if (TestCost(currentCostIndex, card))
+                        alimentUsedInCost[i] = true;
+                        if (currentCostIndex == card.cardLogic.cost.Count - 1)
                         {
                             return true;
                         }
                         else
                         {
-                            alimentUsedInCost[i] = false;
-                            currentCostIndex--;
+                            currentCostIndex++;
+                            if (TestCost(currentCostIndex, card))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                alimentUsedInCost[i] = false;
+                                currentCostIndex--;
+                            }
                         }
                     }
                 }
+                else
+                {
+                    //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
+                }
             }
-            else
-            {
-                //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
-            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     [HideInInspector] public bool cardIsZoom = false;
@@ -785,7 +999,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     public void PlaceAlimentInReserve(AlimentBehavior newAliment)
     {
-        newAliment.isInReserve = true;
+        newAliment.CmdSetInReserve(true);
         reserveCards.Add(newAliment);
         deckManager.CmdPickOnTable(newAliment);
         statePlayer = StatePlayer.PlayCardPhase;
@@ -815,13 +1029,42 @@ public class PlayerBehavior : NetworkBehaviour
         newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + Vector3.left * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
     }
 
-    [Command]
-    public void DestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
+    [Command(requiresAuthority = false)]
+    public void CmdDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
-        chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+        //chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+        RpcDestroyCardFromBoard(chefCardBehaviour);
         NetworkServer.Destroy(chefCardBehaviour.gameObject);
         RefreshBoard();
     }
+
+    [ClientRpc]
+    public void RpcDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
+    {
+        chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
+
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDestroyMeal(ChefCardBehaviour chefCardBehaviour)
+    {
+        List<ChefCardBehaviour> ca = new List<ChefCardBehaviour>(chefCardBehaviour.repas.allRecipes);
+        //RpcDestroyMeal(chefCardBehaviour);
+        chefCardBehaviour.repas.allRecipes.Clear(); //Problème à résoudre
+        for (int i =0; i< ca.Count; i++)
+        {
+            NetworkServer.Destroy(ca[i].gameObject);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDestroyMeal(ChefCardBehaviour chefCardBehaviour)
+    {
+        chefCardBehaviour.repas.allRecipes.Clear();
+        RefreshBoard();
+    }
+
+
 
     public void HighlightRepas(int index, bool active)
     {

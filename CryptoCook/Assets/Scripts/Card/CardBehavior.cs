@@ -11,6 +11,7 @@ public abstract class CardBehavior : NetworkBehaviour
 {
     public LayerMask cardMask;
     public float hoverScaleMultiplier;
+    
 
     #region r�f�rences
     public DeckManager deckManager;

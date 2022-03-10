@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static AlimentScriptable;
 
+[SerializeField]
 [CreateAssetMenu(fileName = "NewChefCard", menuName = "Cards/New Chef Card")]
 public class ChefCardScriptable : ScriptableCard
 {
