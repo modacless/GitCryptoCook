@@ -20,10 +20,6 @@ MonoBehaviour:
   sprite: {fileID: 0}
   recipeType: 0
   recipeCulture: 0
-  cost:
-  - costType: 0
-    goutCost: 0
-    alimentTypeCost: 0
-    specificCost: {fileID: 0}
-  effect: {fileID: 11400000, guid: edd81709af5c1c743931d6c599605ca1, type: 2}
+  cost: []
+  effect: {fileID: 11400000, guid: 1c7963371297d174fa309c3fef9934e2, type: 2}
   pointEarn: 3

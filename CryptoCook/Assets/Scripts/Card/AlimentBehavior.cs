@@ -15,7 +15,7 @@ public class AlimentBehavior : CardBehavior
     public GameObject usedEffect;
     public AlimentScriptable alimentLogic;
 
-    public bool isInReserve = false;
+    [SyncVar]public bool isInReserve = false;
     public bool isEngaged;
     public bool isUsedThisTurn;
 
@@ -154,5 +154,11 @@ public class AlimentBehavior : CardBehavior
         }
 
         return isUsedThisTurn;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetInReserve(bool isIn)
+    {
+        isInReserve = isIn;
     }
 }

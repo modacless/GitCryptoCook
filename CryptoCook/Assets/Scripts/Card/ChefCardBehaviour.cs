@@ -33,6 +33,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
+        
         isEffectActive = true;
         player = _player;
         cardLogic = card;
@@ -40,7 +41,6 @@ public class ChefCardBehaviour : CardBehavior
 
         if(cardLogic.cardType == ScriptableCard.CardType.Recette)
         {
-            //Text Assignement
             textName.text = cardLogic.cardName;
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
             textCost.text = (basePoint + variablePoint).ToString();
@@ -209,7 +209,7 @@ public class ChefCardBehaviour : CardBehavior
 
     public void DestroyCard()
     {
-        player.DestroyCardFromBoard(this);
+        player.CmdDestroyCardFromBoard(this);
     }
 
     public void AddCost(ChefCardScriptable.Cost addedCost)
