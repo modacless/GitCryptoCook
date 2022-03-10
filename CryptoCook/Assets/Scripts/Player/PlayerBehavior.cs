@@ -1037,7 +1037,7 @@ public class PlayerBehavior : NetworkBehaviour
                     zoomedCard = hit.transform.GetComponent<CardBehavior>();
                     zoomedCard.SetCurrentPosAsBase();
 
-                    hit.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10.5f; 
+                    hit.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f; 
                         //new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 10f, Camera.main.transform.position.z + 6f);
 
                     hit.transform.rotation = Camera.main.transform.rotation;

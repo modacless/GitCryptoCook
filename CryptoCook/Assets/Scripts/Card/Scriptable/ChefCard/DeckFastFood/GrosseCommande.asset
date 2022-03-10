@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardType: 2
   meshFilterModel: {fileID: 0}
-  meshRendererModel: {fileID: 0}
+  modelPrefab: {fileID: 0}
+  spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: Grosse Commande
   TextDescription: 
   sprite: {fileID: 0}

@@ -15,6 +15,8 @@ MonoBehaviour:
   cardType: 1
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 7633079957611108045, guid: b98501715b727dd488bc54ddc26afdd9, type: 3}
+  spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: Test cout
   TextDescription: 
   sprite: {fileID: 0}
