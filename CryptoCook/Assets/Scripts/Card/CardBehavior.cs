@@ -68,18 +68,18 @@ public abstract class CardBehavior : NetworkBehaviour
         UpdateHover();
     }
 
-    private void OnMouseExit()
+    public virtual void OnMouseExit()
     {
         targetScale = baseScale;
     }
 
-    private void OnMouseEnter()
+    public virtual void OnMouseEnter()
     {
         targetScale = baseScale * hoverScaleMultiplier;
     }
 
-    private Vector3 baseScale;
-    private Vector3 targetScale;
+    protected Vector3 baseScale;
+    protected Vector3 targetScale;
     public void UpdateHover()
     {
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 30 * Time.deltaTime);

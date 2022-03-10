@@ -14,6 +14,7 @@ public class AlimentBehavior : CardBehavior
     public GameObject engagedEffect;
     public GameObject usedEffect;
     public AlimentScriptable alimentLogic;
+    public float scaleReserveMultiplier;
 
     [SyncVar]public bool isInReserve = false;
     public bool isEngaged;
@@ -21,8 +22,6 @@ public class AlimentBehavior : CardBehavior
 
     [HideInInspector]
     [SyncVar] public int emplacementFood = -1;
-
-
 
     public void InitializeCard(AlimentScriptable aliment)
     {
@@ -108,6 +107,16 @@ public class AlimentBehavior : CardBehavior
                 }
             }
         }
+    }
+
+    public override void OnMouseExit()
+    {
+        targetScale = baseScale * (isInReserve ? scaleReserveMultiplier : 1);
+    }
+
+    public override void OnMouseEnter()
+    {
+        targetScale = baseScale * hoverScaleMultiplier * (isInReserve ? scaleReserveMultiplier : 1);
     }
 
     public void ResetForTurn()

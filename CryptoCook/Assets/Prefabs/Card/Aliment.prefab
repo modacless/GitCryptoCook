@@ -10495,6 +10495,7 @@ MonoBehaviour:
   engagedEffect: {fileID: 1660434368579841594}
   usedEffect: {fileID: 2420041587700985161}
   alimentLogic: {fileID: 0}
+  scaleReserveMultiplier: 0.5
   isInReserve: 0
   isEngaged: 0
   isUsedThisTurn: 0
