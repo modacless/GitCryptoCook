@@ -902,17 +902,18 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
-            CmdAddPoint(boardRepas[i].variablePoint + boardRepas[i].basePoint);
         for (int i = 0; i < boardRepas.Count; i++)
         {
             if (boardRepas[i].allRecipes.Count > 0)
             {
                 //Debug.Log("repas " + i + " : " + (boardRepas[i].variablePoint + boardRepas[i].basePoint));
             }
-            currentPoint += boardRepas[i].variablePoint + boardRepas[i].basePoint;
+            CmdAddPoint(boardRepas[i].variablePoint + boardRepas[i].basePoint);
+
         }
     }
 
+    [Command]
     public void CmdAddPoint(int pointToAdd)
     {
         currentPoint += pointToAdd;
@@ -1082,7 +1083,6 @@ public class PlayerBehavior : NetworkBehaviour
                         cardToZoom.GetComponent<ChefCardBehaviour>().InitializeCard(chefCardZoom.cardLogic, this);
                         cardToZoom.GetComponent<CardBehavior>().SetCurrentPosAsBase();
                     }
-                    //hit.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f; 
 
                     if (hit.transform.GetComponent<AlimentBehavior>())
                     {
@@ -1094,7 +1094,7 @@ public class PlayerBehavior : NetworkBehaviour
 
                     if(cardToZoom != null)
                     {
-                        cardToZoom.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10.5f;
+                        cardToZoom.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f;
                         cardToZoom.transform.rotation = Camera.main.transform.rotation;
                         cardIsZoom = true;
                     }
