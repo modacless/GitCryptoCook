@@ -16,6 +16,8 @@ MonoBehaviour:
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 7633079957611108045, guid: b98501715b727dd488bc54ddc26afdd9, type: 3}
   spriteBackground: {fileID: 2100000, guid: 9a0514f7eab35f44081571e676ce3dd3, type: 2}
+  effectBackground: {fileID: 2100000, guid: 1b512fd900fa48a48be7acd93df30ca9, type: 2}
+  effectIllu: {fileID: 0}
   matRarity: {fileID: 2100000, guid: 6354cf0a8cbeefc4d885841e6492c9f7, type: 2}
   cardName: Burger
   TextDescription: 

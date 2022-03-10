@@ -496,11 +496,11 @@ public class PlayerBehavior : NetworkBehaviour
             card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.up + (isServer ? Vector3.forward : Vector3.back) * repasRecipeStartOffset + (isServer ? Vector3.back : Vector3.forward) * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
             if(isServer)
             {
-                card.transform.rotation = Quaternion.Euler(88, 0, 0);
+                card.transform.rotation = Quaternion.Euler(85, 0, 0);
             }
             else
             {
-                card.transform.rotation = Quaternion.Euler(88, 180, 0);
+                card.transform.rotation = Quaternion.Euler(85, 180, 0);
             }
             card.SetCurrentPosAsBase();
         }
@@ -525,7 +525,7 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
-        RefreshBoard();
+        CmdRefreshBoard();
     }
 
     public int FindBoardPlaces(GameObject card)
@@ -789,7 +789,7 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On table";
 
-        while (selectedChefCard == null && !cancelEffect)
+        while (selectedAliment == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -826,7 +826,7 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On ally Reserve";
 
-        while (selectedChefCard == null && !cancelEffect)
+        while (selectedAliment == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -913,7 +913,14 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
-    public void RefreshBoard()
+    [Command(requiresAuthority = false)]
+    public void CmdRefreshBoard()
+    {
+        RpcRefreshBoard();
+    }
+
+    [ClientRpc]
+    public void RpcRefreshBoard()
     {
         currentPoint = 0;
         for (int i = 0; i < boardRepas.Count; i++)
@@ -977,7 +984,7 @@ public class PlayerBehavior : NetworkBehaviour
         bool canPlayCard = false;
         alimentUsedInCost = new bool[reserveCards.Count];
 
-        if (engagedAliment.Count == card.cardLogic.cost.Count && card.cardLogic.cost.Count > 0)
+        if (engagedAliment.Count == card.currentCost.Count && card.currentCost.Count > 0)
         {
             if (TestCost(0, card))
             {
@@ -990,9 +997,9 @@ public class PlayerBehavior : NetworkBehaviour
         }
         else
         {
-            if(card.cardLogic.cost.Count > 0)
+            if(card.currentCost.Count > 0)
             {
-                if (engagedAliment.Count > card.cardLogic.cost.Count)
+                if (engagedAliment.Count > card.currentCost.Count)
                 {
                     Debug.Log("There is too much aliment engaged");
                 }
@@ -1028,7 +1035,7 @@ public class PlayerBehavior : NetworkBehaviour
     /// <returns></returns>
     private bool TestCost(int costIndexToTest, ChefCardBehaviour card)
     {
-        ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
+        ChefCardScriptable.Cost costToTest = card.currentCost[costIndexToTest];
         int currentCostIndex = costIndexToTest;
         for (int i = 0; i < engagedAliment.Count; i++)
         {
@@ -1065,7 +1072,7 @@ public class PlayerBehavior : NetworkBehaviour
                 if (isValid)
                 {
                     alimentUsedInCost[i] = true;
-                    if (currentCostIndex == card.cardLogic.cost.Count - 1)
+                    if (currentCostIndex == card.currentCost.Count - 1)
                     {
                         return true;
                     }
@@ -1110,7 +1117,6 @@ public class PlayerBehavior : NetworkBehaviour
                 {
                     if (hit.transform.GetComponent<ChefCardBehaviour>())
                     {
-                       
                         ChefCardBehaviour chefCardZoom = hit.transform.GetComponent<ChefCardBehaviour>();
                         if(chefCardZoom.cardLogic.cardType == ScriptableCard.CardType.Effect)
                         {
@@ -1121,8 +1127,21 @@ public class PlayerBehavior : NetworkBehaviour
                         {
                             cardToZoom = Instantiate(cardObjectRecipe);
                         }
-                        cardToZoom.GetComponent<ChefCardBehaviour>().InitializeCard(chefCardZoom.cardLogic, this);
+
+                        ChefCardBehaviour behaviourZoom = cardToZoom.GetComponent<ChefCardBehaviour>();
+
+                        behaviourZoom.InitializeCard(chefCardZoom.cardLogic, this);
                         cardToZoom.GetComponent<CardBehavior>().SetCurrentPosAsBase();
+
+                        cardToZoom.GetComponent<ChefCardBehaviour>().currentCost = new List<ChefCardScriptable.Cost>(chefCardZoom.currentCost);
+                        cardToZoom.GetComponent<ChefCardBehaviour>().RefreshCostDisplay();
+                        cardToZoom.GetComponent<ChefCardBehaviour>().basePoint = chefCardZoom.basePoint;
+                        cardToZoom.GetComponent<ChefCardBehaviour>().variablePoint = chefCardZoom.variablePoint;
+                        cardToZoom.GetComponent<ChefCardBehaviour>().scoreText = chefCardZoom.scoreText;
+
+                        behaviourZoom.effectBackground.gameObject.SetActive(true);
+
+                        cardToZoom.transform.position = -cardToZoom.transform.right * 2.5f;
                     }
 
                     if (hit.transform.GetComponent<AlimentBehavior>())
@@ -1138,6 +1157,10 @@ public class PlayerBehavior : NetworkBehaviour
                         cardToZoom.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f;
                         cardToZoom.transform.rotation = Camera.main.transform.rotation;
                         cardIsZoom = true;
+
+                        ChefCardBehaviour behaviourZoom = cardToZoom.GetComponent<ChefCardBehaviour>();
+                        if(behaviourZoom != null)
+                            cardToZoom.transform.position = cardToZoom.transform.position - cardToZoom.transform.right * 3.5f;
                     }
                 }
             }
@@ -1147,7 +1170,6 @@ public class PlayerBehavior : NetworkBehaviour
                 Destroy(cardToZoom);
                 cardToZoom = null;
                 cardIsZoom = false;
-
             }
         }
     }
@@ -1215,14 +1237,14 @@ public class PlayerBehavior : NetworkBehaviour
     {
         boardRepas[repasIndex].allRecipes.RemoveAt(cardIndex);
 
-        RefreshBoard();
+        CmdRefreshBoard();
     }
 
     [ClientRpc]
     public void RpcDestroyEffectCard()
     {
 
-        RefreshBoard();
+        CmdRefreshBoard();
     }
 
     [Command(requiresAuthority = false)]
@@ -1241,7 +1263,7 @@ public class PlayerBehavior : NetworkBehaviour
     public void RpcDestroyMeal(ChefCardBehaviour chefCardBehaviour)
     {
         chefCardBehaviour.repas.allRecipes.Clear();
-        RefreshBoard();
+        CmdRefreshBoard();
     }
 
     [Command]
@@ -1275,6 +1297,22 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
+    public void RemoveAliment(AlimentBehavior aliment)
+    {
+        for (int i = 0; i < reserveSlots.Count; i++)
+        {
+            for (int j = 0; j < reserveSlots[j].Count; i++)
+            {
+                if(reserveSlots[i][j] == aliment)
+                {
+                    reserveSlots[i][j] = null;
+                }
+            }
+        }
+
+        reserveCards.Remove(aliment);
+        aliment.player = null;
+    }
 
     #region victory management
 

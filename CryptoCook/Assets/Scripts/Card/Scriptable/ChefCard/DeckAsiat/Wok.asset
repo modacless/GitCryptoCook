@@ -16,6 +16,8 @@ MonoBehaviour:
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 621399842672913696, guid: 8daa292b113ba5e49be3160f03c18509, type: 3}
   spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  effectBackground: {fileID: 2100000, guid: 3c25fc80a061ac34cb8c15d8d8f099fc, type: 2}
+  effectIllu: {fileID: 0}
   matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: Wok
   TextDescription: "Un super wok styl\xE9"
@@ -42,5 +44,5 @@ MonoBehaviour:
     goutCost: 1
     alimentTypeCost: 0
     specificCost: {fileID: 11400000, guid: 820b20b73245f9745aa2effd6f6e7dab, type: 2}
-  effect: {fileID: 11400000, guid: f5fcd00f7e620804c9638aaeb313854f, type: 2}
-  pointEarn: 2
+  effect: {fileID: 0}
+  pointEarn: 7

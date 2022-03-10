@@ -16,6 +16,8 @@ MonoBehaviour:
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 2126858795374551236, guid: eb34abcd5d6a94945b6cd1e525ef025b, type: 3}
   spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  effectBackground: {fileID: 2100000, guid: 3c25fc80a061ac34cb8c15d8d8f099fc, type: 2}
+  effectIllu: {fileID: 0}
   matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: Ramen
   TextDescription: Ramen ta fraise
@@ -31,7 +33,7 @@ MonoBehaviour:
     alimentTypeCost: 4
     specificCost: {fileID: 0}
   - costType: 1
-    goutCost: 0
+    goutCost: 2
     alimentTypeCost: 3
     specificCost: {fileID: 0}
   - costType: 2

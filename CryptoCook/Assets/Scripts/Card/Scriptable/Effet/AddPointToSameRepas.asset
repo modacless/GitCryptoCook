@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 400c20dbd99f8f74793cec368ec9d2a7, type: 3}
   m_Name: AddPointToSameRepas
   m_EditorClassIdentifier: 
-  effectDescription: "Donne +2 \xE0 tous les repas similaires \xE0 celui de cette
-    carte."
-  player: {fileID: 0}
+  effectDescription: Donne +2 a chaque repas simillaire.
