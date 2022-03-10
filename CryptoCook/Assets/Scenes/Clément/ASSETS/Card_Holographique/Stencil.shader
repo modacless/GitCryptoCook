@@ -5,8 +5,8 @@ Shader "Custom/Stencil"
         pass
         {
 
-         ColorMask 0
-         Zwrite Off
+            ColorMask 0
+            Zwrite Off
 
          Stencil
          {

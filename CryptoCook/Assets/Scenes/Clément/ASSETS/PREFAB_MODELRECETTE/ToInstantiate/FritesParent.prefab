@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3588727841353922874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3588727841353922884}
+  m_Layer: 6
+  m_Name: FritesParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3588727841353922884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3588727841353922874}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.01}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3696954506913410436}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3495255310295469332
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3588727841353922884}
+    m_Modifications:
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.08179569
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.024000019
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.112999976
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.45228243
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.26976547
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.49938938
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6879517
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -68.612
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -12.762
+      objectReference: {fileID: 0}
+    - target: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -104.629
+      objectReference: {fileID: 0}
+    - target: {fileID: 613699056616585770, guid: 86f638d958500134e91162923930cfe2, type: 3}
+      propertyPath: m_Name
+      value: Prefab_Frites
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 86f638d958500134e91162923930cfe2, type: 3}
+--- !u!4 &3696954506913410436 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 274610342396420240, guid: 86f638d958500134e91162923930cfe2, type: 3}
+  m_PrefabInstance: {fileID: 3495255310295469332}
+  m_PrefabAsset: {fileID: 0}

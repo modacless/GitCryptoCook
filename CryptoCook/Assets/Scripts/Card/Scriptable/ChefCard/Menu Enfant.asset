@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardType: 1
   meshFilterModel: {fileID: 0}
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 8449827391260899550, guid: 49cae0ae73c215c458bad9439a52fd0d, type: 3}
+  spriteBackground: {fileID: 2100000, guid: 9a0514f7eab35f44081571e676ce3dd3, type: 2}
+  matRarity: {fileID: 2100000, guid: 6354cf0a8cbeefc4d885841e6492c9f7, type: 2}
   cardName: Menu Enfant
   TextDescription: "Parce qu'on \xE0 tous aimer ouvrir le petit jouet."
-  sprite: {fileID: 0}
   recipeType: 1
   recipeCulture: 1
   cost:

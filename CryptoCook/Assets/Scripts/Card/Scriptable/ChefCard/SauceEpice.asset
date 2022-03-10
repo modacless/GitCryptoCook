@@ -15,6 +15,8 @@ MonoBehaviour:
   cardType: 2
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 7892979168011791123, guid: 6e5e0979532d99a4b9eb483e523be178, type: 3}
+  spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: "Sauce \xC9pic\xE9"
   TextDescription: "Tr\xE8s risqu\xE9"
   sprite: {fileID: 0}

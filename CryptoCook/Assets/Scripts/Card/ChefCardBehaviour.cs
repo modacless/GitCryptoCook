@@ -11,9 +11,13 @@ public class ChefCardBehaviour : CardBehavior
     public TextMeshPro textCost;
     public TextMeshPro textCostFood;
     public TextMeshPro textRecipeType;
-    public TextMeshPro textCulture;
     public TextMeshPro textDescription;
-    public SpriteRenderer spriteBackgroud;
+
+    public MeshRenderer graph;
+
+    public GameObject modelParent;
+
+    public MeshRenderer cylindreBackground;
 
     public ChefCardScriptable cardLogic;
 
@@ -39,7 +43,9 @@ public class ChefCardBehaviour : CardBehavior
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
 
-        if(cardLogic.cardType == ScriptableCard.CardType.Recette)
+        
+
+        if (cardLogic.cardType == ScriptableCard.CardType.Recette)
         {
             textName.text = cardLogic.cardName;
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
@@ -70,25 +76,38 @@ public class ChefCardBehaviour : CardBehavior
             }
 
             textCostFood.text = foodCost;
-            textRecipeType.text = cardLogic.recipeType.ToString();
-            textCulture.text = cardLogic.recipeCulture.ToString();
+            textRecipeType.text = cardLogic.recipeType.ToString() + " | " + cardLogic.recipeCulture.ToString();
             if(cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
             if (cardLogic.modelPrefab != null)
             {
                 GameObject go = Instantiate(cardLogic.modelPrefab).gameObject;
-                go.transform.SetParent(transform);
+                go.transform.SetParent(modelParent.transform);
                 go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = new Vector3(1, 1, 0.01f);
+                go.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
 
+            Material[] matArray = graph.materials;
+
+            if (cardLogic.matRarity != null)
+                matArray[4] = cardLogic.matRarity;
+
+
+            graph.materials = matArray;
+
+            if (cardLogic.spriteBackground != null && cylindreBackground != null)
+            {
+                cylindreBackground.GetComponent<MeshRenderer>().material = cardLogic.spriteBackground;
             }
         }
 
         if(cardLogic.cardType == ScriptableCard.CardType.Effet)
         {
 
-            if(cardLogic.sprite != null)
+            if(cardLogic.spriteBackground != null)
             {
-                spriteBackgroud.sprite = cardLogic.sprite;
+                //graph.GetComponent<MeshRenderer>().material = cardLogic.spriteBackground;
             }
             
             string foodCost = "";
@@ -117,6 +136,13 @@ public class ChefCardBehaviour : CardBehavior
             if (cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
 
+            Material[] matArray = graph.materials;
+
+            if (cardLogic.matRarity != null)
+                matArray[2] = cardLogic.matRarity;
+
+
+            graph.materials = matArray;
         }
         
 

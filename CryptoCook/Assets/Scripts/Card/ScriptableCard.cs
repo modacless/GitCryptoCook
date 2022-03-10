@@ -17,6 +17,10 @@ public class ScriptableCard : ScriptableObject
     public MeshFilter meshFilterModel;
     public GameObject modelPrefab;
 
+    public Material spriteBackground;
+
+    public Material matRarity;
+
     public string cardName;
     public string TextDescription;
 }
