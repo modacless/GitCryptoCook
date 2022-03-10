@@ -21,5 +21,5 @@ MonoBehaviour:
   recipeType: 0
   recipeCulture: 0
   cost: []
-  effect: {fileID: 11400000, guid: 1c7963371297d174fa309c3fef9934e2, type: 2}
-  pointEarn: 3
+  effect: {fileID: 11400000, guid: edd81709af5c1c743931d6c599605ca1, type: 2}
+  pointEarn: 0

@@ -250,6 +250,24 @@ public class PlayerBehavior : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
+            if (boardRepas[i].allRecipes.Count > 0)
+            {
+                repasScores[i].transform.parent.gameObject.SetActive(true);
+            }
+            else
+            {
+                repasScores[i].transform.parent.gameObject.SetActive(false);
+            }
+            for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
+            {
+                boardRepas[i].allRecipes[j].RefreshScore();
+            }
+        }
+
         if (hasAuthority)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -260,18 +278,6 @@ public class PlayerBehavior : NetworkBehaviour
 
             textPoint.text = currentPoint.ToString();
 
-            for (int i = 0; i < boardRepas.Count; i++)
-            {
-                repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
-                if (boardRepas[i].allRecipes.Count > 0)
-                {
-                    repasScores[i].transform.parent.gameObject.SetActive(true);
-                }
-                else
-                {
-                    repasScores[i].transform.parent.gameObject.SetActive(false);
-                }
-            }
 
             if (statePlayer == StatePlayer.DrawPhase)
             {
@@ -458,17 +464,30 @@ public class PlayerBehavior : NetworkBehaviour
     [ClientRpc]
     public void RpcDropCardOnBoard(ChefCardBehaviour card,int emplacement)
     {
-        boardRepas[emplacement].allRecipes.Add(card);
-        card.repas = boardRepas[emplacement];
+        if (card.cardLogic.cardType == ScriptableCard.CardType.Recette)
+        {
+            boardRepas[emplacement].allRecipes.Add(card);
+            card.repas = boardRepas[emplacement];
+
+            card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.up + (isServer ? Vector3.forward : Vector3.back) * repasRecipeStartOffset + (isServer ? Vector3.back : Vector3.forward) * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
+            if(isServer)
+            {
+                card.transform.rotation = Quaternion.Euler(88, 0, 0);
+            }
+            else
+            {
+                card.transform.rotation = Quaternion.Euler(88, 180, 0);
+            }
+            card.SetCurrentPosAsBase();
+        }
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
 
-        card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.up + Vector3.forward * repasRecipeStartOffset + Vector3.back * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
-        card.transform.rotation = Quaternion.Euler(88, 0, 0);
-        card.SetCurrentPosAsBase();
-
-        if (card.cardLogic.effect != null && card.isEffectActive)
-            StartCoroutine(card.cardLogic.effect.OnUse(card));
+        if(hasAuthority)
+        {
+            if (card.cardLogic.effect != null && card.isEffectActive)
+                StartCoroutine(card.cardLogic.effect.OnUse(card));
+        }
 
         if(card.cardLogic.cardType == ScriptableCard.CardType.Recette)
         {
@@ -476,7 +495,10 @@ public class PlayerBehavior : NetworkBehaviour
         }
         else
         {
-            card.DestroyCard();
+            if(hasAuthority)
+            {
+                card.DestroyCard();
+            }
         }
 
 
@@ -596,12 +618,13 @@ public class PlayerBehavior : NetworkBehaviour
 
         while (selectedChefCard == null)
         {
+            Debug.Log("i");
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
+                if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>() != null && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && !hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     selectedChefCard = hit.transform.GetComponent<ChefCardBehaviour>();
                     Debug.Log("Carte s�lectionn� : " + selectedChefCard);
@@ -811,7 +834,8 @@ public class PlayerBehavior : NetworkBehaviour
         {
             for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
             {
-                StartCoroutine(boardRepas[i].allRecipes[j].cardLogic.effect.OnNewCardPlayed(boardRepas[i].allRecipes[j], newChefCard));
+                if(boardRepas[i].allRecipes[j].cardLogic.effect != null && boardRepas[i].allRecipes[j].isEffectActive)
+                    StartCoroutine(boardRepas[i].allRecipes[j].cardLogic.effect.OnNewCardPlayed(boardRepas[i].allRecipes[j], newChefCard));
             }
         }
     }
@@ -1036,7 +1060,7 @@ public class PlayerBehavior : NetworkBehaviour
             reserveSlotDuplicataIndex = reserveSlots[reserveSlots.Count - 1].Count - 1;
         }
 
-        newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + Vector3.back * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
+        newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + (isServer ? Vector3.back : Vector3.forward) * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
         newAliment.transform.rotation = Quaternion.Euler(88, 0, 0);
     }
 
@@ -1044,16 +1068,32 @@ public class PlayerBehavior : NetworkBehaviour
     public void CmdDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
         //chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
-        RpcDestroyCardFromBoard(chefCardBehaviour);
+        Debug.Log(chefCardBehaviour);
+
+        if(chefCardBehaviour.cardLogic.cardType != ScriptableCard.CardType.Effet)
+        {
+            RpcDestroyCardFromBoard(chefCardBehaviour.repas.allRecipes.IndexOf(chefCardBehaviour), boardRepas.IndexOf(chefCardBehaviour.repas));
+        }
+        else
+        {
+            RpcDestroyEffectCard();
+        }
         NetworkServer.Destroy(chefCardBehaviour.gameObject);
+    }
+
+    [ClientRpc]
+    public void RpcDestroyCardFromBoard(int cardIndex, int repasIndex)
+    {
+        boardRepas[repasIndex].allRecipes.RemoveAt(cardIndex);
+
         RefreshBoard();
     }
 
     [ClientRpc]
-    public void RpcDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
+    public void RpcDestroyEffectCard()
     {
-        chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
 
+        RefreshBoard();
     }
 
     [Command(requiresAuthority = false)]

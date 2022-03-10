@@ -30,7 +30,6 @@ public class ChefCardBehaviour : CardBehavior
 
     public List<ChefCardScriptable.Cost> currentCost;
 
-
     public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
         
@@ -224,6 +223,11 @@ public class ChefCardBehaviour : CardBehavior
         }
 
         textCostFood.text = foodCost;
+    }
+
+    public void RefreshScore()
+    {
+        textCost.text = (basePoint + variablePoint).ToString();
     }
 
     public void AddCost(ChefCardScriptable.Cost addedCost)
