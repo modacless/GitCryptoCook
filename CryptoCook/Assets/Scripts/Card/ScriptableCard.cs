@@ -19,6 +19,10 @@ public class ScriptableCard : ScriptableObject
 
     public Material spriteBackground;
 
+    public Material effectBackground;
+
+    public Sprite effectIllu;
+
     public Material matRarity;
 
     public string cardName;

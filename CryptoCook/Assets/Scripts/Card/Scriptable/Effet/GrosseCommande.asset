@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GrosseCommande
   m_EditorClassIdentifier: 
   effectDescription: "Piocher une carte \xE0 chaque fois que vous jouer une recette
-    pendant le tour"
+    pendant le tour."

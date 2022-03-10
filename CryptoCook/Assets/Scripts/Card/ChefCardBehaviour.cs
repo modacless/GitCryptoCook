@@ -21,6 +21,10 @@ public class ChefCardBehaviour : CardBehavior
 
     public ChefCardScriptable cardLogic;
 
+    public SpriteRenderer spriteRenderer;
+
+    public MeshRenderer effectBackground;
+
     [SyncVar] public bool isOnBoard = false;
 
     public Repas repas;
@@ -76,31 +80,40 @@ public class ChefCardBehaviour : CardBehavior
             {
                 cylindreBackground.GetComponent<MeshRenderer>().material = cardLogic.spriteBackground;
             }
+
+            if (cardLogic.effectBackground != null)
+            {
+                effectBackground.GetComponent<MeshRenderer>().material = cardLogic.effectBackground;
+            }
         }
 
         if(cardLogic.cardType == ScriptableCard.CardType.Effect)
         {
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
 
-            if(cardLogic.spriteBackground != null)
-            {
-                //graph.GetComponent<MeshRenderer>().material = cardLogic.spriteBackground;
-            }
-
             RefreshCostDisplay();
 
-    textName.text = cardLogic.cardName;
+            textName.text = cardLogic.cardName;
 
             if (cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
 
             Material[] matArray = graph.materials;
 
-            if (cardLogic.matRarity != null)
-                matArray[2] = cardLogic.matRarity;
+            if (cardLogic.spriteBackground != null)
+                matArray[2] = cardLogic.spriteBackground;
 
+            if(cardLogic.effectIllu != null)
+            {
+                spriteRenderer.sprite = cardLogic.effectIllu;
+            }
 
             graph.materials = matArray;
+
+            if(cardLogic.effectBackground != null)
+            {
+                effectBackground.GetComponent<MeshRenderer>().material = cardLogic.effectBackground;
+            }
         }
         
 
