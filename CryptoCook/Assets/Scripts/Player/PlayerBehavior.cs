@@ -822,7 +822,7 @@ public class PlayerBehavior : NetworkBehaviour
         statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On Enemy Reserve";
 
-        while (selectedChefCard == null && !cancelEffect)
+        while (selectedAliment == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -1135,6 +1135,7 @@ public class PlayerBehavior : NetworkBehaviour
 
     public void PlaceAlimentInReserve(AlimentBehavior newAliment)
     {
+        Debug.Log("aliment placed in rserve : " + newAliment.alimentLogic.cardName);
         newAliment.CmdSetInReserve(true);
         reserveCards.Add(newAliment);
         deckManager.CmdPickOnTable(newAliment);
@@ -1241,15 +1242,26 @@ public class PlayerBehavior : NetworkBehaviour
 
     public void RemoveAliment(AlimentBehavior aliment)
     {
+        int indexI = 0;
+        int indexJ = 0;
+
         for (int i = 0; i < reserveSlots.Count; i++)
         {
-            for (int j = 0; j < reserveSlots[j].Count; i++)
+            for (int j = 0; j < reserveSlots[i].Count; j++)
             {
                 if(reserveSlots[i][j] == aliment)
                 {
+                    indexI = i;
+                    indexJ = j;
                     reserveSlots[i][j] = null;
                 }
             }
+        }
+
+        reserveSlots[indexI].RemoveAt(indexJ);
+        if(reserveSlots[indexI].Count == 0)
+        {
+            //reserveSlots.RemoveAt(indexI);
         }
 
         reserveCards.Remove(aliment);

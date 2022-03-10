@@ -27588,17 +27588,18 @@ MonoBehaviour:
     allCards:
     - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
     - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
-    - {fileID: 11400000, guid: 05a3e51d300e72341896c1521aab617e, type: 2}
+    - {fileID: 11400000, guid: 01a49b40616699745bebcf34390201e4, type: 2}
     - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
     - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
     - {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
     - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
-    - {fileID: 11400000, guid: fd0f00749d7282d4dbf94c99acc04985, type: 2}
-    - {fileID: 11400000, guid: 50e3594b5e63d8d49a29021035ff29af, type: 2}
-    - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
-    - {fileID: 11400000, guid: 4ec0765733c3af24dae8fc89f7355731, type: 2}
-    - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
-    - {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
+    - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
   - name: Asian
     allCards:
     - {fileID: 11400000, guid: bf7bc62d0633d3d4982db6e0fe96e861, type: 2}

@@ -183,6 +183,9 @@ public class AlimentBehavior : CardBehavior
     [ClientRpc]
     public void RpcRemoveFromReserve()
     {
-        player.RemoveAliment(this);
+        if(hasAuthority)
+        {
+            player.RemoveAliment(this);
+        }
     }
 }
