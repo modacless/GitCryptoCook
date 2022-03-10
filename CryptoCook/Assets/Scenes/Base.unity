@@ -2871,7 +2871,7 @@ MonoBehaviour:
   mouseOverCardSFX: {fileID: 8300000, guid: 0d64506f0e9197a4da1e0426e3273d3c, type: 3}
   nextTurnSFX: {fileID: 8300000, guid: 5443cf33d86cd084bbf55999aa2cc5f7, type: 3}
   navigateSFX: {fileID: 8300000, guid: 039137cef8031074699525d3878f4231, type: 3}
-  readySFX: {fileID: 0}
+  readySFX: {fileID: 8300000, guid: 5443cf33d86cd084bbf55999aa2cc5f7, type: 3}
   gameMusic: {fileID: 8300000, guid: 6d2c7c2744d3abb479026eea4a4a4721, type: 3}
 --- !u!4 &2112925645
 Transform:
