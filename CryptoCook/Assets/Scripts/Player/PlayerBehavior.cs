@@ -128,7 +128,10 @@ public class PlayerBehavior : NetworkBehaviour
 
         public Repas(GameObject _highlight)
         {
+            allRecipes = new List<ChefCardBehaviour>();
             highlight = _highlight;
+            basePoint = 0;
+            variablePoint = 0;
         }
 
     }
@@ -253,9 +256,9 @@ public class PlayerBehavior : NetworkBehaviour
 
         for (int i = 0; i < boardRepas.Count; i++)
         {
-            repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
             if (boardRepas[i].allRecipes.Count > 0)
             {
+                repasScores[i].text = (boardRepas[i].basePoint + boardRepas[i].variablePoint).ToString();
                 repasScores[i].transform.parent.gameObject.SetActive(true);
             }
             else
@@ -359,18 +362,17 @@ public class PlayerBehavior : NetworkBehaviour
             if(chefDeck[0].cardType == ScriptableCard.CardType.Effet)
             {
                 cardToChoose = cardObjectEffect;
-                Debug.Log("EFFECT " + chefDeck[0].cardName);
+                //Debug.Log("EFFECT " + chefDeck[0].cardName);
             }
             else if(chefDeck[0].cardType == ScriptableCard.CardType.Recette)
             {
                 cardToChoose = cardObjectRecipe;
-                Debug.Log("Recette " + chefDeck[0].cardName);
+                //Debug.Log("Recette " + chefDeck[0].cardName);
             }
             GameObject cardObj = Instantiate(cardToChoose, deckObject.transform.position, Quaternion.identity);
             int emplacement = FindPlaceInHand(cardObj.GetComponent<ChefCardBehaviour>());
             if (emplacement != -1 )
             {
-                Debug.Log(handCards.Count);
                 cardObj.transform.position = cardPosition[emplacement].transform.position; //La position de la carte pioch� �tant, la taille de la main
             
                 float angle = Vector3.Angle(new Vector3(cardObj.transform.position.x, 0, cardObj.transform.position.z), new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
@@ -503,7 +505,6 @@ public class PlayerBehavior : NetworkBehaviour
                 card.DestroyCard();
             }
         }
-
 
         RefreshBoard();
     }
@@ -846,6 +847,10 @@ public class PlayerBehavior : NetworkBehaviour
     public void RefreshBoard()
     {
         currentPoint = 0;
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            boardRepas[i].variablePoint = 0;
+        }
 
         for (int k = 0; k < effectActiveThisTurn.Count; k++)
         {
@@ -858,14 +863,23 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 boardRepas[i].allRecipes[j].RefreshEffect();
             }
+        }
 
-            boardRepas[i].variablePoint = 0;
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
 
             for (int j = 0; j < boardRepas[i].allRecipes.Count; j++)
             {
                 boardRepas[i].variablePoint += boardRepas[i].allRecipes[j].basePoint + boardRepas[i].allRecipes[j].variablePoint;
             }
+        }
 
+        for (int i = 0; i < boardRepas.Count; i++)
+        {
+            if (boardRepas[i].allRecipes.Count > 0)
+            {
+                //Debug.Log("repas " + i + " : " + (boardRepas[i].variablePoint + boardRepas[i].basePoint));
+            }
             currentPoint += boardRepas[i].variablePoint + boardRepas[i].basePoint;
         }
     }
@@ -886,7 +900,8 @@ public class PlayerBehavior : NetworkBehaviour
     {
         bool canPlayCard = false;
         alimentUsedInCost = new bool[reserveCards.Count];
-        if(engagedAliment.Count == card.cardLogic.cost.Count)
+
+        if (engagedAliment.Count == card.cardLogic.cost.Count && card.cardLogic.cost.Count > 0)
         {
             if (TestCost(0, card))
             {
@@ -899,13 +914,20 @@ public class PlayerBehavior : NetworkBehaviour
         }
         else
         {
-            if(engagedAliment.Count > card.cardLogic.cost.Count)
+            if(card.cardLogic.cost.Count > 0)
             {
-                Debug.Log("There is too much aliment engaged");
+                if (engagedAliment.Count > card.cardLogic.cost.Count)
+                {
+                    Debug.Log("There is too much aliment engaged");
+                }
+                else
+                {
+                    Debug.Log("There is not enough aliment engaged");
+                }
             }
             else
             {
-                Debug.Log("There is not enough aliment engaged");
+                canPlayCard = true;
             }
         }
 
@@ -930,72 +952,68 @@ public class PlayerBehavior : NetworkBehaviour
     /// <returns></returns>
     private bool TestCost(int costIndexToTest, ChefCardBehaviour card)
     {
-        if(costIndexToTest > 0)
+        ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
+        int currentCostIndex = costIndexToTest;
+        for (int i = 0; i < engagedAliment.Count; i++)
         {
-            ChefCardScriptable.Cost costToTest = card.cardLogic.cost[costIndexToTest];
-            int currentCostIndex = costIndexToTest;
-            for (int i = 0; i < engagedAliment.Count; i++)
+            if (!alimentUsedInCost[i])
             {
-                if (!alimentUsedInCost[i])
+                bool isValid = false;
+                switch (costToTest.costType)
                 {
-                    bool isValid = false;
-                    switch (costToTest.costType)
+                    case ChefCardScriptable.Cost.CostType.Gout:
+                        if (engagedAliment[i].alimentLogic.gout == costToTest.goutCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    case ChefCardScriptable.Cost.CostType.AlimentType:
+                        if (engagedAliment[i].alimentLogic.alimentType == costToTest.alimentTypeCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    case ChefCardScriptable.Cost.CostType.Specific:
+                        if (engagedAliment[i].alimentLogic == costToTest.specificCost)
+                        {
+                            isValid = true;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (isValid)
+                {
+                    alimentUsedInCost[i] = true;
+                    if (currentCostIndex == card.cardLogic.cost.Count - 1)
                     {
-                        case ChefCardScriptable.Cost.CostType.Gout:
-                            if (engagedAliment[i].alimentLogic.gout == costToTest.goutCost)
-                            {
-                                isValid = true;
-                            }
-                            break;
-
-                        case ChefCardScriptable.Cost.CostType.AlimentType:
-                            if (engagedAliment[i].alimentLogic.alimentType == costToTest.alimentTypeCost)
-                            {
-                                isValid = true;
-                            }
-                            break;
-
-                        case ChefCardScriptable.Cost.CostType.Specific:
-                            if (engagedAliment[i].alimentLogic == costToTest.specificCost)
-                            {
-                                isValid = true;
-                            }
-                            break;
-
-                        default:
-                            break;
+                        return true;
                     }
-
-                    if (isValid)
+                    else
                     {
-                        alimentUsedInCost[i] = true;
-                        if (currentCostIndex == card.cardLogic.cost.Count - 1)
+                        currentCostIndex++;
+                        if (TestCost(currentCostIndex, card))
                         {
                             return true;
                         }
                         else
                         {
-                            currentCostIndex++;
-                            if (TestCost(currentCostIndex, card))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                alimentUsedInCost[i] = false;
-                                currentCostIndex--;
-                            }
+                            alimentUsedInCost[i] = false;
+                            currentCostIndex--;
                         }
                     }
                 }
-                else
-                {
-                    //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
-                }
             }
-            return false;
+            else
+            {
+                //Debug.Log("! aliment " + i + " " + engagedAliment[i].alimentLogic.cardName + " is blocked");
+            }
         }
-        return true;
+        return false;
     }
 
     [HideInInspector] public bool cardIsZoom = false;
@@ -1064,14 +1082,20 @@ public class PlayerBehavior : NetworkBehaviour
         }
 
         newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + (isServer ? Vector3.back : Vector3.forward) * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
-        newAliment.transform.rotation = Quaternion.Euler(88, 0, 0);
+        
+        if(!isServer)
+        {
+            newAliment.transform.rotation = Quaternion.Euler(88, 180, 0);
+        }
+        else
+        {
+            newAliment.transform.rotation = Quaternion.Euler(88, 0, 0);
+        }
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
-        //chefCardBehaviour.repas.allRecipes.Remove(chefCardBehaviour);
-        Debug.Log(chefCardBehaviour);
 
         if(chefCardBehaviour.cardLogic.cardType != ScriptableCard.CardType.Effet)
         {

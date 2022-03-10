@@ -7,52 +7,44 @@ using UnityEngine;
 
 public class AddPointsToSameRepas : ScriptableEffect
 {
-    public PlayerBehavior player;
-
-
     public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
-        for (int i = 0; i > player.boardRepas.Count; i++)//Pour tout les repas
+        for (int i = 0; i < card.player.boardRepas.Count; i++)//Pour tout les repas
         {
-            if(player.boardRepas[i].allRecipes.Count == card.repas.allRecipes.Count)
+            if (card.player.boardRepas[i].allRecipes.Count == card.repas.allRecipes.Count)
             {
-                for (int y = 0; y > player.boardRepas[i].allRecipes.Count; y++)//Pour toute les recettes du repas en cours d'analyse.
-                {
-                    bool isValidate = false;
 
-                    for (int z = 0; z > card.repas.allRecipes.Count; z++)//Pour toute les recette du repas d'origine
+                bool[] validatedRecipe = new bool[card.repas.allRecipes.Count];
+
+                for (int j = 0; j < card.repas.allRecipes.Count; j++)//Pour toute les recettes du repas de base
+                {
+                    for (int y = 0; y < card.player.boardRepas[i].allRecipes.Count; y++)//Pour toute les recettes du repas en cours d'analyse.
                     {
-                        if (player.boardRepas[i].allRecipes[y].name == card.repas.allRecipes[z].name)
+                        if (card.repas.allRecipes[j].cardLogic == card.player.boardRepas[i].allRecipes[y].cardLogic && !validatedRecipe[y])
                         {
-                            isValidate = true;
+                            validatedRecipe[y] = true;
+                            break;
                         }
                     }
+                }
 
-                    if(!isValidate)
+                bool isAllTheSame = true;
+                for (int t = 0; t < validatedRecipe.Length; t++)
+                {
+                    if(!validatedRecipe[t])
                     {
-                        break;
+                        isAllTheSame = false;
                     }
-                    else if(isValidate)
-                    {
-                        player.boardRepas[i].basePoint += 2;
-                    }
+                }
 
+                if(isAllTheSame && card.repas != card.player.boardRepas[i])
+                {
+                    card.player.boardRepas[i].variablePoint += 2;
                 }
             }
 
         }
 
-
-
-
-
-            for (int i = 0; i > player.boardRepas.Count; i++)
-        {
-            if (player.boardRepas[i].allRecipes.Count == 2)
-            {
-                player.boardRepas[i].basePoint++;
-            }
-        }
 
         yield return null;
     }

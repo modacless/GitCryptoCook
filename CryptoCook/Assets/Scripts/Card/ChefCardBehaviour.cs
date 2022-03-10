@@ -8,8 +8,8 @@ using static PlayerBehavior;
 public class ChefCardBehaviour : CardBehavior
 {
     public TextMeshPro textName;
-    public TextMeshPro textCost;
-    public TextMeshPro textCostFood;
+    public TextMeshPro scoreText;
+    public TextMeshPro costText;
     public TextMeshPro textRecipeType;
     public TextMeshPro textCulture;
     public TextMeshPro textDescription;
@@ -42,7 +42,7 @@ public class ChefCardBehaviour : CardBehavior
         {
             textName.text = cardLogic.cardName;
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
-            textCost.text = (basePoint + variablePoint).ToString();
+            scoreText.text = (basePoint + variablePoint).ToString();
 
             RefreshCostDisplay();
 
@@ -61,35 +61,17 @@ public class ChefCardBehaviour : CardBehavior
 
         if(cardLogic.cardType == ScriptableCard.CardType.Effet)
         {
+            currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
 
-            if(cardLogic.sprite != null)
+            if (cardLogic.sprite != null)
             {
                 spriteBackgroud.sprite = cardLogic.sprite;
             }
-            
-            string foodCost = "";
-            for (int i = 0; i < currentCost.Count; i++)
-            {
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
-                {
-                    foodCost = currentCost[i].alimentTypeCost.ToString() + " + ";
-                }
 
+            RefreshCostDisplay();
 
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
-                {
-                    foodCost = currentCost[i].goutCost.ToString() + " + ";
-                }
-
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
-                {
-                    foodCost = currentCost[i].specificCost.cardName + " + ";
-                }
-
-
-            }
             textName.text = cardLogic.cardName;
-            textCostFood.text = foodCost;
+
             if (cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
 
@@ -198,42 +180,62 @@ public class ChefCardBehaviour : CardBehavior
 
     public void RefreshCostDisplay()
     {
-        string foodCost = "";
+        string cotsTextString = "";
         for (int i = 0; i < currentCost.Count; i++)
         {
             if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
             {
-                foodCost += currentCost[i].alimentTypeCost.ToString();
+                cotsTextString += currentCost[i].alimentTypeCost.ToString();
             }
 
             if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
             {
-                foodCost += currentCost[i].goutCost.ToString();
+                cotsTextString += currentCost[i].goutCost.ToString();
             }
 
             if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
             {
-                foodCost += currentCost[i].specificCost.cardName;
+                cotsTextString += currentCost[i].specificCost.cardName;
             }
 
             if (i < currentCost.Count - 1)
             {
-                foodCost += " + ";
+                cotsTextString += " + ";
             }
         }
 
-        textCostFood.text = foodCost;
+        costText.text = cotsTextString;
     }
 
     public void RefreshScore()
     {
-        textCost.text = (basePoint + variablePoint).ToString();
+        scoreText.text = (basePoint + variablePoint).ToString();
+    }
+
+    [Command]
+    public void CmdAddCost(string addedCost)
+    {
+        RpcAddCost(addedCost);
+    }
+
+    public ChefCardScriptable.Cost pouletCost;
+
+    [ClientRpc]
+    public void RpcAddCost(string addedCost)
+    {
+        if(addedCost == "Poulet")
+        {
+            AddCost(pouletCost);
+        }
+        else
+        {
+            Debug.Log("Please hardcode the cost here, can't send the cost in the network directly (oblky string :'( )");
+        }
     }
 
     public void AddCost(ChefCardScriptable.Cost addedCost)
     {
         currentCost.Add(addedCost);
         RefreshCostDisplay();
-        // refersh affichage
     }
 }

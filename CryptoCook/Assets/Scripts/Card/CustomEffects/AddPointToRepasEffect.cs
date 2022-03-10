@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class AddPointToRepasEffect : ScriptableEffect
 {
-    public PlayerBehavior player;
-
-
     public override IEnumerator OnBoardChange(ChefCardBehaviour card)
     {
 
@@ -18,11 +15,11 @@ public class AddPointToRepasEffect : ScriptableEffect
 
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
-        for (int i = 0; i > player.boardRepas.Count; i++)
+        for (int i = 0; i < card.player.boardRepas.Count; i++)
         {
-            if(player.boardRepas[i].allRecipes.Count == 2)
+            if(card.player.boardRepas[i].allRecipes.Count == 2)
             {
-                player.boardRepas[i].basePoint++;
+                card.player.boardRepas[i].basePoint++;
             }
         }
 

@@ -15671,8 +15671,8 @@ MonoBehaviour:
   cardHalo: {fileID: 4097911862243750560}
   player: {fileID: 0}
   textName: {fileID: 7718991172240633619}
-  textCost: {fileID: 868641188689533480}
-  textCostFood: {fileID: 1037813119339776987}
+  scoreText: {fileID: 868641188689533480}
+  costText: {fileID: 1037813119339776987}
   textRecipeType: {fileID: 8760437514634903358}
   textCulture: {fileID: 1258480885059451806}
   textDescription: {fileID: 977782713221814007}
@@ -15684,6 +15684,11 @@ MonoBehaviour:
   isEffectActive: 0
   emplacementHand: -1
   currentCost: []
+  pouletCost:
+    costType: 2
+    goutCost: 0
+    alimentTypeCost: 0
+    specificCost: {fileID: 11400000, guid: 30d045ffd1527d9448f6b0c7bb7cceb2, type: 2}
 --- !u!114 &2632394404503819196
 MonoBehaviour:
   m_ObjectHideFlags: 0
