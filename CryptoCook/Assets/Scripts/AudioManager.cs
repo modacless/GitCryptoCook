@@ -15,6 +15,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip dropCardSFX;
     public AudioClip mouseOverCardSFX;
 
+    [Header("UI")]
+    public AudioClip nextTurnSFX;
+    public AudioClip navigateSFX;
+    public AudioClip readySFX;
+
     [Header("Music")]
     public AudioClip gameMusic;
 

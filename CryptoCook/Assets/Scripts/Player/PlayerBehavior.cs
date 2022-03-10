@@ -503,6 +503,7 @@ public class PlayerBehavior : NetworkBehaviour
     {
         deckManager.CmdNextTurn();
         statePlayer = StatePlayer.EnnemyPhase;
+        AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.nextTurnSFX, 1f);
     }
 
     private void ShowButtonTurn(bool oldValue, bool newValue)
