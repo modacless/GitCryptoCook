@@ -9,7 +9,7 @@ public class ScriptableCard : ScriptableObject
     {
         Aliment,
         Recette,
-        Effet
+        Effect
     }
 
     public CardType cardType;

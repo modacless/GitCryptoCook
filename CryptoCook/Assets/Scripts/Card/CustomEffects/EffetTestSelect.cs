@@ -21,7 +21,7 @@ public class EffetTestSelect : ScriptableEffect
 
         card.player.selectedChefCard = null;
         card.player.StartSelectRecipeEnemy();
-        while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
+        while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
         {
             yield return new WaitForEndOfFrame();
         }

@@ -59,7 +59,7 @@ public class ChefCardBehaviour : CardBehavior
             }
         }
 
-        if(cardLogic.cardType == ScriptableCard.CardType.Effet)
+        if(cardLogic.cardType == ScriptableCard.CardType.Effect)
         {
 
             if(cardLogic.sprite != null)
