@@ -36,13 +36,13 @@ public class ChefCardBehaviour : CardBehavior
 
     public void InitializeCard(ChefCardScriptable card, PlayerBehavior _player)
     {
-        
+
         isEffectActive = true;
         player = _player;
         cardLogic = card;
         basePoint = cardLogic.pointEarn;
 
-        
+
 
         if (cardLogic.cardType == ScriptableCard.CardType.Recette)
         {
@@ -52,21 +52,8 @@ public class ChefCardBehaviour : CardBehavior
 
             RefreshCostDisplay();
 
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
-                {
-                    foodCost += currentCost[i].specificCost.cardName;
-                }
-
-                if(i < currentCost.Count - 1)
-                {
-                    foodCost += " + ";
-                }
-
-            }
-
-            textCostFood.text = foodCost;
             textRecipeType.text = cardLogic.recipeType.ToString() + " | " + cardLogic.recipeCulture.ToString();
-            if(cardLogic.effect != null)
+            if (cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
             if (cardLogic.modelPrefab != null)
             {
@@ -91,7 +78,7 @@ public class ChefCardBehaviour : CardBehavior
             }
         }
 
-        if(cardLogic.cardType == ScriptableCard.CardType.Effet)
+        if (cardLogic.cardType == ScriptableCard.CardType.Effet)
         {
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
 
@@ -102,7 +89,7 @@ public class ChefCardBehaviour : CardBehavior
 
             RefreshCostDisplay();
 
-            textName.text = cardLogic.cardName;
+    textName.text = cardLogic.cardName;
 
             if (cardLogic.effect != null)
                 textDescription.text = cardLogic.effect.effectDescription;
@@ -120,35 +107,35 @@ public class ChefCardBehaviour : CardBehavior
     }
 
     public override void OnMouseDrag()
+{
+    if (hasAuthority && !isOnBoard && !deckManager.authorityPlayer.cardIsZoom)
     {
-        if (hasAuthority && !isOnBoard && !deckManager.authorityPlayer.cardIsZoom)
+        //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
+        //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
+        //transform.position = newWorldPosition;
+        deckManager.authorityPlayer.isDraggingCard = true;
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
         {
-            //Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord);
-            //Vector3 newWorldPosition = Camera.main.ScreenToWorldPoint(ScreenPosition);
-            //transform.position = newWorldPosition;
-            deckManager.authorityPlayer.isDraggingCard = true;
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("DragPlane")))
-            {
-                transform.position = hit.point;
-            }
+            transform.position = hit.point;
+        }
 
-            if (Physics.Raycast(transform.position + Vector3.up * 20f, Vector3.down, out hit, 200f, LayerMask.GetMask("DropCard")))
+        if (Physics.Raycast(transform.position + Vector3.up * 20f, Vector3.down, out hit, 200f, LayerMask.GetMask("DropCard")))
+        {
+            if (hit.transform.tag == "Board")
             {
-                if (hit.transform.tag == "Board")
+                if (player.statePlayer == StatePlayer.PlayCardPhase)
                 {
-                    if (player.statePlayer == StatePlayer.PlayCardPhase)
-                    {
-                        player.HighlightRepas(player.FindBoardPlaces(hit.transform.gameObject), true);
-                    }
+                    player.HighlightRepas(player.FindBoardPlaces(hit.transform.gameObject), true);
                 }
             }
-            else
-            {
-                player.LowLightAllRepas();
-            }
         }
+        else
+        {
+            player.LowLightAllRepas();
+        }
+    }
     }
 
     public override void OnMouseUp()
