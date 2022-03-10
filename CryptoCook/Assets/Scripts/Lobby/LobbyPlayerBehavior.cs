@@ -17,6 +17,9 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public GameObject readyButton;
 
     public NetManager networkManager; //Référence qui permet de donner stocker les variables transmises ( pseudo, deck )
+
+    public GameObject deckFastFood;
+    public GameObject deckAsian;
     #endregion
 
     [Header("Variables internes")]
@@ -25,6 +28,8 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public string pseudo;
     [SyncVar(hook = nameof(UpdatePosition))]
     public int positionInLobby;
+    [SyncVar(hook = nameof(UpdateDeck))]
+    public int chooseDeck = 0;
 
     [HideInInspector]
     [SyncVar(hook = nameof(UpdateReady))]
@@ -48,6 +53,7 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         UpdatePosition(positionInLobby, positionInLobby);
         UpdatePseudoText(pseudo, pseudo);
         UpdateReady(isReady, isReady);
+        UpdateDeck(chooseDeck, chooseDeck);
 
         //Active le boutton ready pour le joueur possédant l'authorité
         readyButton.SetActive(true);
@@ -91,4 +97,42 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         }
     }
 
+    public void UpdateDeck(int oldValue, int newValue)
+    {
+        switch (newValue)
+        {
+            case 0:
+                deck = "FastFood";
+                deckFastFood.SetActive(true);
+                deckAsian.SetActive(false);
+                break;
+            case 1:
+                deck = "Asian";
+                deckFastFood.SetActive(false);
+                deckAsian.SetActive(true);
+                break;
+        }
+    }
+
+    [Command]
+    public void CmdOnPressedRight()
+    {
+        chooseDeck++;
+
+        if (chooseDeck > 1)
+        {
+            chooseDeck = 0;
+        }
+    }
+
+    [Command]
+    public void CmdOnPressedLeft()
+    {
+        chooseDeck--;
+
+        if (chooseDeck < 0)
+        {
+            chooseDeck = 1;
+        }
+    }
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a86cad0a2c0f3848b4a9eb3ec2a8efa, type: 3}
   m_Name: AddPointToRepasEffect
   m_EditorClassIdentifier: 
-  effectDescription: 
+  effectDescription: "Une fois jou\xE9e, donne +1 \xE0 tout les repas de deux recettes."
   player: {fileID: 0}
