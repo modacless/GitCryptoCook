@@ -44,32 +44,9 @@ public class ChefCardBehaviour : CardBehavior
             textName.text = cardLogic.cardName;
             currentCost = new List<ChefCardScriptable.Cost>(cardLogic.cost);
             textCost.text = (basePoint + variablePoint).ToString();
-            string foodCost = "";
-            for (int i = 0; i < currentCost.Count; i++)
-            {
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
-                {
-                    foodCost += currentCost[i].alimentTypeCost.ToString();
-                }
 
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
-                {
-                    foodCost += currentCost[i].goutCost.ToString();
-                }
+            RefreshCostDisplay();
 
-                if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
-                {
-                    foodCost += currentCost[i].specificCost.cardName;
-                }
-
-                if(i < currentCost.Count - 1)
-                {
-                    foodCost += " + ";
-                }
-
-            }
-
-            textCostFood.text = foodCost;
             textRecipeType.text = cardLogic.recipeType.ToString();
             textCulture.text = cardLogic.recipeCulture.ToString();
             if(cardLogic.effect != null)
@@ -220,9 +197,39 @@ public class ChefCardBehaviour : CardBehavior
         player.CmdDestroyCardFromBoard(this);
     }
 
+    public void RefreshCostDisplay()
+    {
+        string foodCost = "";
+        for (int i = 0; i < currentCost.Count; i++)
+        {
+            if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.AlimentType)
+            {
+                foodCost += currentCost[i].alimentTypeCost.ToString();
+            }
+
+            if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Gout)
+            {
+                foodCost += currentCost[i].goutCost.ToString();
+            }
+
+            if (currentCost[i].costType == ChefCardScriptable.Cost.CostType.Specific)
+            {
+                foodCost += currentCost[i].specificCost.cardName;
+            }
+
+            if (i < currentCost.Count - 1)
+            {
+                foodCost += " + ";
+            }
+        }
+
+        textCostFood.text = foodCost;
+    }
+
     public void AddCost(ChefCardScriptable.Cost addedCost)
     {
         currentCost.Add(addedCost);
+        RefreshCostDisplay();
         // refersh affichage
     }
 }

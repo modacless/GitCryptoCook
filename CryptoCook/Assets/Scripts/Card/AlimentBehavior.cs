@@ -63,6 +63,7 @@ public class AlimentBehavior : CardBehavior
                     if (pl.statePlayer == PlayerBehavior.StatePlayer.PickupFoodPhase)
                     {
                         player = pl;
+                        targetScale = baseScale * (isInReserve ? scaleReserveMultiplier : 1);
                         player.PlaceAlimentInReserve(this);
                         SetCurrentPosAsBase();
                     }

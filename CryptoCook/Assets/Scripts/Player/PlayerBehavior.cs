@@ -453,8 +453,8 @@ public class PlayerBehavior : NetworkBehaviour
         handCards.Remove(card);
         handCardsPositionIsNotEmpty[card.emplacementHand] = false;
 
-        card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.forward * repasRecipeStartOffset + Vector3.back * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
-        card.transform.rotation = Quaternion.Euler(85, 0, 0);
+        card.transform.position = boardCardsEmplacement[emplacement].transform.GetChild(0).position + Vector3.up + Vector3.forward * repasRecipeStartOffset + Vector3.back * repasRecipeStackingOffset * boardRepas[emplacement].allRecipes.Count;
+        card.transform.rotation = Quaternion.Euler(88, 0, 0);
         card.SetCurrentPosAsBase();
 
         if (card.cardLogic.effect != null && card.isEffectActive)
@@ -1026,7 +1026,8 @@ public class PlayerBehavior : NetworkBehaviour
             reserveSlotDuplicataIndex = reserveSlots[reserveSlots.Count - 1].Count - 1;
         }
 
-        newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + Vector3.left * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
+        newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + Vector3.back * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
+        newAliment.transform.rotation = Quaternion.Euler(88, 0, 0);
     }
 
     [Command(requiresAuthority = false)]
