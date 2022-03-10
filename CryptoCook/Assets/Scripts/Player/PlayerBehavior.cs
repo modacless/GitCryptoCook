@@ -30,7 +30,7 @@ public class PlayerBehavior : NetworkBehaviour
     [SerializeField]
     private TextMeshProUGUI textStatePlayer;
     [SerializeField]
-    private TextMeshProUGUI textPoint;
+    private TextMeshPro textPoint;
 
     private GameObject gameManager;
     private DeckManager deckManager;
