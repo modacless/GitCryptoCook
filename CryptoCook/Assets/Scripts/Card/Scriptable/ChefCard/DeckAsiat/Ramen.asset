@@ -31,7 +31,7 @@ MonoBehaviour:
     alimentTypeCost: 4
     specificCost: {fileID: 0}
   - costType: 1
-    goutCost: 0
+    goutCost: 2
     alimentTypeCost: 3
     specificCost: {fileID: 0}
   - costType: 2

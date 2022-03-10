@@ -208,7 +208,6 @@ public class ChefCardBehaviour : CardBehavior
 
     public void RefreshCostDisplay()
     {
-        Debug.Log("Cost display refresh");
         string cotsTextString = "";
         for (int i = 0; i < currentCost.Count; i++)
         {
@@ -266,5 +265,18 @@ public class ChefCardBehaviour : CardBehavior
     {
         currentCost.Add(addedCost);
         RefreshCostDisplay();
+    }
+
+
+    [Command(requiresAuthority = false)]
+    public void CmdDisabelEffect()
+    {
+        RpcDisableEffect();
+    }
+
+    [ClientRpc]
+    public void RpcDisableEffect()
+    {
+        isEffectActive = false;
     }
 }

@@ -173,4 +173,16 @@ public class AlimentBehavior : CardBehavior
     {
         isInReserve = isIn;
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdRemoveFromReserve()
+    {
+        RpcRemoveFromReserve();
+    }
+
+    [ClientRpc]
+    public void RpcRemoveFromReserve()
+    {
+        player.RemoveAliment(this);
+    }
 }

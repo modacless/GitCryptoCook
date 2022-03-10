@@ -19,9 +19,20 @@ MonoBehaviour:
   matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: "Sauce \xC9pic\xE9"
   TextDescription: "Tr\xE8s risqu\xE9"
-  sprite: {fileID: 0}
   recipeType: 0
   recipeCulture: 0
-  cost: []
+  cost:
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
   effect: {fileID: 11400000, guid: edd81709af5c1c743931d6c599605ca1, type: 2}
   pointEarn: 0
