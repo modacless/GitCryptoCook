@@ -133,14 +133,24 @@ public class PlayerBehavior : NetworkBehaviour
 
     }
 
+    [Command]
+    public void CmdAddDeck( string msg)
+    {
+        this.deck = msg;
+    }
 
     IEnumerator Start()
     {
         if (isServer)
             yield return new WaitUntil(() => allPlayersReady());
 
-        DeckChoosen.decks.TryGetValue(deck, out List<ChefCardScriptable> deckFind);
-        chefDeck = deckFind;
+        yield return new WaitUntil(() => deck != string.Empty);
+        if (DeckChoosen.decks.TryGetValue(deck, out List<ChefCardScriptable> deckFind)){
+            chefDeck = new List<ChefCardScriptable>(deckFind);
+        }
+
+        yield return new WaitForSeconds(1f);
+        
 
         textPoint.gameObject.SetActive(false);
         handCardsPositionIsNotEmpty = new bool[maxCardsInHand];

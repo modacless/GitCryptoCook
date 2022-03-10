@@ -391,7 +391,10 @@ public class NetManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player);
         player.GetComponent<PlayerBehavior>().pseudo = msg.pseudo;
         player.GetComponent<PlayerBehavior>().deck = msg.deck;
+        //player.GetComponent<PlayerBehavior>().CmdAddDeck(msg.deck);
     }
+
+
 
     #endregion
 
