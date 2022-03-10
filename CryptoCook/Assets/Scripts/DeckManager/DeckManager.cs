@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class DeckManager : NetworkBehaviour
 {
     public LayerMask cardMask;
 
+    #region Références
 
     public GameObject dragPlane;
     [SerializeField]
@@ -26,6 +28,12 @@ public class DeckManager : NetworkBehaviour
     [SerializeField]
     private GameObject[] cardsPosition;
 
+    public GameObject endScreen;
+    public GameObject victoryScreen;
+    public GameObject looseScreen;
+
+    #endregion
+
     public List<CardBehavior> boardCards = new List<CardBehavior>(); // for network purpose
     public List<AlimentBehavior> tableAliments = new List<AlimentBehavior>();
 
@@ -33,7 +41,6 @@ public class DeckManager : NetworkBehaviour
     [SyncVar] public GameObject playerClient;
 
     public PlayerBehavior authorityPlayer;
-
 
     [SyncVar] public int tour = 0;
 
@@ -181,5 +188,23 @@ public class DeckManager : NetworkBehaviour
         {
             tableAliments[i].cardHalo.SetActive(_state);
         }
+    }
+
+    public void OnPressedQuit()
+    {
+        if (isServer)
+        {
+            NetworkServer.Shutdown();
+            //NetworkClient.Shutdown();
+
+            Destroy(GameObject.Find("NetworkManager"));
+        }
+        else
+        {
+            Destroy(GameObject.Find("NetworkManager"));
+            NetworkClient.Shutdown();
+        }
+
+        SceneManager.LoadScene("Base");
     }
 }

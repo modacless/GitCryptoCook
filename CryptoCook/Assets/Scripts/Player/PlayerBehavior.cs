@@ -15,9 +15,13 @@ public class PlayerBehavior : NetworkBehaviour
     [SerializeField]
     private GameObject buttonNextRound;
     [SerializeField]
+    private GameObject buttonCancelEffect;
+    [SerializeField]
     private GameObject cardObjectRecipe;
     [SerializeField]
     private GameObject cardObjectEffect;
+    [SerializeField]
+    private GameObject cardObjectAliment;
     [SerializeField]
     private GameObject deckObject;
     [SerializeField]
@@ -50,17 +54,14 @@ public class PlayerBehavior : NetworkBehaviour
     public float repasRecipeStartOffset;
     public float alimentReserveDuplicataOffset;
 
-    [HideInInspector]
-    [SyncVar] public int gamePoint; //variables repr�sentant les points gagn�s par le joueur
-
     //Carte pioch� au d�but de la partie
     private int startHand = 5;
 
     private int maxCardsInHand = 7;
 
     [HideInInspector]
-    public int currentPoint = 0; //Point du joueur
-    public int maxPoint = 50; //Point a atteindre pour que le joueur gagne
+    [SyncVar(hook = nameof(CheckVictory))] public int currentPoint = 24; //Point du joueur
+    public int maxPoint = 25; //Point a atteindre pour que le joueur gagne
 
     [HideInInspector]
     [SyncVar(hook = nameof(ShowButtonTurn))] public bool yourTurn = false;
@@ -72,15 +73,16 @@ public class PlayerBehavior : NetworkBehaviour
         DrawPhase,
         PickupFoodPhase,
         PlayCardPhase,
-        EffetPhase,
+        EffectPhase,
         EnnemyPhase
     }
 
     [SyncVar] public StatePlayer statePlayer;
+    private bool cancelEffect = false;
 
-    /// <summary>
-    /// Stockage des diff�rentes cartes
-    /// </summary>
+    #endregion
+
+    #region Gestion data cartes
 
     // Liste de cartes dans la main du joueur
     [HideInInspector]
@@ -144,6 +146,8 @@ public class PlayerBehavior : NetworkBehaviour
 
     IEnumerator Start()
     {
+        buttonCancelEffect.SetActive(false);
+
         if (isServer)
             yield return new WaitUntil(() => allPlayersReady());
 
@@ -311,6 +315,15 @@ public class PlayerBehavior : NetworkBehaviour
                 textStatePlayer.text = "Ennemy Turn";
             }
 
+            if(statePlayer == StatePlayer.EffectPhase)
+            {
+                buttonCancelEffect.SetActive(true);
+            }
+            else
+            {
+                buttonCancelEffect.SetActive(false);
+                cancelEffect = false;
+            }
             CardZoom();
         }
 
@@ -361,7 +374,7 @@ public class PlayerBehavior : NetworkBehaviour
         {
 
             GameObject cardToChoose = null;
-            if(chefDeck[0].cardType == ScriptableCard.CardType.Effet)
+            if(chefDeck[0].cardType == ScriptableCard.CardType.Effect)
             {
                 cardToChoose = cardObjectEffect;
                 //Debug.Log("EFFECT " + chefDeck[0].cardName);
@@ -590,14 +603,15 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelectRecipeAlly()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Receipe ally";
         
-        while (selectedChefCard == null)
+        while (selectedChefCard == null && !cancelEffect )
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 if (hit.transform.tag == "Card" && Input.GetMouseButton(0) && hit.transform.GetComponent<ChefCardBehaviour>().isOnBoard && hit.transform.GetComponent<NetworkIdentity>().hasAuthority)
@@ -608,6 +622,7 @@ public class PlayerBehavior : NetworkBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        cancelEffect = false;
         statePlayer = oldState;
     }
 
@@ -620,12 +635,11 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelectRecipeEnemy()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Receipe Enemy";
 
-        while (selectedChefCard == null)
+        while (selectedChefCard == null && !cancelEffect)
         {
-            Debug.Log("i");
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -640,6 +654,7 @@ public class PlayerBehavior : NetworkBehaviour
             yield return new WaitForEndOfFrame();
         }
         statePlayer = oldState;
+        cancelEffect = false;
     }
     //Permet de sélectionner un repas sur la planche allié
     public void StartSelectMealAlly()
@@ -650,10 +665,10 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelecMealAlly()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Meal Ally";
 
-        while (selectMeal == null)
+        while (selectMeal == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("DropCard");
@@ -679,6 +694,7 @@ public class PlayerBehavior : NetworkBehaviour
         }
         selectMeal = null;
         statePlayer = oldState;
+        cancelEffect = false;
     }
 
     public void StartSelectMealEnemy()
@@ -689,10 +705,10 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelecMealEnemy()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Meal Enemy";
 
-        while (selectMeal == null)
+        while (selectMeal == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("DropCard");
@@ -718,6 +734,7 @@ public class PlayerBehavior : NetworkBehaviour
             yield return new WaitForEndOfFrame();
         }
         statePlayer = oldState;
+        cancelEffect = false;
     }
 
     public void StartSelectTableIngredient(AlimentScriptable.Gout flavor)
@@ -728,10 +745,10 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelectTableIngredient(AlimentScriptable.Gout flavor)
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On table";
 
-        while (selectedChefCard == null)
+        while (selectedChefCard == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -754,6 +771,7 @@ public class PlayerBehavior : NetworkBehaviour
             yield return new WaitForEndOfFrame();
         }
         statePlayer = oldState;
+        cancelEffect = false;
     }
 
     public void StartSelectIngredientAlly()
@@ -764,10 +782,10 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelectIngredientAlly()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On ally Reserve";
 
-        while (selectedChefCard == null)
+        while (selectedChefCard == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -790,6 +808,7 @@ public class PlayerBehavior : NetworkBehaviour
             yield return new WaitForEndOfFrame();
         }
         statePlayer = oldState;
+        cancelEffect = false;
     }
 
     public void StartSelectIngredientEnemy()
@@ -800,10 +819,10 @@ public class PlayerBehavior : NetworkBehaviour
     private IEnumerator SelectIngredientEnemy()
     {
         StatePlayer oldState = statePlayer;
-        statePlayer = StatePlayer.EffetPhase;
+        statePlayer = StatePlayer.EffectPhase;
         textStatePlayer.text = "Select Food On Enemy Reserve";
 
-        while (selectedChefCard == null)
+        while (selectedChefCard == null && !cancelEffect)
         {
             RaycastHit hit;
             int layerMask = LayerMask.GetMask("Card");
@@ -826,6 +845,12 @@ public class PlayerBehavior : NetworkBehaviour
             yield return new WaitForEndOfFrame();
         }
         statePlayer = oldState;
+        cancelEffect = false;
+    }
+
+    public void OnPressedCancelEffect()
+    {
+        cancelEffect = true;
     }
 
     #endregion
@@ -877,6 +902,7 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
+            CmdAddPoint(boardRepas[i].variablePoint + boardRepas[i].basePoint);
         for (int i = 0; i < boardRepas.Count; i++)
         {
             if (boardRepas[i].allRecipes.Count > 0)
@@ -885,6 +911,11 @@ public class PlayerBehavior : NetworkBehaviour
             }
             currentPoint += boardRepas[i].variablePoint + boardRepas[i].basePoint;
         }
+    }
+
+    public void CmdAddPoint(int pointToAdd)
+    {
+        currentPoint += pointToAdd;
     }
 
     public void NewTurn()
@@ -1022,6 +1053,7 @@ public class PlayerBehavior : NetworkBehaviour
     [HideInInspector] public bool cardIsZoom = false;
     [HideInInspector] public bool isDraggingCard = false;
     [HideInInspector] public CardBehavior zoomedCard = null;
+    [HideInInspector] GameObject cardToZoom = null;
     public void CardZoom()
     {
         if (Input.GetMouseButtonDown(1)) //Récupère la carte sur laquelle le joueur clique
@@ -1034,21 +1066,45 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 if (Physics.Raycast(ray, out hit, 100, deckManager.cardMask))
                 {
-                    zoomedCard = hit.transform.GetComponent<CardBehavior>();
-                    zoomedCard.SetCurrentPosAsBase();
+                    if (hit.transform.GetComponent<ChefCardBehaviour>())
+                    {
+                       
+                        ChefCardBehaviour chefCardZoom = hit.transform.GetComponent<ChefCardBehaviour>();
+                        if(chefCardZoom.cardLogic.cardType == ScriptableCard.CardType.Effect)
+                        {
+                            cardToZoom = Instantiate(cardObjectEffect);
+                        }
 
-                    hit.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f; 
-                        //new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 10f, Camera.main.transform.position.z + 6f);
+                        if(chefCardZoom.cardLogic.cardType == ScriptableCard.CardType.Recette)
+                        {
+                            cardToZoom = Instantiate(cardObjectRecipe);
+                        }
+                        cardToZoom.GetComponent<ChefCardBehaviour>().InitializeCard(chefCardZoom.cardLogic, this);
+                        cardToZoom.GetComponent<CardBehavior>().SetCurrentPosAsBase();
+                    }
+                    //hit.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 14f; 
 
-                    hit.transform.rotation = Camera.main.transform.rotation;
+                    if (hit.transform.GetComponent<AlimentBehavior>())
+                    {
+                        AlimentBehavior alimentCardZoom = hit.transform.GetComponent<AlimentBehavior>();
+                        cardToZoom = Instantiate(cardObjectAliment);
+                        cardToZoom.GetComponent<AlimentBehavior>().InitializeCard(alimentCardZoom.alimentLogic);
+                        cardToZoom.GetComponent<CardBehavior>().SetCurrentPosAsBase();
+                    }
 
-                    cardIsZoom = true;
-
+                    if(cardToZoom != null)
+                    {
+                        cardToZoom.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 10.5f;
+                        cardToZoom.transform.rotation = Camera.main.transform.rotation;
+                        cardIsZoom = true;
+                    }
                 }
             }
             else if (cardIsZoom == true)
             {
-                zoomedCard.ResetPos();
+                cardToZoom.GetComponent<CardBehavior>().ResetPos();
+                Destroy(cardToZoom);
+                cardToZoom = null;
                 cardIsZoom = false;
 
             }
@@ -1100,7 +1156,7 @@ public class PlayerBehavior : NetworkBehaviour
     public void CmdDestroyCardFromBoard(ChefCardBehaviour chefCardBehaviour)
     {
 
-        if(chefCardBehaviour.cardLogic.cardType != ScriptableCard.CardType.Effet)
+        if(chefCardBehaviour.cardLogic.cardType != ScriptableCard.CardType.Effect)
         {
             RpcDestroyCardFromBoard(chefCardBehaviour.repas.allRecipes.IndexOf(chefCardBehaviour), boardRepas.IndexOf(chefCardBehaviour.repas));
         }
@@ -1160,4 +1216,36 @@ public class PlayerBehavior : NetworkBehaviour
             boardRepas[i].highlight.SetActive(false);
         }
     }
+
+    #region victory management
+
+    public void CheckVictory(int oldValue, int newValue)
+    {
+        if (newValue >= maxPoint)
+        {
+            if (hasAuthority)
+            {
+                deckManager.endScreen.SetActive(true);
+                deckManager.victoryScreen.SetActive(true);
+                CmdWin();
+            }
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdWin()
+    {
+        RpcWin();
+    }
+    [ClientRpc]
+    private void RpcWin()
+    {
+        if (!hasAuthority)
+        {
+            deckManager.endScreen.SetActive(true);
+            deckManager.looseScreen.SetActive(true);
+        }
+    }
+
+    #endregion
 }

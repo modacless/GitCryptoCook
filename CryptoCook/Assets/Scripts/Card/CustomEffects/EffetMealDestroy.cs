@@ -19,7 +19,7 @@ public class EffetMealDestroy : ScriptableEffect
     {
         card.player.selectMeal = null;
         card.player.StartSelectMealAlly();
-        while (card.player.selectMeal == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffetPhase)
+        while (card.player.selectMeal == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
         {
             yield return new WaitForEndOfFrame();
         }
