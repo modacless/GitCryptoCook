@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e53fd0bf41ac5043a61bf098d7a79cc, type: 3}
   m_Name: Effect Hommage Respectueux
   m_EditorClassIdentifier: 
-  effectDescription: Jeter 1 aliment et voler une recette d'un adversaire
+  effectDescription: Jeter 1 aliment et voler une recette d'un adversaire.

@@ -24,6 +24,14 @@ MonoBehaviour:
     une recette adverse dans sa main"
   recipeType: 2
   recipeCulture: 0
-  cost: []
+  cost:
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 3
+    specificCost: {fileID: 0}
+  - costType: 0
+    goutCost: 1
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
   effect: {fileID: 11400000, guid: 11d2e463ed19e804481e05b5792cceaf, type: 2}
   pointEarn: 1

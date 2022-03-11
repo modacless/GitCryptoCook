@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c943326b251aa4c922d8638a13a94c, type: 3}
   m_Name: Combo
   m_EditorClassIdentifier: 
-  effectDescription: "Combo +2 par rapport aux entr\xE9s"
+  effectDescription: "Combo +2 par rapport aux entr\xE9s."

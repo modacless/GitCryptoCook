@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AddCostInHandEffect
   m_EditorClassIdentifier: 
   effectDescription: "Les recettes de la mains de votre adversaires demandent un
-    Poulet en plus pour \xEAtre jou\xE9"
+    Poulet en plus pour \xEAtre jou\xE9."
   addedCost: Poulet

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Effect Mochi
   m_EditorClassIdentifier: 
   effectDescription: "Lorsque pos\xE9 : S'il y a une entr\xE9e dans le repas, renvoie
-    une recette adverse dans sa main"
+    une recette adverse dans sa main."

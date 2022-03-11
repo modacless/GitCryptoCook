@@ -12,17 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
   m_Name: Sushi
   m_EditorClassIdentifier: 
-  cardType: 0
+  cardType: 1
   meshFilterModel: {fileID: 0}
-  modelPrefab: {fileID: 0}
-  spriteBackground: {fileID: 0}
-  effectBackground: {fileID: 0}
+  modelPrefab: {fileID: 6937882341154979547, guid: bce70e218a14b144a882ff1b9e7ac19f, type: 3}
+  spriteBackground: {fileID: 2100000, guid: e3f909969f93d4f47bef546e544e4fd1, type: 2}
+  effectBackground: {fileID: 2100000, guid: 3c25fc80a061ac34cb8c15d8d8f099fc, type: 2}
   effectIllu: {fileID: 0}
-  matRarity: {fileID: 0}
-  cardName: 
+  matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
+  cardName: Sushi
   TextDescription: 
   recipeType: 0
   recipeCulture: 0
-  cost: []
+  cost:
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 4
+    specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 3
+    specificCost: {fileID: 0}
   effect: {fileID: 0}
-  pointEarn: 0
+  pointEarn: 2

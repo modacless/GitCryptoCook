@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: UnlockAlimentWithPlacingRecipe
   m_EditorClassIdentifier: 
   effectDescription: "A chaque fois que vous placez une recette, choisissez un aliment
-    \xE0 d\xE9bloqu\xE9"
+    \xE0 d\xE9bloqu\xE9."
