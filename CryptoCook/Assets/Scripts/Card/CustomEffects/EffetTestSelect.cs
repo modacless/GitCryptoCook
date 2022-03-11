@@ -18,18 +18,21 @@ public class EffetTestSelect : ScriptableEffect
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
         //code pour effet pour détruire une recette adverse
-
-        card.player.selectedChefCard = null;
-        card.player.StartSelectRecipeEnemy();
-        while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
+        if (card.player.hasAuthority)
         {
-            yield return new WaitForEndOfFrame();
-        }
+            card.player.selectedChefCard = null;
+            card.player.StartSelectRecipeEnemy();
+            while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
+            {
+                yield return new WaitForEndOfFrame();
+            }
 
-        if (card.player.selectedChefCard != null)
-        {
-            card.player.selectedChefCard.DestroyCard();
+            if (card.player.selectedChefCard != null)
+            {
+                card.player.selectedChefCard.DestroyCard();
+            }
+            yield return null;
         }
-        yield return null;
+        
     }
 }

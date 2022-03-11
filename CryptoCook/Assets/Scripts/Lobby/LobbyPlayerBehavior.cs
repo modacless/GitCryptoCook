@@ -16,6 +16,9 @@ public class LobbyPlayerBehavior : NetworkBehaviour
     public GameObject readyUi;
     public GameObject readyButton;
 
+    public GameObject BouttonLeft;
+    public GameObject BouttonRight;
+
     public NetManager networkManager; //Référence qui permet de donner stocker les variables transmises ( pseudo, deck )
 
     public GameObject deckFastFood;
@@ -60,6 +63,8 @@ public class LobbyPlayerBehavior : NetworkBehaviour
         if (!hasAuthority)
         {
             readyButton.SetActive(false);
+            BouttonLeft.SetActive(false);
+            BouttonRight.SetActive(false);
         }
     }
 
@@ -96,6 +101,14 @@ public class LobbyPlayerBehavior : NetworkBehaviour
             networkManager.pseudoPlayer = pseudo;
             networkManager.deckPlayer = deck;
 
+            BouttonLeft.SetActive(false);
+            BouttonRight.SetActive(false);
+
+        }
+        else
+        {
+            BouttonLeft.SetActive(true);
+            BouttonRight.SetActive(true);
         }
     }
 

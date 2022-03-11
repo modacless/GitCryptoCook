@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DeckManager : NetworkBehaviour
 {
@@ -19,6 +20,8 @@ public class DeckManager : NetworkBehaviour
     private GameObject deckObject;
     [SerializeField]
     public GameObject[] playerPosition;
+
+    public Image fadeOutPicture;
 
     public GameObject posCamP1;
     public GameObject posCamP2;
@@ -227,5 +230,20 @@ public class DeckManager : NetworkBehaviour
         }
 
         SceneManager.LoadScene("Base");
+    }
+
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOutManager());
+    }
+
+    private IEnumerator FadeOutManager()
+    {
+        while(fadeOutPicture.color.a > 0)
+        {
+            fadeOutPicture.color = new Color(fadeOutPicture.color.r, fadeOutPicture.color.g, fadeOutPicture.color.b, fadeOutPicture.color.a - Time.deltaTime*0.5f);
+            yield return new WaitForEndOfFrame();
+        }
+        fadeOutPicture.gameObject.SetActive(false);
     }
 }

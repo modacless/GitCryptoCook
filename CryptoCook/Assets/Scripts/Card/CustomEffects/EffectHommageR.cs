@@ -33,12 +33,30 @@ public class EffectHommageR : ScriptableEffect
         card.player.selectedChefCard = null;
         card.player.StartSelectRecipeEnemy();
 
-        while (card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
+        while(card.player.selectedChefCard == null && card.player.statePlayer == PlayerBehavior.StatePlayer.EffectPhase)
         {
             yield return new WaitForEndOfFrame();
         }
         card.player.CmdStealRecipe(card.player, card.player.selectedChefCard);
-        card.player.selectedChefCard = null;
+
+        /*yield return new WaitForSeconds(1f);
+        //yield return new WaitUntil(() => card.player.statePlayer != PlayerBehavior.StatePlayer.EffectPhase);
+        card.player.statePlayer = PlayerBehavior.StatePlayer.EffectPhase;
+        while (card.player.selectedChefCard == null)
+        {
+            if (card.player.cancelEffect)
+            {
+                card.player.statePlayer = PlayerBehavior.StatePlayer.PlayCardPhase;
+                yield return null;
+            }
+            card.player.statePlayer = PlayerBehavior.StatePlayer.EffectPhase;
+            yield return new WaitForEndOfFrame();
+        }
+        if(card.player.selectedChefCard != null)
+        {
+            card.player.CmdStealRecipe(card.player, card.player.selectedChefCard);
+        }
+        card.player.selectedChefCard = null;*/
         yield return null;
     }
 
