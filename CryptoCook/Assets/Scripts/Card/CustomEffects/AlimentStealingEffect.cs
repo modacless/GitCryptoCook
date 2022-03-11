@@ -34,7 +34,7 @@ public class AlimentStealingEffect : ScriptableEffect
                 yield return new WaitForEndOfFrame();
             }
 
-            card.player.PlaceAlimentInReserve(card.player.selectedAliment);
+            card.player.PlaceAlimentInReserve(card.player.selectedAliment, false);
         }
     }
 }
