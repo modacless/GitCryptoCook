@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DeckManager : NetworkBehaviour
 {
@@ -19,6 +20,8 @@ public class DeckManager : NetworkBehaviour
     private GameObject deckObject;
     [SerializeField]
     public GameObject[] playerPosition;
+
+    public Image fadeOutPicture;
 
     public GameObject posCamP1;
     public GameObject posCamP2;
@@ -52,6 +55,8 @@ public class DeckManager : NetworkBehaviour
         {
             yield return new WaitUntil(() => allPlayersReady());
 
+            CmdShuffleDeckAliment();
+
             for (int i = 0; i < cardsPosition.Length; i++)
             {
                 DrawAlimentToTable(i);
@@ -71,6 +76,25 @@ public class DeckManager : NetworkBehaviour
                 break;
         }
         yield return null;
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdShuffleDeckAliment()
+    {
+        for (int i = 0; i < alimentDeck.Count; i++)
+        {
+            int randomPosition = Random.Range(0, alimentDeck.Count);
+            RpcShuffleDeckCuisine(i, randomPosition);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcShuffleDeckCuisine(int i, int rand)
+    {
+        AlimentScriptable cardToShuffle;
+        cardToShuffle = alimentDeck[i];
+        alimentDeck[i] = alimentDeck[rand];
+        alimentDeck[rand] = cardToShuffle;
     }
 
     public void DrawAlimentToTable(int emplacement)
@@ -206,5 +230,20 @@ public class DeckManager : NetworkBehaviour
         }
 
         SceneManager.LoadScene("Base");
+    }
+
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOutManager());
+    }
+
+    private IEnumerator FadeOutManager()
+    {
+        while(fadeOutPicture.color.a > 0)
+        {
+            fadeOutPicture.color = new Color(fadeOutPicture.color.r, fadeOutPicture.color.g, fadeOutPicture.color.b, fadeOutPicture.color.a - Time.deltaTime*0.5f);
+            yield return new WaitForEndOfFrame();
+        }
+        fadeOutPicture.gameObject.SetActive(false);
     }
 }

@@ -662,6 +662,8 @@ MonoBehaviour:
   lobbyPosition: []
   readyUi: {fileID: 6752157990364802916}
   readyButton: {fileID: 7640124255189058020}
+  BouttonLeft: {fileID: 4846417185515250961}
+  BouttonRight: {fileID: 6594320639560828147}
   networkManager: {fileID: 0}
   deckFastFood: {fileID: 7325998904693953483}
   deckAsian: {fileID: 6967068578906888611}

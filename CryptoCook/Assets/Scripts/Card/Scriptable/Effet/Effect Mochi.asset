@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5bad8368c0db424cb76ffbd1d8712d7, type: 3}
+  m_Name: Effect Mochi
+  m_EditorClassIdentifier: 
+  effectDescription: "Lorsque pos\xE9 : S'il y a une entr\xE9e dans le repas, renvoie
+    une recette adverse dans sa main"
