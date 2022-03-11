@@ -28,9 +28,9 @@ public class PlayerBehavior : NetworkBehaviour
     private GameObject[] cardPosition;
 
     [SerializeField]
-    private TextMeshProUGUI textStatePlayer;
+    private TextMeshPro textStatePlayer;
     [SerializeField]
-    private TextMeshProUGUI textPoint;
+    private TextMeshPro textPoint;
 
     private GameObject gameManager;
     private DeckManager deckManager;
