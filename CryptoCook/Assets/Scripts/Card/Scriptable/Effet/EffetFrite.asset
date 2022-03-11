@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04cc332e731197478e827a6b7297c95, type: 3}
   m_Name: EffetFrite
   m_EditorClassIdentifier: 
-  effectDescription: '+ 1 en association avec un Burger de n''importe quel type
+  effectDescription: '+ 1 en association avec un Burger de n''importe quel type.
 
 '
   recette1: {fileID: 11400000, guid: c31bf0895e6d6034791ad054ed78acb8, type: 2}

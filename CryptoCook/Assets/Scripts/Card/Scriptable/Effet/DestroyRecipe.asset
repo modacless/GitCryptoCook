@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af8732c16bc3174594bcd2803403e2d, type: 3}
   m_Name: DestroyRecipe
   m_EditorClassIdentifier: 
-  effectDescription: "D\xE9truire carte \xE9nemie"
+  effectDescription: "D\xE9truit une recette adverse."

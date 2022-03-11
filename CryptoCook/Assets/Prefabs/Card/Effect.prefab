@@ -14628,7 +14628,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: + 1 en association avec une Frite ou une Patatoe
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1fa6fec9f1b9ec545ae0a56865e295bf, type: 2}
   m_sharedMaterial: {fileID: -8949923805289098979, guid: 1fa6fec9f1b9ec545ae0a56865e295bf, type: 2}

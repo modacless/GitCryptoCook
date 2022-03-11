@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AlimentPiocheEffect
   m_EditorClassIdentifier: 
   effectDescription: "Choisissez 1 aliment de votre r\xE9serve, piochez autant de
-    carte que de duplicata de cet aliment"
+    carte que de duplicata de cet aliment."

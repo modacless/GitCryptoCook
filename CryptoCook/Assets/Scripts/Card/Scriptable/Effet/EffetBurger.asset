@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04cc332e731197478e827a6b7297c95, type: 3}
   m_Name: EffetBurger
   m_EditorClassIdentifier: 
-  effectDescription: + 1 en association avec une Frite ou une Patatoes
+  effectDescription: + 1 en association avec une Frite ou une Patatoes.
   recette1: {fileID: 11400000, guid: 958c6b056960caf479bdd22a0aa57ca5, type: 2}
   recette2: {fileID: 0}

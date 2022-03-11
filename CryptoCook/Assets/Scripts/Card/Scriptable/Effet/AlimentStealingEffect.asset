@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac4bca564208524fb201d2ce2c83d32, type: 3}
   m_Name: AlimentStealingEffect
   m_EditorClassIdentifier: 
-  effectDescription: "Volez 1 aliment de la r\xE9serve de l'adversaire"
+  effectDescription: "Volez 1 aliment de la r\xE9serve de l'adversaire."

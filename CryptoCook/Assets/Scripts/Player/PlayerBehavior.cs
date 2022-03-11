@@ -221,7 +221,7 @@ public class PlayerBehavior : NetworkBehaviour
                 Camera.main.transform.position = deckManager.posCamP2.transform.position;
             }
 
-            //CmdShuffleDeckCuisine();
+            CmdShuffleDeckCuisine();
 
             //On attend que les joueurs se positionnent correctement
             yield return new WaitForSeconds(1f);
