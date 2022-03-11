@@ -76,9 +76,9 @@ public class ChefCardBehaviour : CardBehavior
 
             graph.materials = matArray;
 
-            if (cardLogic.spriteBackground != null && cylindreBackground != null)
+            if (cardLogic.effectBackground != null && cylindreBackground != null)
             {
-                cylindreBackground.GetComponent<MeshRenderer>().material = cardLogic.spriteBackground;
+                cylindreBackground.GetComponent<MeshRenderer>().material = cardLogic.effectBackground;
             }
 
             if (cardLogic.effectBackground != null)

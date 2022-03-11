@@ -15,8 +15,10 @@ MonoBehaviour:
   cardType: 2
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 0}
-  spriteBackground: {fileID: 0}
-  matRarity: {fileID: 0}
+  spriteBackground: {fileID: 2100000, guid: bdd74e40efe63394082f9e45a87e149a, type: 2}
+  effectBackground: {fileID: 2100000, guid: 3c25fc80a061ac34cb8c15d8d8f099fc, type: 2}
+  effectIllu: {fileID: 21300000, guid: 01b36d35e006f204d8e90d5ae6619c30, type: 3}
+  matRarity: {fileID: 2100000, guid: f56e250986aaf3143aaa6d65de7107b0, type: 2}
   cardName: Lancer de Mochi
   TextDescription: 
   recipeType: 0
