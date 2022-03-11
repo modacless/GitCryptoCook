@@ -16,11 +16,25 @@ MonoBehaviour:
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 0}
   spriteBackground: {fileID: 0}
+  effectBackground: {fileID: 0}
+  effectIllu: {fileID: 0}
   matRarity: {fileID: 0}
   cardName: Hommage Respectueux
   TextDescription: Jeter 1 aliment et voler une recette d'un adversaire
   recipeType: 0
   recipeCulture: 0
-  cost: []
+  cost:
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
+  - costType: 0
+    goutCost: 2
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
+  - costType: 1
+    goutCost: 0
+    alimentTypeCost: 0
+    specificCost: {fileID: 0}
   effect: {fileID: 11400000, guid: 4234cd788b6dee549be899a4bcd206f4, type: 2}
   pointEarn: 0
