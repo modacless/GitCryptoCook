@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
   m_Name: Sushi
   m_EditorClassIdentifier: 
-  cardType: 0
+  cardType: 2
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 0}
   spriteBackground: {fileID: 0}

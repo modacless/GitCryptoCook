@@ -28171,6 +28171,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 48aff721cc5350145a9b15687de7de85, type: 2}
   - name: Asian
     allCards:
+    - {fileID: 11400000, guid: b3c4259ef248aa047972496764bd5ce0, type: 2}
+    - {fileID: 11400000, guid: b3c4259ef248aa047972496764bd5ce0, type: 2}
     - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
     - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
     - {fileID: 11400000, guid: d2f037f8772db174e8e6e4fbd7c66373, type: 2}
@@ -28180,7 +28182,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4ec0765733c3af24dae8fc89f7355731, type: 2}
     - {fileID: 11400000, guid: f32e2ec63d3ea544c890b07a1285f0db, type: 2}
     - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
-    - {fileID: 11400000, guid: 4eb65ce86568a6347adc890bbf4f4521, type: 2}
     - {fileID: 11400000, guid: 4eb65ce86568a6347adc890bbf4f4521, type: 2}
     - {fileID: 11400000, guid: 4eb65ce86568a6347adc890bbf4f4521, type: 2}
 --- !u!1 &9217536637384563529
