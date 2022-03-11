@@ -37,7 +37,9 @@ public class EffectHommageR : ScriptableEffect
         {
             yield return new WaitForEndOfFrame();
         }
+        PlayerBehavior otherPlayer = card.player.selectedChefCard.player;
         card.player.CmdStealRecipe(card.player, card.player.selectedChefCard);
+        otherPlayer.CmdRefreshBoard();
 
         /*yield return new WaitForSeconds(1f);
         //yield return new WaitUntil(() => card.player.statePlayer != PlayerBehavior.StatePlayer.EffectPhase);

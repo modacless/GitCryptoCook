@@ -64,7 +64,7 @@ public class AlimentBehavior : CardBehavior
                     {
                         player = pl;
                         targetScale = baseScale * (isInReserve ? scaleReserveMultiplier : 1);
-                        player.PlaceAlimentInReserve(this);
+                        player.PlaceAlimentInReserve(this, true);
                         SetCurrentPosAsBase();
 
                         AudioManager.AMInstance.PlaySFX(AudioManager.AMInstance.dropCardSFX, 1.2f);
@@ -107,7 +107,19 @@ public class AlimentBehavior : CardBehavior
                             DisEngage();
                         }
                     }
+                    else
+                    {
+                        Debug.Log("aliment is used or not in reesrve");
+                    }
                 }
+                else
+                {
+                    Debug.Log("player is not in right phase");
+                }
+            }
+            else
+            {
+                Debug.Log("player is null");
             }
         }
     }
@@ -169,23 +181,30 @@ public class AlimentBehavior : CardBehavior
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdSetInReserve(bool isIn)
+    public void CmdSetInReserve(bool isIn, PlayerBehavior newPlayerOwner)
     {
         isInReserve = isIn;
+        netIdentity.AssignClientAuthority(newPlayerOwner.netIdentity.connectionToClient);
     }
 
     [Command(requiresAuthority = false)]
     public void CmdRemoveFromReserve()
     {
         RpcRemoveFromReserve();
+        netIdentity.RemoveClientAuthority();
     }
 
     [ClientRpc]
     public void RpcRemoveFromReserve()
     {
-        if(hasAuthority)
-        {
-            player.RemoveAliment(this);
-        }
+        player.RemoveAliment(this);
+    }
+
+
+    [Command(requiresAuthority = false)]
+    public void CmdMoveAliment(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
     }
 }

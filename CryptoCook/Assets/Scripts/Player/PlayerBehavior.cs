@@ -159,7 +159,7 @@ public class PlayerBehavior : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         
 
-        textPoint.gameObject.SetActive(false);
+        //textPoint.gameObject.SetActive(false);
         handCardsPositionIsNotEmpty = new bool[maxCardsInHand];
         handCardsPositionIsNotEmpty.Count(v => (v = false));
 
@@ -272,11 +272,10 @@ public class PlayerBehavior : NetworkBehaviour
             }
         }
 
+        textPoint.text = currentPoint.ToString();
+
         if (hasAuthority)
         {
-
-            textPoint.text = currentPoint.ToString();
-
             if (statePlayer == StatePlayer.DrawPhase)
             {
                 textStatePlayer.text = "Draw phase";
@@ -1013,15 +1012,15 @@ public class PlayerBehavior : NetworkBehaviour
             {
                 //Debug.Log("repas " + i + " : " + (boardRepas[i].variablePoint + boardRepas[i].basePoint));
             }
-            CmdAddPoint(boardRepas[i].variablePoint + boardRepas[i].basePoint);
-
+            currentPoint += boardRepas[i].variablePoint + boardRepas[i].basePoint;
+            CmdSetPoint(currentPoint);
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdAddPoint(int pointToAdd)
+    public void CmdSetPoint(int pointToSet)
     {
-        currentPoint += pointToAdd;
+        currentPoint = pointToSet;
     }
 
     public void NewTurn()
@@ -1231,25 +1230,43 @@ public class PlayerBehavior : NetworkBehaviour
         }
     }
 
-    public void PlaceAlimentInReserve(AlimentBehavior newAliment)
+    public void PlaceAlimentInReserve(AlimentBehavior newAliment, bool wasOnTable)
     {
         Debug.Log("aliment placed in rserve : " + newAliment.alimentLogic.cardName);
-        newAliment.CmdSetInReserve(true);
+        newAliment.CmdSetInReserve(true, this);
         reserveCards.Add(newAliment);
-        deckManager.CmdPickOnTable(newAliment);
-        statePlayer = StatePlayer.PlayCardPhase;
+        if(wasOnTable)
+        {
+            deckManager.CmdPickOnTable(newAliment);
+            statePlayer = StatePlayer.PlayCardPhase;
+        }
+        newAliment.player = this;
 
         bool alimentTypeAlreadyInReserve = false;
         int reserveSlotIndex = 0;
         int reserveSlotDuplicataIndex = 0;
         for (int i = 0; i < reserveSlots.Count; i++)
         {
-            if(reserveSlots[i][0].alimentLogic == newAliment.alimentLogic)
+            if(reserveSlots[i] != null && reserveSlots[i].Count > 0)
+            {
+                if(reserveSlots[i][0] != null)
+                {
+                    if (reserveSlots[i][0].alimentLogic == newAliment.alimentLogic)
+                    {
+                        alimentTypeAlreadyInReserve = true;
+                        reserveSlotIndex = i;
+                        reserveSlotDuplicataIndex = reserveSlots[i].Count;
+                        reserveSlots[i].Add(newAliment);
+                    }
+                }
+            }
+            else
             {
                 alimentTypeAlreadyInReserve = true;
-                reserveSlotIndex = i;
-                reserveSlotDuplicataIndex = reserveSlots[i].Count;
+                reserveSlots[i] = new List<AlimentBehavior>();
                 reserveSlots[i].Add(newAliment);
+                reserveSlotIndex = i;
+                reserveSlotDuplicataIndex = 0;
             }
         }
 
@@ -1261,17 +1278,29 @@ public class PlayerBehavior : NetworkBehaviour
             reserveSlotDuplicataIndex = reserveSlots[reserveSlots.Count - 1].Count - 1;
         }
 
+        Vector3 alimentPos = reservesSlotsPositions[reserveSlotIndex].transform.position + (isServer ? Vector3.back : Vector3.forward) * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
         newAliment.transform.position = reservesSlotsPositions[reserveSlotIndex].transform.position + (isServer ? Vector3.back : Vector3.forward) * reserveSlotDuplicataIndex * alimentReserveDuplicataOffset;
-        
+        Quaternion alimentRot = Quaternion.identity;
         if(!isServer)
         {
+            alimentRot = Quaternion.Euler(88, 180, 0);
             newAliment.transform.rotation = Quaternion.Euler(88, 180, 0);
         }
         else
         {
+            alimentRot = Quaternion.Euler(88, 0, 0);
             newAliment.transform.rotation = Quaternion.Euler(88, 0, 0);
         }
+
+        newAliment.CmdMoveAliment(alimentPos, alimentRot);
+        newAliment.SetCurrentPosAsBase();
+
+        if(!wasOnTable)
+        {
+            newAliment.ResetForTurn();
+        }
     }
+
 
     #region Destruction Card
 
