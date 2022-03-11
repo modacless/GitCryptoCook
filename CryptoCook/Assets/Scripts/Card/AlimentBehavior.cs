@@ -183,8 +183,9 @@ public class AlimentBehavior : CardBehavior
     [Command(requiresAuthority = false)]
     public void CmdSetInReserve(bool isIn, PlayerBehavior newPlayerOwner)
     {
-        isInReserve = isIn;
         netIdentity.AssignClientAuthority(newPlayerOwner.netIdentity.connectionToClient);
+        isInReserve = isIn;
+        player = newPlayerOwner;
     }
 
     [Command(requiresAuthority = false)]
@@ -197,7 +198,11 @@ public class AlimentBehavior : CardBehavior
     [ClientRpc]
     public void RpcRemoveFromReserve()
     {
-        player.RemoveAliment(this);
+        if(hasAuthority)
+        {
+            player.RemoveAliment(this);
+        }
+        player = null;
     }
 
 

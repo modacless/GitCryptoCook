@@ -17,6 +17,7 @@ public class AlimentStealingEffect : ScriptableEffect
 
     public override IEnumerator OnUse(ChefCardBehaviour card)
     {
+        Debug.Log("Use ffect steal aliment");
         card.player.selectedAliment = null;
         card.player.StartSelectIngredientEnemy();
 
@@ -34,6 +35,9 @@ public class AlimentStealingEffect : ScriptableEffect
                 yield return new WaitForEndOfFrame();
             }
 
+            Debug.Log("ended");
+            card.player.selectedAliment.player = card.player;
+            Debug.Log("in effect : " + card.player);
             card.player.PlaceAlimentInReserve(card.player.selectedAliment, false);
         }
     }

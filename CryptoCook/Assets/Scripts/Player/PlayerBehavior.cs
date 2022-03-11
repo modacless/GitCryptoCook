@@ -856,7 +856,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        selectedAliment = null;
         statePlayer = oldState;
         cancelEffect = false;
         yield return null;
@@ -895,7 +894,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        selectedAliment = null;
         /*if (cancelEffect)
         {
             statePlayer = oldState;
@@ -938,7 +936,6 @@ public class PlayerBehavior : NetworkBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        selectedAliment = null;
         statePlayer = oldState;
         cancelEffect = false;
 
@@ -1240,7 +1237,6 @@ public class PlayerBehavior : NetworkBehaviour
             deckManager.CmdPickOnTable(newAliment);
             statePlayer = StatePlayer.PlayCardPhase;
         }
-        newAliment.player = this;
 
         bool alimentTypeAlreadyInReserve = false;
         int reserveSlotIndex = 0;
@@ -1397,7 +1393,6 @@ public class PlayerBehavior : NetworkBehaviour
                 {
                     indexI = i;
                     indexJ = j;
-                    reserveSlots[i][j] = null;
                 }
             }
         }
@@ -1409,7 +1404,6 @@ public class PlayerBehavior : NetworkBehaviour
         }
 
         reserveCards.Remove(aliment);
-        aliment.player = null;
     }
 
     #region victory management
