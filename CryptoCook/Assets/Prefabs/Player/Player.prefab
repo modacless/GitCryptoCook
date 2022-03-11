@@ -28173,10 +28173,10 @@ MonoBehaviour:
     allCards:
     - {fileID: 11400000, guid: b3c4259ef248aa047972496764bd5ce0, type: 2}
     - {fileID: 11400000, guid: b3c4259ef248aa047972496764bd5ce0, type: 2}
-    - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
-    - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
+    - {fileID: 11400000, guid: 1b8e74e500b2ffa4d98dc47ed407eb7a, type: 2}
+    - {fileID: 11400000, guid: 1b8e74e500b2ffa4d98dc47ed407eb7a, type: 2}
     - {fileID: 11400000, guid: d2f037f8772db174e8e6e4fbd7c66373, type: 2}
-    - {fileID: 11400000, guid: d2f037f8772db174e8e6e4fbd7c66373, type: 2}
+    - {fileID: 11400000, guid: 2df18f4ee1b4d3e43a5ff2366381bee5, type: 2}
     - {fileID: 11400000, guid: 6c034b07d46d7ea40b5a57e155a988ae, type: 2}
     - {fileID: 11400000, guid: 52fe9c1011869614282b517da2a681dc, type: 2}
     - {fileID: 11400000, guid: 4ec0765733c3af24dae8fc89f7355731, type: 2}

@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5bec06d4913dd498d3097efb0234bd, type: 3}
   m_Name: Sushi
   m_EditorClassIdentifier: 
-  cardType: 2
+  cardType: 1
   meshFilterModel: {fileID: 0}
   modelPrefab: {fileID: 0}
   spriteBackground: {fileID: 0}
   effectBackground: {fileID: 0}
   effectIllu: {fileID: 0}
   matRarity: {fileID: 0}
-  cardName: 
+  cardName: Sushi
   TextDescription: 
   recipeType: 0
   recipeCulture: 0
   cost: []
-  effect: {fileID: 0}
-  pointEarn: 0
+  effect: {fileID: 11400000, guid: 43a3c90b014715b44b18610bab204e3c, type: 2}
+  pointEarn: 2

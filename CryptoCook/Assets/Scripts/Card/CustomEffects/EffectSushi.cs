@@ -23,7 +23,9 @@ public class EffectSushi : ScriptableEffect
         {
             yield return new WaitForEndOfFrame();
         }
-        card.player.PlaceAlimentInReserve(card.player.selectedAliment);
+        card.player.PlaceAlimentInReserve(card.player.selectedAliment,true);
+        card.player.selectedAliment.UseToPlayCard();
+        card.player.selectedAliment = null;
 
         yield return null;
     }
